@@ -8,7 +8,7 @@ namespace XamarinReactorUI
     {
         protected VisualNode()
         {
-            System.Diagnostics.Debug.WriteLine($"{this}->Created()");
+            //System.Diagnostics.Debug.WriteLine($"{this}->Created()");
         }
 
         public object Key { get; set; }
@@ -19,7 +19,7 @@ namespace XamarinReactorUI
         protected void Invalidate()
         {
             _invalidated = true;
-            System.Diagnostics.Debug.WriteLine($"{this}->Invalidated()");
+            //System.Diagnostics.Debug.WriteLine($"{this}->Invalidated()");
         }
 
         private IReadOnlyList<VisualNode> _children = null;
@@ -85,7 +85,7 @@ namespace XamarinReactorUI
         {
             if (_invalidated)
             {
-                System.Diagnostics.Debug.WriteLine($"{this}->Layout(Invalidated)");
+                //System.Diagnostics.Debug.WriteLine($"{this}->Layout(Invalidated)");
                 var oldChildren = Children;
                 _children = null;
                 MergeChildrenFrom(oldChildren);
@@ -137,6 +137,59 @@ namespace XamarinReactorUI
         protected virtual void OnRemoveChild(RxElement widget, Xamarin.Forms.View nativeControl)
         {
 
+        }
+
+
+        private readonly Dictionary<string, object> _metadata = new Dictionary<string, object>();
+        public void SetMetadata<T>(string key, T value)
+        {
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                throw new ArgumentException("can'be null or empty", nameof(key));
+            }
+
+            _metadata[key] = value;
+        }
+
+        public void SetMetadata<T>(T value)
+        {
+            _metadata[typeof(T).FullName] = value;
+        }
+
+        public T GetMetadata<T>(string key, T defaultValue = default)
+        {
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                throw new ArgumentException("can'be null or empty", nameof(key));
+            }
+
+            if (_metadata.TryGetValue(key, out var value))
+                return (T)value;
+
+            return defaultValue;
+        }
+
+        public T GetMetadata<T>(T defaultValue = default) 
+            => GetMetadata(typeof(T).FullName, defaultValue);
+    }
+
+    public static class VisualNodeExtensions
+    {
+        public static T WithMetadata<T>(this T node, string key, object value) where T : VisualNode
+        {
+            node.SetMetadata(key, value);
+            return node;
+        }
+
+        public static T WithMetadata<T>(this T node, object value) where T : VisualNode
+        {
+            if (value is null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
+            node.SetMetadata(value.GetType().FullName, value);
+            return node;
         }
     }
 }

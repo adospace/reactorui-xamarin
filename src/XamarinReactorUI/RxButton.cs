@@ -18,13 +18,15 @@ namespace XamarinReactorUI
             Text = text;
         }
 
-        public string Text { get; set; }
+        private readonly NullableField<string> _text = new NullableField<string>();
+        public string Text { get => _text.GetValueOrDefault(); set => _text.Value = value; }
 
         public Action ClickAction { get; set; }
 
         protected override void OnUpdate()
         {
-            NativeControl.Text = Text;
+            if (_text.HasValue) NativeControl.Text = _text.Value;
+
             if (ClickAction != null)
                 NativeControl.Clicked += NativeControl_Clicked;
 

@@ -3,21 +3,35 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public abstract class RxLayout<T> : RxView<T>, IEnumerable<VisualNode> where T : Xamarin.Forms.Layout, new()
+    public interface IRxLayout
+    {
+        Thickness Padding { get; set; }
+    }
+
+    public abstract class RxLayout<T> : RxView<T>, IEnumerable<VisualNode>, IRxLayout where T : Xamarin.Forms.Layout, new()
     {
         protected RxLayout(params VisualNode[] children)
         {
+            if (children is null)
+            {
+                throw new ArgumentNullException(nameof(children));
+            }
+
             _internalChildren.AddRange(children);
         }
 
         private readonly List<VisualNode> _internalChildren = new List<VisualNode>();
 
+        private readonly NullableField<Thickness> _padding = new NullableField<Thickness>();
+        public Thickness Padding { get => _padding.GetValueOrDefault(); set => _padding.Value = value; }
+
         protected override IEnumerable<VisualNode> RenderChildren()
         {
-            return _internalChildren.Where(_ => _ != null);
+            return _internalChildren;
         }
 
         public IEnumerator<VisualNode> GetEnumerator()
@@ -32,9 +46,29 @@ namespace XamarinReactorUI
 
         public void Add(VisualNode node)
         {
+            if (node is null)
+            {
+                throw new ArgumentNullException(nameof(node));
+            }
+
             _internalChildren.Add(node);
         }
 
+        protected override void OnUpdate()
+        {
+            if (_padding.HasValue) NativeControl.Padding = _padding.Value;
 
+            base.OnUpdate();
+        }
+    }
+
+    public static class RxLayoutExtensions
+    {
+        public static T Padding<T>(this T layout, Thickness padding) where T : IRxLayout
+        {
+            layout.Padding = padding;
+            return layout;        
+        }
+    
     }
 }

@@ -18,11 +18,12 @@ namespace XamarinReactorUI
             ItemsSource = itemsSource;
         }
 
-        public IEnumerable ItemsSource { get; set; }
+        private readonly NullableField<IEnumerable> _itemsSource = new NullableField<IEnumerable>();
+        public IEnumerable ItemsSource { get => _itemsSource.GetValueOrDefault(); set => _itemsSource.Value = value; }
 
         protected override void OnUpdate()
         {
-            NativeControl.ItemsSource = ItemsSource;
+            if (_itemsSource.HasValue) NativeControl.ItemsSource = _itemsSource.Value;
 
             base.OnUpdate();
         }

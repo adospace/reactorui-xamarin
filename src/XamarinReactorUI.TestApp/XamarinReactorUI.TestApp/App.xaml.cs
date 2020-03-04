@@ -6,16 +6,17 @@ namespace XamarinReactorUI.TestApp
 {
     public partial class App : Application
     {
+        private RxPageContentContainer _mainPageHost;
+
         public App()
         {
             InitializeComponent();
 
-            //MainPage = new MainPage();
-
             var mainPage = new ContentPage();
             MainPage = mainPage;
 
-            new ReactorContainer(new TestComponent(), mainPage)
+            _mainPageHost = mainPage
+                .Host(new TestCollectionViewComponent())
                 .Run();
         }
 
@@ -25,10 +26,12 @@ namespace XamarinReactorUI.TestApp
 
         protected override void OnSleep()
         {
+            _mainPageHost.Stop();
         }
 
         protected override void OnResume()
         {
+            _mainPageHost.Run();
         }
     }
 }

@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public class ReactorContainer : RxElement
+    public class RxPageContentContainer : RxElement
     {
         private readonly RxComponent _rootComponent;
         private readonly Xamarin.Forms.ContentPage _containerPage;
 
-        public ReactorContainer(RxComponent rootComponent, Xamarin.Forms.ContentPage page)
+        public RxPageContentContainer(RxComponent rootComponent, Xamarin.Forms.ContentPage page)
         {
             _rootComponent = rootComponent ?? throw new ArgumentNullException(nameof(rootComponent));
             _containerPage = page ?? throw new ArgumentNullException(nameof(page));
@@ -29,14 +30,25 @@ namespace XamarinReactorUI
             base.OnRemoveChild(widget, nativeControl);
         }
 
-        public ReactorContainer Run()
+        public RxPageContentContainer Run()
         {
+            _pendingStop = false;
             _containerPage.Dispatcher.BeginInvokeOnMainThread(OnLayout);
             return this;
         }
 
+        public void Stop()
+        {
+            _pendingStop = true;   
+        }
+
+        private bool _pendingStop = false;
+
         private void OnLayout()
         {
+            if (_pendingStop)
+                return;
+
             new VisualTree(this).Layout();
             _containerPage.Dispatcher.BeginInvokeOnMainThread(OnLayout);
         }
@@ -45,5 +57,12 @@ namespace XamarinReactorUI
         {
             yield return _rootComponent;
         }
+    }
+
+
+    public static class RxPageContentContainerExtensions
+    {
+        public static RxPageContentContainer Host(this ContentPage pageContent, RxComponent component) 
+            => new RxPageContentContainer(component, pageContent);
     }
 }

@@ -5,7 +5,12 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public abstract class RxElement : VisualNode
+    public interface IRxElement
+    {
+
+    }
+
+    public abstract class RxElement : VisualNode, IRxElement
     {
         protected Xamarin.Forms.Element _nativeControl;
 

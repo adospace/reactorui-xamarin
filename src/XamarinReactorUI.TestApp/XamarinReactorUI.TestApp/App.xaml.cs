@@ -18,6 +18,8 @@ namespace XamarinReactorUI.TestApp
             _mainPageHost = mainPage
                 .Host(new TestCollectionViewComponent())
                 .Run();
+
+            
         }
 
         protected override void OnStart()

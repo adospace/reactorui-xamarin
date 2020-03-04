@@ -18,14 +18,11 @@ namespace XamarinReactorUI
         {
         }
 
-        private readonly NullableField<LayoutOptions> _horizonalOptions = new NullableField<LayoutOptions>();
-        public LayoutOptions HorizontalOptions { get => _horizonalOptions.GetValueOrDefault(); set => _horizonalOptions.Value = value; }
-
-        private readonly NullableField<LayoutOptions> _verticalOptions = new NullableField<LayoutOptions>();
-        public LayoutOptions VerticalOptions { get => _verticalOptions.GetValueOrDefault(); set => _verticalOptions.Value = value; }
-
-        private readonly NullableField<Thickness> _margin = new NullableField<Thickness>();
-        public Thickness Margin { get => _margin.GetValueOrDefault(); set => _margin.Value = value; }
+        public LayoutOptions HorizontalOptions { get; set; } = (LayoutOptions)View.HorizontalOptionsProperty.DefaultValue;
+        
+        public LayoutOptions VerticalOptions { get; set; } = (LayoutOptions)View.VerticalOptionsProperty.DefaultValue;
+        
+        public Thickness Margin { get; set; } = (Thickness)View.MarginProperty.DefaultValue;
 
         protected override void OnMount()
         {
@@ -45,9 +42,9 @@ namespace XamarinReactorUI
 
         protected override void OnUpdate()
         {
-            if (_horizonalOptions.HasValue) NativeControl.HorizontalOptions = _horizonalOptions.Value;
-            if (_verticalOptions.HasValue) NativeControl.VerticalOptions = _verticalOptions.Value;
-            if (_margin.HasValue) NativeControl.Margin = _margin.Value;
+            NativeControl.VerticalOptions = VerticalOptions;
+            NativeControl.HorizontalOptions = HorizontalOptions;
+            NativeControl.Margin = Margin;
 
             base.OnUpdate();
         }

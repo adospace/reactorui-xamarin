@@ -26,16 +26,15 @@ namespace XamarinReactorUI
 
         protected override void OnMount()
         {
-            _nativeControl = new T();
+            base.OnMount();
+
             Parent.AddChild(this, NativeControl);
 
-            base.OnMount();
         }
 
         protected override void OnUnmount()
         {
             Parent.RemoveChild(this, NativeControl);
-            _nativeControl = null;
 
             base.OnUnmount();
         }
@@ -134,45 +133,45 @@ namespace XamarinReactorUI
 
         public static T VStart<T>(this T view) where T : IRxView
         {
-            view.HorizontalOptions = LayoutOptions.Start;
+            view.VerticalOptions = LayoutOptions.Start;
             return view;
         }
 
         public static T VCenter<T>(this T view) where T : IRxView
         {
-            view.HorizontalOptions = LayoutOptions.Center;
+            view.VerticalOptions = LayoutOptions.Center;
             return view;
         }
 
         public static T VEnd<T>(this T view) where T : IRxView
         {
-            view.HorizontalOptions = LayoutOptions.End;
+            view.VerticalOptions = LayoutOptions.End;
             return view;
         }
 
         public static T VFill<T>(this T view) where T : IRxView
         {
-            view.HorizontalOptions = LayoutOptions.Fill;
+            view.VerticalOptions = LayoutOptions.Fill;
             return view;
         }
         public static T VStartAndExpand<T>(this T view) where T : IRxView
         {
-            view.HorizontalOptions = LayoutOptions.StartAndExpand;
+            view.VerticalOptions = LayoutOptions.StartAndExpand;
             return view;
         }
         public static T VCenterAndExpand<T>(this T view) where T : IRxView
         {
-            view.HorizontalOptions = LayoutOptions.CenterAndExpand;
+            view.VerticalOptions = LayoutOptions.CenterAndExpand;
             return view;
         }
         public static T VEndAndExpand<T>(this T view) where T : IRxView
         {
-            view.HorizontalOptions = LayoutOptions.EndAndExpand;
+            view.VerticalOptions = LayoutOptions.EndAndExpand;
             return view;
         }
         public static T VFillAndExpand<T>(this T view) where T : IRxView
         {
-            view.HorizontalOptions = LayoutOptions.FillAndExpand;
+            view.VerticalOptions = LayoutOptions.FillAndExpand;
             return view;
         }
 

@@ -6,8 +6,9 @@ using Xamarin.Forms;
 namespace XamarinReactorUI
 {
     public interface IRxStackLayout
-    { 
+    {
         StackOrientation Orientation { get; set; }
+        double Spacing { get; set; }
     }
 
     public class RxStackLayout : RxLayout<Xamarin.Forms.StackLayout>, IEnumerable<VisualNode>, IRxStackLayout
@@ -16,8 +17,8 @@ namespace XamarinReactorUI
             : base(children)
         { }
 
-        private readonly NullableField<StackOrientation> _orientation = new NullableField<StackOrientation>();
-        public StackOrientation Orientation { get => _orientation.GetValueOrDefault(); set => _orientation.Value = value; }
+        public StackOrientation Orientation { get; set; } = (StackOrientation)StackLayout.OrientationProperty.DefaultValue;
+        public double Spacing { get; set; } = (double)StackLayout.SpacingProperty.DefaultValue;
 
         protected override void OnAddChild(RxElement widget, Xamarin.Forms.View child)
         {
@@ -35,8 +36,9 @@ namespace XamarinReactorUI
 
         protected override void OnUpdate()
         {
-            if (_orientation.HasValue) NativeControl.Orientation = _orientation.Value;
-            
+            NativeControl.Orientation = Orientation;
+            NativeControl.Spacing = Spacing;
+
             base.OnUpdate();
         }
     }
@@ -59,6 +61,12 @@ namespace XamarinReactorUI
         {
             stackLayout.Orientation = StackOrientation.Vertical;
             return stackLayout;
+        }
+
+        public static T Spacing<T>(this T stacklayout, double spacing) where T : IRxStackLayout
+        {
+            stacklayout.Spacing = spacing;
+            return stacklayout;
         }
     }
 }

@@ -1,0 +1,119 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+
+using System;
+using System.Collections.Generic;
+using System.Text;
+using Xamarin.Forms;
+
+namespace XamarinReactorUI
+{
+    public interface IRx<#= TypeName() #>
+    {
+    <# foreach (var property in Properties) { #>
+        <#= property.PropertyType.Name.ToResevedWordTypeName() #> <#= property.Name #> { get; set; }
+    <# } #>
+    }
+
+    public class Rx<#= TypeName() #> : RxView<Xamarin.Forms.<#= TypeName() #>>, IRx<#= TypeName() #>
+    {
+        public Rx<#= TypeName() #>()
+        { 
+        
+        }
+
+        <# foreach (var property in Properties) { #>
+        public <#= property.PropertyType.Name.ToResevedWordTypeName() #> <#= property.Name #> { get; set; } = (<#= property.PropertyType.Name.ToResevedWordTypeName() #>)<#= TypeName() #>.<#= property.Name #>Property.DefaultValue;
+        <# } #>
+
+        protected override void OnUpdate()
+        {
+            <# foreach (var property in Properties) { #>
+            NativeControl.<#= property.Name #> = <#= property.Name #>;
+            <# } #>
+
+            base.OnUpdate();
+        }
+
+        protected override IEnumerable<VisualNode> RenderChildren()
+        {
+            yield break;
+        }
+    }
+
+    public static class Rx<#= TypeName() #>Extensions
+    {
+        <# foreach (var property in Properties) { #>
+        public static T <#= property.Name #><T>(this T <#= TypeName().ToLowerInvariant() #>, <#= property.PropertyType.Name.ToResevedWordTypeName() #> <#= property.Name.CamelCase() #>) where T : IRx<#= TypeName() #>
+        {
+            <#= TypeName().ToLowerInvariant() #>.<#= property.Name #> = <#= property.Name.CamelCase() #>;
+            return <#= TypeName().ToLowerInvariant() #>;
+        }
+        <# if (property.PropertyType.Name == "Thickness") { #>
+        public static T <#= property.Name #><T>(this T <#= TypeName().ToLowerInvariant() #>, double leftRight, double topBottom) where T : IRx<#= TypeName() #>
+        {
+            <#= TypeName().ToLowerInvariant() #>.<#= property.Name #> = new Thickness(leftRight, topBottom);
+            return <#= TypeName().ToLowerInvariant() #>;
+        }
+        public static T <#= property.Name #><T>(this T <#= TypeName().ToLowerInvariant() #>, double uniformSize) where T : IRx<#= TypeName() #>
+        {
+            <#= TypeName().ToLowerInvariant() #>.<#= property.Name #> = new Thickness(uniformSize);
+            return <#= TypeName().ToLowerInvariant() #>;
+        }
+        <# } #>
+        <# if (property.Name == "FontSize") { #>
+        public static T <#= property.Name #><T>(this T <#= TypeName().ToLowerInvariant() #>, NamedSize size) where T : IRx<#= TypeName() #>
+        {
+            <#= TypeName().ToLowerInvariant() #>.<#= property.Name #> = Device.GetNamedSize(size, typeof(<#= TypeName() #>));
+            return <#= TypeName().ToLowerInvariant() #>;
+        }
+        <# } #>
+
+        <# if (property.PropertyType.Name == "ImageSource") { 
+               var propertyName = property.Name.Substring(0, property.Name.Length - "Source".Length); #>
+
+        public static T <#= propertyName #><T>(this T page, string file) where T : IRxPage
+        {
+            <#= TypeName().ToLowerInvariant() #>.<#= property.Name #> = ImageSource.FromFile(file);
+            return page;
+        }
+        public static T <#= propertyName #><T>(this T page, string fileAndroid, string fileiOS) where T : IRxPage
+        {
+            <#= TypeName().ToLowerInvariant() #>.<#= property.Name #> = Device.RuntimePlatform == Device.Android ? ImageSource.FromFile(fileAndroid) : ImageSource.FromFile(fileiOS);
+            return page;
+        }
+        public static T <#= propertyName #><T>(this T page, string resourceName, Assembly sourceAssembly) where T : IRxPage
+        {
+            <#= TypeName().ToLowerInvariant() #>.<#= property.Name #> = ImageSource.FromResource(resourceName, sourceAssembly);
+            return page;
+        }
+        public static T <#= propertyName #><T>(this T page, Uri imageUri) where T : IRxPage
+        {
+            <#= TypeName().ToLowerInvariant() #>.<#= property.Name #> = ImageSource.FromUri(imageUri);
+            return page;
+        }
+        public static T <#= propertyName #><T>(this T page, Uri imageUri, bool cachingEnabled, TimeSpan cacheValidity) where T : IRxPage
+        {
+            <#= TypeName().ToLowerInvariant() #>.<#= property.Name #> = new UriImageSource
+            {
+                Uri = imageUri,
+                CachingEnabled = cachingEnabled,
+                CacheValidity = cacheValidity
+            };
+            return page;
+        }
+        public static T <#= propertyName #><T>(this T page, Func<Stream> imageStream) where T : IRxPage
+        {
+            <#= TypeName().ToLowerInvariant() #>.<#= property.Name #> = ImageSource.FromStream(imageStream);
+            return page;
+        }
+        <# } #>
+
+
+        <# } #>
+    }
+
+}

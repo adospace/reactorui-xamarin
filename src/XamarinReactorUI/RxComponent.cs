@@ -23,5 +23,17 @@ namespace XamarinReactorUI
         {
             yield return Render();
         }
+
+        protected sealed override void OnMount()
+        {
+            base.OnMount();
+
+            OnMounted();
+        }
+
+        protected virtual void OnMounted()
+        { 
+        
+        }
     }
 }

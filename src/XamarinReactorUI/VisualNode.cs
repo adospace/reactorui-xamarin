@@ -119,22 +119,42 @@ namespace XamarinReactorUI
         }
 
 
-        internal void AddChild(RxElement widget, Xamarin.Forms.View nativeControl)
+        internal void AddChild(RxElement widget, Xamarin.Forms.VisualElement nativeControl)
         {
+            if (widget is null)
+            {
+                throw new ArgumentNullException(nameof(widget));
+            }
+
+            if (nativeControl is null)
+            {
+                throw new ArgumentNullException(nameof(nativeControl));
+            }
+
             OnAddChild(widget, nativeControl);
         }
 
-        protected virtual void OnAddChild(RxElement widget, Xamarin.Forms.View nativeControl)
+        protected virtual void OnAddChild(RxElement widget, Xamarin.Forms.VisualElement nativeControl)
         {
 
         }
 
-        internal void RemoveChild(RxElement widget, Xamarin.Forms.View nativeControl)
+        internal void RemoveChild(RxElement widget, Xamarin.Forms.VisualElement nativeControl)
         {
+            if (widget is null)
+            {
+                throw new ArgumentNullException(nameof(widget));
+            }
+
+            if (nativeControl is null)
+            {
+                throw new ArgumentNullException(nameof(nativeControl));
+            }
+
             OnRemoveChild(widget, nativeControl);
         }
 
-        protected virtual void OnRemoveChild(RxElement widget, Xamarin.Forms.View nativeControl)
+        protected virtual void OnRemoveChild(RxElement widget, Xamarin.Forms.VisualElement nativeControl)
         {
 
         }

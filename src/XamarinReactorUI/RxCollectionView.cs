@@ -9,13 +9,7 @@ namespace XamarinReactorUI
 {
     public interface IRxCollectionView
     {
-        object SelectedItem { get; set; }
 
-        Action<VisualNode> SelectedAction { get; set; }
-        
-        Action<IReadOnlyList<VisualNode>, IReadOnlyList<VisualNode>> SelectionChangedAction { get; set; }
-
-        SelectionMode SelectionMode { get; set; }
     }
 
 

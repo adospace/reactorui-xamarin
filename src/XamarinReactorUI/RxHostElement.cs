@@ -14,12 +14,12 @@ namespace XamarinReactorUI
             _rootComponent = rootComponent ?? throw new ArgumentNullException(nameof(rootComponent));
         }
 
-        protected sealed override void OnAddChild(RxElement widget, Xamarin.Forms.View nativeControl)
+        protected sealed override void OnAddChild(RxElement widget, Xamarin.Forms.VisualElement nativeControl)
         {
             
         }
 
-        protected sealed override void OnRemoveChild(RxElement widget, Xamarin.Forms.View nativeControl)
+        protected sealed override void OnRemoveChild(RxElement widget, Xamarin.Forms.VisualElement nativeControl)
         {
         }
 

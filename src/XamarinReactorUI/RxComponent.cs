@@ -9,12 +9,12 @@ namespace XamarinReactorUI
     {
         public abstract VisualNode Render();
 
-        protected sealed override void OnAddChild(RxElement widget, Xamarin.Forms.View nativeControl)
+        protected sealed override void OnAddChild(RxElement widget, Xamarin.Forms.VisualElement nativeControl)
         {
             Parent.AddChild(widget, nativeControl);
         }
 
-        protected sealed override void OnRemoveChild(RxElement widget, Xamarin.Forms.View nativeControl)
+        protected sealed override void OnRemoveChild(RxElement widget, Xamarin.Forms.VisualElement nativeControl)
         {
             Parent.RemoveChild(widget, nativeControl);
         }

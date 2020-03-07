@@ -7,10 +7,18 @@
              x:Class="XamarinReactorUI.TestApp.Page1">
     <ContentPage.Content>
         <StackLayout>
+            <!--<StackLayout.Resources>
+                <Style TargetType="Label">
+                    <Setter Property="Text" Value="FromStyle"/>
+                </Style>
+            </StackLayout.Resources>-->
             <Label Text="Welcome to Xamarin.Forms!"
                    FontSize="Title"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
+            <Label
+                x:Name="lblTest"
+                Text="{Binding Text}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

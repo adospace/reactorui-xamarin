@@ -42,18 +42,23 @@ namespace XamarinReactorUI
             return _contents.GetEnumerator();
         }
 
-        protected override void OnAddChild(RxElement widget, View nativeControl)
+        protected override void OnAddChild(RxElement widget, VisualElement childControl)
         {
-            NativeControl.Content = nativeControl;
+            if (childControl is View view)
+                NativeControl.Content = view;
+            else
+            {
+                throw new InvalidOperationException($"Type '{childControl.GetType()}' not supported under '{GetType()}'");
+            }
 
-            base.OnAddChild(widget, nativeControl);
+            base.OnAddChild(widget, childControl);
         }
 
-        protected override void OnRemoveChild(RxElement widget, View nativeControl)
+        protected override void OnRemoveChild(RxElement widget, VisualElement childControl)
         {
             NativeControl.Content = null;
 
-            base.OnRemoveChild(widget, nativeControl);
+            base.OnRemoveChild(widget, childControl);
         }
 
         protected override IEnumerable<VisualNode> RenderChildren()

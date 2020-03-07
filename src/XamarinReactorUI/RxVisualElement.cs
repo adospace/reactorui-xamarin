@@ -32,7 +32,7 @@ namespace XamarinReactorUI
         FlowDirection FlowDirection { get; set; }
         int TabIndex { get; set; }
         bool IsTabStop { get; set; }
-        List<VisualStateGroup> VisualStateGroups { get; set; }
+        VisualStateGroupList VisualStateGroups { get; set; }
     }
 
     public abstract class RxVisualElement<T> : RxElement, IRxVisualElement where T : Xamarin.Forms.VisualElement, new()
@@ -68,7 +68,7 @@ namespace XamarinReactorUI
         public int TabIndex { get; set; } = (int)VisualElement.TabIndexProperty.DefaultValue;
         public bool IsTabStop { get; set; } = (bool)VisualElement.IsTabStopProperty.DefaultValue;
 
-        public List<VisualStateGroup> VisualStateGroups { get; set; } = new List<VisualStateGroup>();
+        public VisualStateGroupList VisualStateGroups { get; set; } = new VisualStateGroupList();
 
         protected override void OnUpdate()
         {
@@ -98,9 +98,7 @@ namespace XamarinReactorUI
             NativeControl.IsTabStop = IsTabStop;
 
             //TODO: Merge instead of clear+add
-            VisualStateManager.GetVisualStateGroups(NativeControl).Clear();
-            foreach (var vsg in VisualStateGroups)
-                VisualStateManager.GetVisualStateGroups(NativeControl).Add(vsg);
+            VisualStateManager.SetVisualStateGroups(NativeControl, VisualStateGroups);
 
             base.OnUpdate();
         }
@@ -108,13 +106,14 @@ namespace XamarinReactorUI
         protected override void OnMount()
         {
             _nativeControl = _nativeControl ?? new T();
+            Parent.AddChild(this, NativeControl);
 
             base.OnMount();
         }
 
         protected override void OnUnmount()
         {
-
+            Parent.RemoveChild(this, NativeControl);
             _nativeControl = null;
 
             base.OnUnmount();
@@ -124,14 +123,6 @@ namespace XamarinReactorUI
     public class VisualStateNamedGroup
     {
         public const string Common = "CommonStates";
-    }
-
-    public class VisualStateNamedState
-    {
-        public const string Normal = "Normal";
-        public const string Disabled = "Disabled";
-        public const string Focused = "Focused";
-        public const string Selected = "Selected";
     }
 
     public static class RxVisualElementExtensions

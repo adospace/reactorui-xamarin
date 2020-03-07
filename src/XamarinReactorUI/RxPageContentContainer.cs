@@ -16,14 +16,19 @@ namespace XamarinReactorUI
             _containerPage = page ?? throw new ArgumentNullException(nameof(page));
         }
 
-        protected override void OnAddChild(RxElement widget, Xamarin.Forms.View nativeControl)
+        protected override void OnAddChild(RxElement widget, Xamarin.Forms.VisualElement childControl)
         {
-            _containerPage.Content = (Xamarin.Forms.View)nativeControl;
+            if (childControl is View view)
+                _containerPage.Content = view;
+            else
+            {
+                throw new InvalidOperationException($"Type '{childControl.GetType()}' not supported under '{GetType()}'");
+            }
 
-            base.OnAddChild(widget, nativeControl);
+            base.OnAddChild(widget, childControl);
         }
 
-        protected override void OnRemoveChild(RxElement widget, Xamarin.Forms.View nativeControl)
+        protected override void OnRemoveChild(RxElement widget, Xamarin.Forms.VisualElement nativeControl)
         {
             _containerPage.Content = null;
 

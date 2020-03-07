@@ -21,14 +21,14 @@ namespace XamarinReactorUI.TestApp
         {
             InitializeComponent();
 
-            //MainPage = new Page1();
+            MainPage = new Page1();
 
-            var mainPage = new ContentPage();
-            MainPage = mainPage;
+            //var mainPage = new ContentPage();
+            //MainPage = mainPage;
 
-            _mainPageHost = mainPage
-                .Host(new TestHelloWorld())
-                .Run();
+            //_mainPageHost = mainPage
+            //    .Host(new TestHelloWorld())
+            //    .Run();
 
             //CollectionView collectionView = new CollectionView(); 
 

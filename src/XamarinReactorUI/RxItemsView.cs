@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Xamarin.Forms;
 
@@ -13,6 +14,7 @@ namespace XamarinReactorUI
         ScrollBarVisibility VerticalScrollBarVisibility { get; set; }
         int RemainingItemsThreshold { get; set; }
         ItemsUpdatingScrollMode ItemsUpdatingScrollMode { get; set; }
+        VisualStateGroupList ItemVisualStateGroups { get; set; }
     }
 
     public abstract class RxItemsView<T> : RxView<T>, IRxItemsView, IEnumerable<VisualNode> where T : Xamarin.Forms.ItemsView, new()
@@ -85,12 +87,17 @@ namespace XamarinReactorUI
                 _itemTemplatePreseter = itemTemplatePreseter;
             }
 
-            protected sealed override void OnAddChild(RxElement widget, Xamarin.Forms.View nativeControl)
+            protected sealed override void OnAddChild(RxElement widget, Xamarin.Forms.VisualElement nativeControl)
             {
-                _itemTemplatePreseter.Content = nativeControl;
+                if (nativeControl is View view)
+                    _itemTemplatePreseter.Content = view;
+                else
+                {
+                    throw new InvalidOperationException($"Type '{nativeControl.GetType()}' not supported under '{GetType()}'");
+                }
             }
 
-            protected sealed override void OnRemoveChild(RxElement widget, Xamarin.Forms.View nativeControl)
+            protected sealed override void OnRemoveChild(RxElement widget, Xamarin.Forms.VisualElement nativeControl)
             {
                 _itemTemplatePreseter.Content = null;
             }
@@ -107,7 +114,7 @@ namespace XamarinReactorUI
             }
         }
 
-        private class ItemTemplatePresenter : ContentView
+        private class ItemTemplatePresenter : ContentPresenter
         {
             private readonly RxItemsView<T> _collectionView;
             private ItemTemplateNode _itemTemplateNode;
@@ -115,6 +122,7 @@ namespace XamarinReactorUI
             public ItemTemplatePresenter(RxItemsView<T> collectionView)
             {
                 _collectionView = collectionView;
+                VisualStateManager.SetVisualStateGroups(this, collectionView.ItemVisualStateGroups);
             }
 
             protected override void OnBindingContextChanged()
@@ -135,6 +143,7 @@ namespace XamarinReactorUI
         public ScrollBarVisibility VerticalScrollBarVisibility { get; set; } = (ScrollBarVisibility)ItemsView.VerticalScrollBarVisibilityProperty.DefaultValue;
         public int RemainingItemsThreshold { get; set; } = (int)ItemsView.RemainingItemsThresholdProperty.DefaultValue;
         public ItemsUpdatingScrollMode ItemsUpdatingScrollMode { get; set; } = (ItemsUpdatingScrollMode)ItemsView.ItemsUpdatingScrollModeProperty.DefaultValue;
+        public VisualStateGroupList ItemVisualStateGroups { get; set; } = new VisualStateGroupList();
 
         protected override void OnUpdate()
         {
@@ -153,6 +162,33 @@ namespace XamarinReactorUI
 
     public static class RxItemsViewExtensions
     {
+        public static T ItemVisualState<T>(this T itemsview, string groupName, string stateName, BindableProperty property, object value, string targetName = null) where T : IRxItemsView
+        {
+            var group = itemsview.ItemVisualStateGroups.FirstOrDefault(_ => _.Name == groupName);
+
+            if (group == null)
+            {
+                itemsview.ItemVisualStateGroups.Add(group = new VisualStateGroup()
+                {
+                    Name = groupName
+                });
+            }
+
+            var state = group.States.FirstOrDefault(_ => _.Name == stateName);
+            if (state == null)
+            {
+                group.States.Add(state = new VisualState { Name = stateName });
+            }
+
+            state.Setters.Add(new Setter() { Property = property, Value = value });
+
+            return itemsview;
+        }
+
+
+
+
+
         public static T HorizontalScrollBarVisibility<T>(this T itemsview, ScrollBarVisibility horizontalScrollBarVisibility) where T : IRxItemsView
         {
             itemsview.HorizontalScrollBarVisibility = horizontalScrollBarVisibility;

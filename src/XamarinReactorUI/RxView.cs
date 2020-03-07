@@ -24,21 +24,6 @@ namespace XamarinReactorUI
         
         public Thickness Margin { get; set; } = (Thickness)View.MarginProperty.DefaultValue;
 
-        protected override void OnMount()
-        {
-            base.OnMount();
-
-            Parent.AddChild(this, NativeControl);
-
-        }
-
-        protected override void OnUnmount()
-        {
-            Parent.RemoveChild(this, NativeControl);
-
-            base.OnUnmount();
-        }
-
         protected override void OnUpdate()
         {
             NativeControl.VerticalOptions = VerticalOptions;

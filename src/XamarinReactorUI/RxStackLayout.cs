@@ -20,18 +20,23 @@ namespace XamarinReactorUI
         public StackOrientation Orientation { get; set; } = (StackOrientation)StackLayout.OrientationProperty.DefaultValue;
         public double Spacing { get; set; } = (double)StackLayout.SpacingProperty.DefaultValue;
 
-        protected override void OnAddChild(RxElement widget, Xamarin.Forms.View child)
+        protected override void OnAddChild(RxElement widget, Xamarin.Forms.VisualElement childControl)
         {
-            NativeControl.Children.Add(child);
+            if (childControl is View view)
+                NativeControl.Children.Add(view);
+            else
+            {
+                throw new InvalidOperationException($"Type '{childControl.GetType()}' not supported under '{GetType()}'");
+            }
             
-            base.OnAddChild(widget, child);
+            base.OnAddChild(widget, childControl);
         }
 
-        protected override void OnRemoveChild(RxElement widget, Xamarin.Forms.View child)
+        protected override void OnRemoveChild(RxElement widget, Xamarin.Forms.VisualElement childControl)
         {
-            NativeControl.Children.Remove(child);
+            NativeControl.Children.Remove((View)childControl);
 
-            base.OnRemoveChild(widget, child);
+            base.OnRemoveChild(widget, childControl);
         }
 
         protected override void OnUpdate()

@@ -57,6 +57,7 @@ namespace XamarinReactorUI
             {
                 SelectedAction?.Invoke(e.CurrentSelection.Count > 0 ? (VisualNode)e.CurrentSelection[0] : null);
                 SelectionChangedAction?.Invoke(e.CurrentSelection.Cast<VisualNode>().ToList(), e.PreviousSelection.Cast<VisualNode>().ToList());
+                Invalidate();
             }
         }
 
@@ -72,13 +73,13 @@ namespace XamarinReactorUI
 
     public static class RxSelectableItemsViewExtensions
     {
-        public static T OnSelected<T>(this T collectionView, Action<VisualNode> action) where T : IRxCollectionView
+        public static T OnSelected<T>(this T collectionView, Action<VisualNode> action) where T : IRxSelectableItemsView
         {
             collectionView.SelectedAction = action;
             return collectionView;
         }
 
-        public static T OnSelectionChanged<T>(this T collectionView, Action<IReadOnlyList<VisualNode>, IReadOnlyList<VisualNode>> action) where T : IRxCollectionView
+        public static T OnSelectionChanged<T>(this T collectionView, Action<IReadOnlyList<VisualNode>, IReadOnlyList<VisualNode>> action) where T : IRxSelectableItemsView
         {
             collectionView.SelectionChangedAction = action;
             return collectionView;

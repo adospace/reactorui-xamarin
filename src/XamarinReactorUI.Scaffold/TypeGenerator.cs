@@ -413,7 +413,7 @@ namespace XamarinReactorUI.Scaffold
             
             #line 75 "D:\Source\Projects\reactorui-xamarin\src\XamarinReactorUI.Scaffold\TypeGenerator.tt"
  if (property.PropertyType.Name == "ImageSource") { 
-               var propertyName = property.Name.Substring(0, property.Name.Length - "Source".Length); 
+               var propertyName = property.Name.Length <= 6 ? property.Name : property.Name.Substring(0, property.Name.Length - 6); 
             
             #line default
             #line hidden
@@ -424,7 +424,21 @@ namespace XamarinReactorUI.Scaffold
             
             #line default
             #line hidden
-            this.Write("<T>(this T page, string file) where T : IRxPage\r\n        {\r\n            ");
+            this.Write("<T>(this T ");
+            
+            #line 78 "D:\Source\Projects\reactorui-xamarin\src\XamarinReactorUI.Scaffold\TypeGenerator.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(TypeName().ToLowerInvariant()));
+            
+            #line default
+            #line hidden
+            this.Write(", string file) where T : IRx");
+            
+            #line 78 "D:\Source\Projects\reactorui-xamarin\src\XamarinReactorUI.Scaffold\TypeGenerator.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(TypeName()));
+            
+            #line default
+            #line hidden
+            this.Write("\r\n        {\r\n            ");
             
             #line 80 "D:\Source\Projects\reactorui-xamarin\src\XamarinReactorUI.Scaffold\TypeGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(TypeName().ToLowerInvariant()));
@@ -438,16 +452,35 @@ namespace XamarinReactorUI.Scaffold
             
             #line default
             #line hidden
-            this.Write(" = ImageSource.FromFile(file);\r\n            return page;\r\n        }\r\n        publ" +
-                    "ic static T ");
+            this.Write(" = ImageSource.FromFile(file);\r\n            return ");
+            
+            #line 81 "D:\Source\Projects\reactorui-xamarin\src\XamarinReactorUI.Scaffold\TypeGenerator.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(TypeName().ToLowerInvariant()));
+            
+            #line default
+            #line hidden
+            this.Write(";\r\n        }\r\n        public static T ");
             
             #line 83 "D:\Source\Projects\reactorui-xamarin\src\XamarinReactorUI.Scaffold\TypeGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(propertyName));
             
             #line default
             #line hidden
-            this.Write("<T>(this T page, string fileAndroid, string fileiOS) where T : IRxPage\r\n        {" +
-                    "\r\n            ");
+            this.Write("<T>(this T ");
+            
+            #line 83 "D:\Source\Projects\reactorui-xamarin\src\XamarinReactorUI.Scaffold\TypeGenerator.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(TypeName().ToLowerInvariant()));
+            
+            #line default
+            #line hidden
+            this.Write(", string fileAndroid, string fileiOS) where T : IRx");
+            
+            #line 83 "D:\Source\Projects\reactorui-xamarin\src\XamarinReactorUI.Scaffold\TypeGenerator.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(TypeName()));
+            
+            #line default
+            #line hidden
+            this.Write("\r\n        {\r\n            ");
             
             #line 85 "D:\Source\Projects\reactorui-xamarin\src\XamarinReactorUI.Scaffold\TypeGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(TypeName().ToLowerInvariant()));
@@ -462,16 +495,35 @@ namespace XamarinReactorUI.Scaffold
             #line default
             #line hidden
             this.Write(" = Device.RuntimePlatform == Device.Android ? ImageSource.FromFile(fileAndroid) :" +
-                    " ImageSource.FromFile(fileiOS);\r\n            return page;\r\n        }\r\n        pu" +
-                    "blic static T ");
+                    " ImageSource.FromFile(fileiOS);\r\n            return ");
+            
+            #line 86 "D:\Source\Projects\reactorui-xamarin\src\XamarinReactorUI.Scaffold\TypeGenerator.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(TypeName().ToLowerInvariant()));
+            
+            #line default
+            #line hidden
+            this.Write(";\r\n        }\r\n        public static T ");
             
             #line 88 "D:\Source\Projects\reactorui-xamarin\src\XamarinReactorUI.Scaffold\TypeGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(propertyName));
             
             #line default
             #line hidden
-            this.Write("<T>(this T page, string resourceName, Assembly sourceAssembly) where T : IRxPage\r" +
-                    "\n        {\r\n            ");
+            this.Write("<T>(this T ");
+            
+            #line 88 "D:\Source\Projects\reactorui-xamarin\src\XamarinReactorUI.Scaffold\TypeGenerator.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(TypeName().ToLowerInvariant()));
+            
+            #line default
+            #line hidden
+            this.Write(", string resourceName, Assembly sourceAssembly) where T : IRx");
+            
+            #line 88 "D:\Source\Projects\reactorui-xamarin\src\XamarinReactorUI.Scaffold\TypeGenerator.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(TypeName()));
+            
+            #line default
+            #line hidden
+            this.Write("\r\n        {\r\n            ");
             
             #line 90 "D:\Source\Projects\reactorui-xamarin\src\XamarinReactorUI.Scaffold\TypeGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(TypeName().ToLowerInvariant()));
@@ -485,15 +537,35 @@ namespace XamarinReactorUI.Scaffold
             
             #line default
             #line hidden
-            this.Write(" = ImageSource.FromResource(resourceName, sourceAssembly);\r\n            return pa" +
-                    "ge;\r\n        }\r\n        public static T ");
+            this.Write(" = ImageSource.FromResource(resourceName, sourceAssembly);\r\n            return ");
+            
+            #line 91 "D:\Source\Projects\reactorui-xamarin\src\XamarinReactorUI.Scaffold\TypeGenerator.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(TypeName().ToLowerInvariant()));
+            
+            #line default
+            #line hidden
+            this.Write(";\r\n        }\r\n        public static T ");
             
             #line 93 "D:\Source\Projects\reactorui-xamarin\src\XamarinReactorUI.Scaffold\TypeGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(propertyName));
             
             #line default
             #line hidden
-            this.Write("<T>(this T page, Uri imageUri) where T : IRxPage\r\n        {\r\n            ");
+            this.Write("<T>(this T ");
+            
+            #line 93 "D:\Source\Projects\reactorui-xamarin\src\XamarinReactorUI.Scaffold\TypeGenerator.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(TypeName().ToLowerInvariant()));
+            
+            #line default
+            #line hidden
+            this.Write(", Uri imageUri) where T : IRx");
+            
+            #line 93 "D:\Source\Projects\reactorui-xamarin\src\XamarinReactorUI.Scaffold\TypeGenerator.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(TypeName()));
+            
+            #line default
+            #line hidden
+            this.Write("\r\n        {\r\n            ");
             
             #line 95 "D:\Source\Projects\reactorui-xamarin\src\XamarinReactorUI.Scaffold\TypeGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(TypeName().ToLowerInvariant()));
@@ -507,16 +579,35 @@ namespace XamarinReactorUI.Scaffold
             
             #line default
             #line hidden
-            this.Write(" = ImageSource.FromUri(imageUri);\r\n            return page;\r\n        }\r\n        p" +
-                    "ublic static T ");
+            this.Write(" = ImageSource.FromUri(imageUri);\r\n            return ");
+            
+            #line 96 "D:\Source\Projects\reactorui-xamarin\src\XamarinReactorUI.Scaffold\TypeGenerator.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(TypeName().ToLowerInvariant()));
+            
+            #line default
+            #line hidden
+            this.Write(";\r\n        }\r\n        public static T ");
             
             #line 98 "D:\Source\Projects\reactorui-xamarin\src\XamarinReactorUI.Scaffold\TypeGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(propertyName));
             
             #line default
             #line hidden
-            this.Write("<T>(this T page, Uri imageUri, bool cachingEnabled, TimeSpan cacheValidity) where" +
-                    " T : IRxPage\r\n        {\r\n            ");
+            this.Write("<T>(this T ");
+            
+            #line 98 "D:\Source\Projects\reactorui-xamarin\src\XamarinReactorUI.Scaffold\TypeGenerator.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(TypeName().ToLowerInvariant()));
+            
+            #line default
+            #line hidden
+            this.Write(", Uri imageUri, bool cachingEnabled, TimeSpan cacheValidity) where T : IRx");
+            
+            #line 98 "D:\Source\Projects\reactorui-xamarin\src\XamarinReactorUI.Scaffold\TypeGenerator.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(TypeName()));
+            
+            #line default
+            #line hidden
+            this.Write("\r\n        {\r\n            ");
             
             #line 100 "D:\Source\Projects\reactorui-xamarin\src\XamarinReactorUI.Scaffold\TypeGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(TypeName().ToLowerInvariant()));
@@ -532,16 +623,35 @@ namespace XamarinReactorUI.Scaffold
             #line hidden
             this.Write(" = new UriImageSource\r\n            {\r\n                Uri = imageUri,\r\n          " +
                     "      CachingEnabled = cachingEnabled,\r\n                CacheValidity = cacheVal" +
-                    "idity\r\n            };\r\n            return page;\r\n        }\r\n        public stati" +
-                    "c T ");
+                    "idity\r\n            };\r\n            return ");
+            
+            #line 106 "D:\Source\Projects\reactorui-xamarin\src\XamarinReactorUI.Scaffold\TypeGenerator.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(TypeName().ToLowerInvariant()));
+            
+            #line default
+            #line hidden
+            this.Write(";\r\n        }\r\n        public static T ");
             
             #line 108 "D:\Source\Projects\reactorui-xamarin\src\XamarinReactorUI.Scaffold\TypeGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(propertyName));
             
             #line default
             #line hidden
-            this.Write("<T>(this T page, Func<Stream> imageStream) where T : IRxPage\r\n        {\r\n        " +
-                    "    ");
+            this.Write("<T>(this T ");
+            
+            #line 108 "D:\Source\Projects\reactorui-xamarin\src\XamarinReactorUI.Scaffold\TypeGenerator.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(TypeName().ToLowerInvariant()));
+            
+            #line default
+            #line hidden
+            this.Write(", Func<Stream> imageStream) where T : IRx");
+            
+            #line 108 "D:\Source\Projects\reactorui-xamarin\src\XamarinReactorUI.Scaffold\TypeGenerator.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(TypeName()));
+            
+            #line default
+            #line hidden
+            this.Write("\r\n        {\r\n            ");
             
             #line 110 "D:\Source\Projects\reactorui-xamarin\src\XamarinReactorUI.Scaffold\TypeGenerator.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(TypeName().ToLowerInvariant()));
@@ -555,8 +665,14 @@ namespace XamarinReactorUI.Scaffold
             
             #line default
             #line hidden
-            this.Write(" = ImageSource.FromStream(imageStream);\r\n            return page;\r\n        }\r\n   " +
-                    "     ");
+            this.Write(" = ImageSource.FromStream(imageStream);\r\n            return ");
+            
+            #line 111 "D:\Source\Projects\reactorui-xamarin\src\XamarinReactorUI.Scaffold\TypeGenerator.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(TypeName().ToLowerInvariant()));
+            
+            #line default
+            #line hidden
+            this.Write(";\r\n        }\r\n        ");
             
             #line 113 "D:\Source\Projects\reactorui-xamarin\src\XamarinReactorUI.Scaffold\TypeGenerator.tt"
  } 

@@ -73,29 +73,29 @@ namespace XamarinReactorUI
         <# } #>
 
         <# if (property.PropertyType.Name == "ImageSource") { 
-               var propertyName = property.Name.Substring(0, property.Name.Length - "Source".Length); #>
+               var propertyName = property.Name.Length <= 6 ? property.Name : property.Name.Substring(0, property.Name.Length - 6); #>
 
-        public static T <#= propertyName #><T>(this T page, string file) where T : IRxPage
+        public static T <#= propertyName #><T>(this T <#= TypeName().ToLowerInvariant() #>, string file) where T : IRx<#= TypeName() #>
         {
             <#= TypeName().ToLowerInvariant() #>.<#= property.Name #> = ImageSource.FromFile(file);
-            return page;
+            return <#= TypeName().ToLowerInvariant() #>;
         }
-        public static T <#= propertyName #><T>(this T page, string fileAndroid, string fileiOS) where T : IRxPage
+        public static T <#= propertyName #><T>(this T <#= TypeName().ToLowerInvariant() #>, string fileAndroid, string fileiOS) where T : IRx<#= TypeName() #>
         {
             <#= TypeName().ToLowerInvariant() #>.<#= property.Name #> = Device.RuntimePlatform == Device.Android ? ImageSource.FromFile(fileAndroid) : ImageSource.FromFile(fileiOS);
-            return page;
+            return <#= TypeName().ToLowerInvariant() #>;
         }
-        public static T <#= propertyName #><T>(this T page, string resourceName, Assembly sourceAssembly) where T : IRxPage
+        public static T <#= propertyName #><T>(this T <#= TypeName().ToLowerInvariant() #>, string resourceName, Assembly sourceAssembly) where T : IRx<#= TypeName() #>
         {
             <#= TypeName().ToLowerInvariant() #>.<#= property.Name #> = ImageSource.FromResource(resourceName, sourceAssembly);
-            return page;
+            return <#= TypeName().ToLowerInvariant() #>;
         }
-        public static T <#= propertyName #><T>(this T page, Uri imageUri) where T : IRxPage
+        public static T <#= propertyName #><T>(this T <#= TypeName().ToLowerInvariant() #>, Uri imageUri) where T : IRx<#= TypeName() #>
         {
             <#= TypeName().ToLowerInvariant() #>.<#= property.Name #> = ImageSource.FromUri(imageUri);
-            return page;
+            return <#= TypeName().ToLowerInvariant() #>;
         }
-        public static T <#= propertyName #><T>(this T page, Uri imageUri, bool cachingEnabled, TimeSpan cacheValidity) where T : IRxPage
+        public static T <#= propertyName #><T>(this T <#= TypeName().ToLowerInvariant() #>, Uri imageUri, bool cachingEnabled, TimeSpan cacheValidity) where T : IRx<#= TypeName() #>
         {
             <#= TypeName().ToLowerInvariant() #>.<#= property.Name #> = new UriImageSource
             {
@@ -103,12 +103,12 @@ namespace XamarinReactorUI
                 CachingEnabled = cachingEnabled,
                 CacheValidity = cacheValidity
             };
-            return page;
+            return <#= TypeName().ToLowerInvariant() #>;
         }
-        public static T <#= propertyName #><T>(this T page, Func<Stream> imageStream) where T : IRxPage
+        public static T <#= propertyName #><T>(this T <#= TypeName().ToLowerInvariant() #>, Func<Stream> imageStream) where T : IRx<#= TypeName() #>
         {
             <#= TypeName().ToLowerInvariant() #>.<#= property.Name #> = ImageSource.FromStream(imageStream);
-            return page;
+            return <#= TypeName().ToLowerInvariant() #>;
         }
         <# } #>
 

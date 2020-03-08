@@ -13,26 +13,27 @@ namespace XamarinReactorUI.TestApp
         {
             InitializeComponent();
 
-            var mainPage = new ContentPage();
+            MainPage = new TestHotReloadPage();
+            //var mainPage = new ContentPage();
 
-            _mainPageHost = mainPage.Host(new TestCollectionViewComponent());
+            //_mainPageHost = mainPage.Host(new TestCollectionViewComponent());
 
-            MainPage = mainPage;
+            //MainPage = mainPage;
         }
 
         protected override void OnStart()
         {
-            _mainPageHost.Run();
+            //_mainPageHost.Run();
         }
 
         protected override void OnSleep()
         {
-            _mainPageHost.Stop();
+            //_mainPageHost.Stop();
         }
 
         protected override void OnResume()
         {
-            _mainPageHost.Run();
+            //_mainPageHost.Run();
         }
     }
 }

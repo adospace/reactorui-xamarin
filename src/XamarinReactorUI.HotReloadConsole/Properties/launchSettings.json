@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "XamarinReactorUI.HotReloadConsole": {
+      "commandName": "Project",
+      "commandLineArgs": "dotnet run --assembly \"D:\\Source\\Projects\\reactorui-xamarin\\src\\XamarinReactorUI.TestApp\\XamarinReactorUI.TestApp\\bin\\Debug\\netstandard2.0\\XamarinReactorUI.TestApp.dll\""
+    }
+  }
+}

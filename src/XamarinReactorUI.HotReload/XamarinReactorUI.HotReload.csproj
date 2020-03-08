@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Version Condition=" '$(APPVEYOR_BUILD_VERSION)' == '' ">0.0.1-local</Version>
+    <Version Condition=" '$(APPVEYOR_BUILD_VERSION)' != '' ">$(APPVEYOR_BUILD_VERSION)-beta</Version>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>adospace</Authors>
+    <Description>XamarinReactorUI is an UI framework that let you build Xamarin Forms pages using a React/Flutter inspired model. This is the assembly required to enable HotReload feature.</Description>
+    <Copyright>Adolfo Marinucci</Copyright>
+    <PackageProjectUrl>https://github.com/adospace/reactorui-xamarin</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/adospace/reactorui-xamarin</RepositoryUrl>
+    <PackageTags>xamarin forms .net react flutter ui hot reload</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Forms" Version="4.5.0.356" />
+    <PackageReference Include="Ninja.WebSockets" Version="1.1.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\XamarinReactorUI\XamarinReactorUI.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\XamarinReactorUI.HotReload\XamarinReactorUI.HotReload.csproj" />
     <ProjectReference Include="..\..\XamarinReactorUI\XamarinReactorUI.csproj" />
   </ItemGroup>
 </Project>

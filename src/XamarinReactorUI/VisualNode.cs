@@ -159,6 +159,23 @@ namespace XamarinReactorUI
 
         }
 
+        private IValueSet _context;
+        public IValueSet Context
+        {
+            get => _context ?? Parent?.Context;
+            set => _context = value;
+        }
+
+        public T GetContext<T>() where T : new()
+        {
+            var context = Context;
+            if (context is T)
+                return (T)context;
+
+            var newContext = new T();
+            context.CopyPropertiesTo(newContext);
+            return newContext;
+        }
 
         private readonly Dictionary<string, object> _metadata = new Dictionary<string, object>();
         public void SetMetadata<T>(string key, T value)

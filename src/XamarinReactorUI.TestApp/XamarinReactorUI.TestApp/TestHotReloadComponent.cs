@@ -5,29 +5,42 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI.TestApp
 {
-    public class TestHotReloadComponent : RxComponent
+    public class TestHotReloadState : IValueSet
     {
-        private readonly ContentPage _contentPage;
+        public int Counter { get; set; }
+    }
 
-        public TestHotReloadComponent(ContentPage contentPage)
+    public class TestHotReloadComponent : RxComponent<TestHotReloadState>
+    {
+        public TestHotReloadComponent()
         {
-            _contentPage = contentPage;
         }
 
         public override VisualNode Render()
         {
-            return new RxContentPage(_contentPage)
+            return new RxContentPage(GetContext<TestHotReloadContext>().Page)
             {
                 new RxStackLayout()
                 { 
-                    new RxLabel("Hello world")
+                    new RxLabel($"Clicked {State.Counter} times!")
+                        .HCenter(),
+                    new RxButton("Click here!")
+                        .OnClick(IncrementCounter)
+                        .HCenter()
+                        .VEnd()
                 }
-                .HCenter()
-                .VCenter()
+                .HFillAndExpand()
+                .HCenterAndExpand()
+                .Margin(10)
             }
             .Title("Xamarin Reactor UI Hot Reload")
             .BackgroundColor(Color.White)
             ;
+        }
+
+        private void IncrementCounter()
+        {
+            SetState(s => s.Counter++);
         }
     }
 }

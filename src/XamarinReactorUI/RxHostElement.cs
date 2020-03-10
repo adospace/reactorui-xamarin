@@ -5,7 +5,14 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public class RxHostElement : RxElement
+    public interface IRxHostElement
+    {
+        void Run();
+
+        void Stop();
+    }
+
+    public class RxHostElement : RxElement, IRxHostElement
     {
         private readonly RxComponent _rootComponent;
 
@@ -23,11 +30,10 @@ namespace XamarinReactorUI
         {
         }
 
-        public RxHostElement Run()
+        public void Run()
         {
             _pendingStop = false;
             Device.BeginInvokeOnMainThread(OnLayout);
-            return this;
         }
 
         public void Stop()

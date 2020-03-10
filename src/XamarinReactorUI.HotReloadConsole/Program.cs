@@ -26,6 +26,8 @@ namespace XamarinReactorUI.HotReloadConsole
 
         static void Main(string[] args)
         {
+            //C:\Program Files (x86)\Android\android-sdk>adb forward tcp:45820 tcp:45821
+
             var cancellationTokenSource = new CancellationTokenSource();
             _cancellationToken = cancellationTokenSource.Token;
 
@@ -38,7 +40,7 @@ namespace XamarinReactorUI.HotReloadConsole
                    });
 
             // Wait for the user to quit the program.
-            Console.WriteLine("Press 'q' to quit the sample.");
+            Console.WriteLine("Press 'q' to quit");
             while (Console.Read() != 'q') ;
 
             cancellationTokenSource.Cancel();

@@ -25,7 +25,7 @@ namespace XamarinReactorUI
         Thickness Padding { get; set; }
     }
 
-    public class RxButton : RxView<Button>, IRxButton
+    public sealed class RxButton : RxView<Button>, IRxButton
     {
         public RxButton()
         {
@@ -101,7 +101,7 @@ namespace XamarinReactorUI
 
     public static class RxButtonViewExtensions
     {
-        public static T OnClick<T>(this T button, Action clickAction) where T : RxButton
+        public static T OnClick<T>(this T button, Action clickAction) where T : IRxButton
         {
             button.ClickAction = clickAction;
             return button;

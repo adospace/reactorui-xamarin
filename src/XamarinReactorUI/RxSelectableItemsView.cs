@@ -16,7 +16,7 @@ namespace XamarinReactorUI
         Action<IReadOnlyList<VisualNode>, IReadOnlyList<VisualNode>> SelectionChangedAction { get; set; }
     }
 
-    public class RxSelectableItemsView<T> : RxItemsView<T>, IRxSelectableItemsView where T : Xamarin.Forms.SelectableItemsView, new()
+    public abstract class RxSelectableItemsView<T> : RxItemsView<T>, IRxSelectableItemsView where T : Xamarin.Forms.SelectableItemsView, new()
     {
         public RxSelectableItemsView()
         {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace XamarinReactorUI.TestApp
+namespace XamarinReactorUI.TestApp.CollectionView
 {
     public class Monkey
     {

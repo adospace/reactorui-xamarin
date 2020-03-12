@@ -19,8 +19,19 @@ namespace XamarinReactorUI
         protected void Invalidate()
         {
             _invalidated = true;
+            RequireLayoutCycle();
             //System.Diagnostics.Debug.WriteLine($"{this}->Invalidated()");
         }
+
+        internal bool IsLayoutCycleRequired { get; set; } = true;
+        private void RequireLayoutCycle()
+        {
+            IsLayoutCycleRequired = true;
+            Parent?.RequireLayoutCycle();
+            LayoutCycleRequest?.Invoke(this, EventArgs.Empty);
+        }
+
+        internal event EventHandler LayoutCycleRequest;
 
         private IReadOnlyList<VisualNode> _children = null;
         internal IReadOnlyList<VisualNode> Children
@@ -83,6 +94,9 @@ namespace XamarinReactorUI
 
         internal void Layout()
         {
+            if (!IsLayoutCycleRequired)
+                return;
+
             if (_invalidated)
             {
                 //System.Diagnostics.Debug.WriteLine($"{this}->Layout(Invalidated)");
@@ -101,6 +115,7 @@ namespace XamarinReactorUI
             foreach (var child in Children)
                 child.Layout();
 
+            IsLayoutCycleRequired = false;
         }
 
         protected virtual void OnMount()
@@ -119,63 +134,63 @@ namespace XamarinReactorUI
         }
 
 
-        internal void AddChild(RxElement widget, Xamarin.Forms.VisualElement nativeControl)
+        internal void AddChild(RxElement widget, Xamarin.Forms.Element childNativeControl)
         {
             if (widget is null)
             {
                 throw new ArgumentNullException(nameof(widget));
             }
 
-            if (nativeControl is null)
+            if (childNativeControl is null)
             {
-                throw new ArgumentNullException(nameof(nativeControl));
+                throw new ArgumentNullException(nameof(childNativeControl));
             }
 
-            OnAddChild(widget, nativeControl);
+            OnAddChild(widget, childNativeControl);
         }
 
-        protected virtual void OnAddChild(RxElement widget, Xamarin.Forms.VisualElement nativeControl)
+        protected virtual void OnAddChild(RxElement widget, Xamarin.Forms.Element childNativeControl)
         {
 
         }
 
-        internal void RemoveChild(RxElement widget, Xamarin.Forms.VisualElement nativeControl)
+        internal void RemoveChild(RxElement widget, Xamarin.Forms.Element childNativeControl)
         {
             if (widget is null)
             {
                 throw new ArgumentNullException(nameof(widget));
             }
 
-            if (nativeControl is null)
+            if (childNativeControl is null)
             {
-                throw new ArgumentNullException(nameof(nativeControl));
+                throw new ArgumentNullException(nameof(childNativeControl));
             }
 
-            OnRemoveChild(widget, nativeControl);
+            OnRemoveChild(widget, childNativeControl);
         }
 
-        protected virtual void OnRemoveChild(RxElement widget, Xamarin.Forms.VisualElement nativeControl)
+        protected virtual void OnRemoveChild(RxElement widget, Xamarin.Forms.Element childNativeControl)
         {
 
         }
 
-        private IValueSet _context;
-        public IValueSet Context
+        private RxContext _context;
+        public RxContext Context
         {
             get => _context ?? Parent?.Context;
             set => _context = value;
         }
 
-        public T GetContext<T>() where T : new()
-        {
-            var context = Context;
-            if (context is T)
-                return (T)context;
+        //public T GetContext<T>() where T : IValueSet, new()
+        //{
+        //    var context = Context;
+        //    if (context is T)
+        //        return (T)context;
 
-            var newContext = new T();
-            context.CopyPropertiesTo(newContext);
-            return newContext;
-        }
+        //    var newContext = new T();
+        //    context.CopyPropertiesTo(newContext);
+        //    return newContext;
+        //}
 
         private readonly Dictionary<string, object> _metadata = new Dictionary<string, object>();
         public void SetMetadata<T>(string key, T value)

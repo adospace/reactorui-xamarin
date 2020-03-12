@@ -24,7 +24,7 @@ namespace XamarinReactorUI
         TextType TextType { get; set; }
     }
 
-    public class RxLabel : RxView<Xamarin.Forms.Label>, IRxLabel
+    public sealed class RxLabel : RxView<Xamarin.Forms.Label>, IRxLabel
     {
         public RxLabel()
         {

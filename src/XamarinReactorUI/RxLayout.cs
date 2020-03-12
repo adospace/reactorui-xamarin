@@ -44,14 +44,25 @@ namespace XamarinReactorUI
             return _internalChildren.GetEnumerator();
         }
 
-        public void Add(VisualNode node)
+        //public void Add(VisualNode node)
+        //{
+        //    if (node is null)
+        //    {
+        //        throw new ArgumentNullException(nameof(node));
+        //    }
+
+        //    _internalChildren.Add(node);
+        //}
+
+        public void Add(params VisualNode[] nodes)
         {
-            if (node is null)
+            if (nodes is null)
             {
-                throw new ArgumentNullException(nameof(node));
+                throw new ArgumentNullException(nameof(nodes));
             }
 
-            _internalChildren.Add(node);
+            foreach (var node in nodes)
+                _internalChildren.Add(node);
         }
 
         protected override void OnUpdate()

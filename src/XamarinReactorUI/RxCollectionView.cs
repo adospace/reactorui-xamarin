@@ -13,7 +13,7 @@ namespace XamarinReactorUI
     }
 
 
-    public class RxCollectionView : RxSelectableItemsView<CollectionView>, IRxCollectionView, IEnumerable<VisualNode>
+    public sealed class RxCollectionView : RxSelectableItemsView<CollectionView>, IRxCollectionView, IEnumerable<VisualNode>
     {
         public RxCollectionView()
         { }

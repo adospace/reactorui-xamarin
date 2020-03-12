@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public class RxPageContentContainer : RxElement
+    public sealed class RxPageContentContainer : RxElement
     {
         private readonly RxComponent _rootComponent;
         private readonly Xamarin.Forms.ContentPage _containerPage;
@@ -16,7 +16,7 @@ namespace XamarinReactorUI
             _containerPage = page ?? throw new ArgumentNullException(nameof(page));
         }
 
-        protected override void OnAddChild(RxElement widget, Xamarin.Forms.VisualElement childControl)
+        protected override void OnAddChild(RxElement widget, Xamarin.Forms.Element childControl)
         {
             if (childControl is View view)
                 _containerPage.Content = view;
@@ -28,7 +28,7 @@ namespace XamarinReactorUI
             base.OnAddChild(widget, childControl);
         }
 
-        protected override void OnRemoveChild(RxElement widget, Xamarin.Forms.VisualElement nativeControl)
+        protected override void OnRemoveChild(RxElement widget, Xamarin.Forms.Element nativeControl)
         {
             _containerPage.Content = null;
 

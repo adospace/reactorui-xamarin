@@ -9,6 +9,7 @@ namespace XamarinReactorUI
         public VisualTree(VisualNode root)
         {
             Root = root ?? throw new ArgumentNullException(nameof(root));
+            Root.LayoutCycleRequest += (s, e) => LayoutCycleRequest?.Invoke(this, EventArgs.Empty);
         }
 
         public VisualNode Root { get; }
@@ -17,6 +18,8 @@ namespace XamarinReactorUI
         {
             Root.Layout();
         }
+
+        public event EventHandler LayoutCycleRequest;
 
     }
 }

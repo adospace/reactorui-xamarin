@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Xamarin.Forms;
 
-namespace XamarinReactorUI.TestApp
+namespace XamarinReactorUI.TestApp.CollectionView
 {
     public class TestCollectionViewComponent : RxComponent
     {

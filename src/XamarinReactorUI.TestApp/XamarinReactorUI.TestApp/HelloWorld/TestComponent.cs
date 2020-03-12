@@ -1,6 +1,6 @@
 ﻿using Xamarin.Forms;
 
-namespace XamarinReactorUI.TestApp
+namespace XamarinReactorUI.TestApp.HelloWorld
 {
     internal class TestComponent : RxComponent
     {

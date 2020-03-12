@@ -16,7 +16,7 @@ namespace XamarinReactorUI
 
         }
 
-        protected override void OnAddChild(RxElement widget, VisualElement nativeControl)
+        protected override void OnAddChild(RxElement widget, Element nativeControl)
         {
             if (nativeControl is TPAGE page)
                 NativeControl.Children.Add(page);
@@ -28,7 +28,7 @@ namespace XamarinReactorUI
             base.OnAddChild(widget, nativeControl);
         }
 
-        protected override void OnRemoveChild(RxElement widget, VisualElement nativeControl)
+        protected override void OnRemoveChild(RxElement widget, Element nativeControl)
         {
             NativeControl.Children.Remove((TPAGE)nativeControl);
 

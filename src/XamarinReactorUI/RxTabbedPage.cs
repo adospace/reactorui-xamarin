@@ -16,11 +16,24 @@ namespace XamarinReactorUI
         Color SelectedTabColor { get; set; }
     }
 
-    public class RxTabbedPage : RxMultiPage<TabbedPage, Page>, IRxTabbedPage
+    public sealed class RxTabbedPage : RxMultiPage<TabbedPage, Page>, IRxTabbedPage
     {
+        private readonly TabbedPage _existingPage;
+
         public RxTabbedPage()
         {
 
+        }
+
+        public RxTabbedPage(TabbedPage page)
+        {
+            _existingPage = page;
+        }
+
+        protected override void OnMount()
+        {
+            _nativeControl = _existingPage;
+            base.OnMount();
         }
 
         public Color BarBackgroundColor { get; set; } = (Color)TabbedPage.BarBackgroundColorProperty.DefaultValue;

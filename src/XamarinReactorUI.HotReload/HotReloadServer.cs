@@ -50,7 +50,11 @@ namespace XamarinReactorUI
             }
             catch (TaskCanceledException)
             {
-
+                //stop called
+            }
+            catch (ObjectDisposedException)
+            {
+                //stop called
             }
             catch (Exception ex)
             {

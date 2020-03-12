@@ -1,9 +1,11 @@
 ﻿using CommandLine;
 using Ninja.WebSockets;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.InteropServices;
 using System.Threading;
 
 namespace XamarinReactorUI.HotReloadConsole
@@ -24,9 +26,12 @@ namespace XamarinReactorUI.HotReloadConsole
         private static FileSystemWatcher _watcher;
         private static DateTime _lastWriteTime;
 
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
             //C:\Program Files (x86)\Android\android-sdk>adb forward tcp:45820 tcp:45821
+            if (!ExecutePortForwardCommmand())
+                return -1;
+
 
             var cancellationTokenSource = new CancellationTokenSource();
             _cancellationToken = cancellationTokenSource.Token;
@@ -40,12 +45,67 @@ namespace XamarinReactorUI.HotReloadConsole
                    });
 
             // Wait for the user to quit the program.
-            Console.WriteLine("Press 'q' to quit");
-            while (Console.Read() != 'q') ;
+            Console.WriteLine("Press Cancel Key to quit");
+            //while (Console.Read() != 'q') ;
+
+            Console.CancelKeyPress += (s, e) =>
+            {
+                e.Cancel = true;
+                cancellationTokenSource.Cancel();
+            };
+
+            cancellationTokenSource.Token.WaitHandle.WaitOne();
 
             cancellationTokenSource.Cancel();
 
             _watcher?.Dispose();
+
+            return 0;
+        }
+
+        private static bool IsWindows => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+
+        private static bool ExecutePortForwardCommmand()
+        {
+            var adbCommandLine = "\"" + Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Android", "sdk", "platform-tools", "adb" + (IsWindows ? ".exe" : "")) + "\" "
+                + "forward tcp:45820 tcp:45820";
+
+            var process = new Process();
+
+            process.StartInfo.CreateNoWindow = true;
+            process.StartInfo.RedirectStandardOutput = true;
+            process.StartInfo.RedirectStandardInput = true;
+            process.StartInfo.RedirectStandardError = true;
+            process.StartInfo.UseShellExecute = false;
+            if (IsWindows)
+            {
+                process.StartInfo.Arguments = adbCommandLine;
+                process.StartInfo.FileName = "powershell";
+            }
+            else
+            {
+                process.StartInfo.Arguments = string.Format("-c \"{0}\"", adbCommandLine);
+                process.StartInfo.FileName = "/bin/sh";
+            }
+
+            try
+            {
+                process.Start();
+
+                var adb_output = process.StandardOutput.ReadToEnd();
+                
+                if (adb_output.Length > 0 && adb_output != "45820" + Environment.NewLine)
+                    throw new InvalidOperationException($"Unable to forward tcp port from emulator, is emulator running? (adb tool returned '{adb_output}')");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(process.StandardOutput.ReadToEnd());
+                Console.WriteLine(process.StandardError.ReadToEnd());
+                Console.WriteLine(ex.ToString());
+                return false;
+            }
+
+            return true;
         }
 
         private static void StartMonitoring(string assemblyPath)
@@ -78,13 +138,18 @@ namespace XamarinReactorUI.HotReloadConsole
 
         }
 
+        private static bool _sending = false;
         private static async void OnChanged(object sender, FileSystemEventArgs e)
         {
             DateTime lastWriteTime = File.GetLastWriteTime(e.FullPath);
             if (lastWriteTime == _lastWriteTime)
                 return;
 
+            if (_sending)
+                return;
+
             _lastWriteTime = lastWriteTime;
+            _sending = true;
 
             var client = new TcpClient();
 
@@ -115,6 +180,7 @@ namespace XamarinReactorUI.HotReloadConsole
             finally
             {
                 client.Close();
+                _sending = false;
             }
         }
 

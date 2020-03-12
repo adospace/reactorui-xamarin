@@ -11,7 +11,7 @@ namespace XamarinReactorUI
         IEnumerable ItemsSource { get; set; }
     }
 
-    public class RxListView : RxView<ListView>, IRxListView
+    public sealed class RxListView : RxView<ListView>, IRxListView
     {
         public RxListView(IEnumerable itemsSource = null)
         {

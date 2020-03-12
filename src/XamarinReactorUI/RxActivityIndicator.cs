@@ -11,7 +11,7 @@ namespace XamarinReactorUI
         Color Color { get; set; }
     }
 
-    public class RxActivityIndicator : RxView<ActivityIndicator>, IRxActivityIndicator
+    public sealed class RxActivityIndicator : RxView<ActivityIndicator>, IRxActivityIndicator
     {
         protected override IEnumerable<VisualNode> RenderChildren()
         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using Xamarin.Forms;
@@ -10,12 +11,12 @@ namespace XamarinReactorUI
     {
         public abstract VisualNode Render();
 
-        protected sealed override void OnAddChild(RxElement widget, Xamarin.Forms.VisualElement nativeControl)
+        protected sealed override void OnAddChild(RxElement widget, Xamarin.Forms.Element nativeControl)
         {
             Parent.AddChild(widget, nativeControl);
         }
 
-        protected sealed override void OnRemoveChild(RxElement widget, Xamarin.Forms.VisualElement nativeControl)
+        protected sealed override void OnRemoveChild(RxElement widget, Xamarin.Forms.Element nativeControl)
         {
             Parent.RemoveChild(widget, nativeControl);
         }
@@ -54,7 +55,7 @@ namespace XamarinReactorUI
 
         public S State { get; private set; }
 
-        public PropertyInfo[] Properties => typeof(S).GetProperties();
+        public PropertyInfo[] Properties => typeof(S).GetProperties().Where(_ => _.CanWrite).ToArray();
 
         object IRxComponentWithState.State => State;
 

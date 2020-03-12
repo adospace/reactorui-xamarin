@@ -5,11 +5,14 @@ using System.Text;
 
 using Xamarin.Forms;
 
-namespace XamarinReactorUI.TestApp
+namespace XamarinReactorUI.TestApp.HelloWorld
 {
-    public class TestHotReloadContext : IValueSet
-    { 
-        public ContentPage Page { get; set; }
+    public class TestHotReloadContext : RxContext
+    {
+        public TestHotReloadContext(ContentPage page)
+        {
+            this["Page"] = page;
+        }
     }
 
     public class TestHotReloadPage : ContentPage
@@ -18,7 +21,7 @@ namespace XamarinReactorUI.TestApp
 
         public TestHotReloadPage()
         {
-            _componentHost = new RxHotReloadHostElement(new TestHotReloadComponent() { Context = new TestHotReloadContext { Page = this } });
+            _componentHost = new RxHotReloadHostElement(new TestHotReloadComponent() { Context = new TestHotReloadContext(this) });
         }
 
         protected override void OnAppearing()

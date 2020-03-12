@@ -11,7 +11,7 @@ namespace XamarinReactorUI
     {
     }
 
-    public class RxContentPage : RxPage<Xamarin.Forms.ContentPage>, IRxContentPage, IEnumerable<VisualNode>
+    public sealed class RxContentPage : RxPage<Xamarin.Forms.ContentPage>, IRxContentPage, IEnumerable<VisualNode>
     {
         private List<VisualNode> _contents = new List<VisualNode>();
         private readonly ContentPage _contentPage;
@@ -19,6 +19,11 @@ namespace XamarinReactorUI
         public RxContentPage()
         {
 
+        }
+
+        public RxContentPage(VisualNode content)
+        {
+            _contents.Add(content ?? throw new ArgumentNullException());
         }
 
         public RxContentPage(ContentPage contentPage)
@@ -42,7 +47,7 @@ namespace XamarinReactorUI
             return _contents.GetEnumerator();
         }
 
-        protected override void OnAddChild(RxElement widget, VisualElement childControl)
+        protected override void OnAddChild(RxElement widget, Element childControl)
         {
             if (childControl is View view)
                 NativeControl.Content = view;
@@ -54,7 +59,7 @@ namespace XamarinReactorUI
             base.OnAddChild(widget, childControl);
         }
 
-        protected override void OnRemoveChild(RxElement widget, VisualElement childControl)
+        protected override void OnRemoveChild(RxElement widget, Element childControl)
         {
             NativeControl.Content = null;
 

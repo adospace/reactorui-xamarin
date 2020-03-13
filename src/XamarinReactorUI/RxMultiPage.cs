@@ -11,10 +11,17 @@ namespace XamarinReactorUI
     {
         private readonly List<VisualNode> _internalChildren = new List<VisualNode>();
 
-        public RxMultiPage()
+        protected RxMultiPage()
         {
 
         }
+
+        protected RxMultiPage(Action<T> componentRefAction)
+            : base(componentRefAction)
+        {
+
+        }
+
 
         protected override void OnAddChild(RxElement widget, Element nativeControl)
         {

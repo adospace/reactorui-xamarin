@@ -36,6 +36,12 @@ namespace XamarinReactorUI
             Text = text;
         }
 
+        public RxLabel(Action<Xamarin.Forms.Label> componentRefAction)
+            : base(componentRefAction)
+        {
+
+        }
+
         public TextAlignment HorizontalTextAlignment { get; set; } = (TextAlignment)Label.HorizontalTextAlignmentProperty.DefaultValue;
         public TextAlignment VerticalTextAlignment { get; set; } = (TextAlignment)Label.VerticalTextAlignmentProperty.DefaultValue;
         public Color TextColor { get; set; } = (Color)Label.TextColorProperty.DefaultValue;

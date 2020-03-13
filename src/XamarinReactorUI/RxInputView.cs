@@ -29,6 +29,12 @@ namespace XamarinReactorUI
             Text = text;
         }
 
+        protected RxInputView(Action<T> componentRefAction)
+            : base(componentRefAction)
+        {
+
+        }
+
         public string Text { get; set; } = (string)InputView.TextProperty.DefaultValue;
         public Keyboard Keyboard { get; set; } = (Keyboard)InputView.KeyboardProperty.DefaultValue;
         public bool IsSpellCheckEnabled { get; set; } = (bool)InputView.IsSpellCheckEnabledProperty.DefaultValue;

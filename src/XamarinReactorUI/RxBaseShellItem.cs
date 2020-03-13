@@ -31,6 +31,12 @@ namespace XamarinReactorUI
             Title = title;
         }
 
+        public RxBaseShellItem(Action<T> componentRefAction)
+            : base(componentRefAction)
+        {
+
+        }
+
         public ImageSource FlyoutIcon { get; set; } = (ImageSource)BaseShellItem.FlyoutIconProperty.DefaultValue;
         public ImageSource Icon { get; set; } = (ImageSource)BaseShellItem.IconProperty.DefaultValue;
         public bool IsEnabled { get; set; } = (bool)BaseShellItem.IsEnabledProperty.DefaultValue;

@@ -24,6 +24,12 @@ namespace XamarinReactorUI
 
         }
 
+        public RxPage(Action<T> componentRefAction)
+            : base(componentRefAction)
+        {
+
+        }
+
         public ImageSource BackgroundImageSource { get; set; } = (ImageSource)Page.BackgroundImageSourceProperty.DefaultValue;
         public bool IsBusy { get; set; } = (bool)Page.IsBusyProperty.DefaultValue;
         public Thickness Padding { get; set; } = (Thickness)Page.PaddingProperty.DefaultValue;

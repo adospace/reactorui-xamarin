@@ -13,10 +13,16 @@ namespace XamarinReactorUI
         RowDefinitionCollection RowDefinitions { get; set; }
     }
 
-    public class RxGrid : RxLayout<Xamarin.Forms.Grid>, IRxGrid
+    public class RxGrid : RxLayout<Grid>, IRxGrid
     {
         public RxGrid()
         {
+        }
+
+        public RxGrid(Action<Grid> componentRefAction)
+            : base(componentRefAction)
+        {
+
         }
 
         public RxGrid(string rows, string columns)

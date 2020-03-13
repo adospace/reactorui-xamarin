@@ -1,8 +1,4 @@
-﻿
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
 using Xamarin.Forms;
 
 namespace XamarinReactorUI
@@ -11,12 +7,19 @@ namespace XamarinReactorUI
     {
     }
 
-    public sealed class RxTabBar : RxShellItem<Xamarin.Forms.TabBar>, IRxTabBar
+    public sealed class RxTabBar : RxShellItem<TabBar>, IRxTabBar
     {
+        public RxTabBar()
+        {
+        }
+
+        public RxTabBar(Action<TabBar> componentRefAction)
+            : base(componentRefAction)
+        {
+        }
     }
 
     public static class RxTabBarExtensions
     {
     }
-
 }

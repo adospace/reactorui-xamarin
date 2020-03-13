@@ -13,6 +13,14 @@ namespace XamarinReactorUI
 
     public sealed class RxActivityIndicator : RxView<ActivityIndicator>, IRxActivityIndicator
     {
+
+        public RxActivityIndicator(Action<ActivityIndicator> componentRefAction)
+            : base(componentRefAction)
+        {
+
+        }
+
+
         protected override IEnumerable<VisualNode> RenderChildren()
         {
             yield break;

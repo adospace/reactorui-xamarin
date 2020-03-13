@@ -36,6 +36,12 @@ namespace XamarinReactorUI
             Text = text;
         }
 
+        public RxButton(Action<Button> componentRefAction)
+            : base(componentRefAction)
+        {
+
+        }
+
         public ButtonContentLayout ContentLayout { get; set; } = (ButtonContentLayout)Button.ContentLayoutProperty.DefaultValue;
         public string Text { get; set; } = (string)Button.TextProperty.DefaultValue;
         public Color TextColor { get; set; } = (Color)Button.TextColorProperty.DefaultValue;

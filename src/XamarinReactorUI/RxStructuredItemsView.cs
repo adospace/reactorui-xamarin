@@ -1,7 +1,5 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Xamarin.Forms;
 
 namespace XamarinReactorUI
@@ -13,6 +11,7 @@ namespace XamarinReactorUI
         //Object Footer { get; set; }
         //DataTemplate FooterTemplate { get; set; }
         IItemsLayout ItemsLayout { get; set; }
+
         ItemSizingStrategy ItemSizingStrategy { get; set; }
     }
 
@@ -20,7 +19,11 @@ namespace XamarinReactorUI
     {
         public RxStructuredItemsView()
         {
+        }
 
+        public RxStructuredItemsView(Action<StructuredItemsView> componentRefAction)
+            : base(componentRefAction)
+        {
         }
 
         //public Object Header { get; set; } = (Object)StructuredItemsView.HeaderProperty.DefaultValue;
@@ -28,6 +31,7 @@ namespace XamarinReactorUI
         //public Object Footer { get; set; } = (Object)StructuredItemsView.FooterProperty.DefaultValue;
         //public DataTemplate FooterTemplate { get; set; } = (DataTemplate)StructuredItemsView.FooterTemplateProperty.DefaultValue;
         public IItemsLayout ItemsLayout { get; set; } = (IItemsLayout)StructuredItemsView.ItemsLayoutProperty.DefaultValue;
+
         public ItemSizingStrategy ItemSizingStrategy { get; set; } = (ItemSizingStrategy)StructuredItemsView.ItemSizingStrategyProperty.DefaultValue;
 
         protected override void OnUpdate()
@@ -75,11 +79,11 @@ namespace XamarinReactorUI
             structureditemsview.ItemsLayout = itemsLayout;
             return structureditemsview;
         }
+
         public static T ItemSizingStrategy<T>(this T structureditemsview, ItemSizingStrategy itemSizingStrategy) where T : IRxStructuredItemsView
         {
             structureditemsview.ItemSizingStrategy = itemSizingStrategy;
             return structureditemsview;
         }
     }
-
 }

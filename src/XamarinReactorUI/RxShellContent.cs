@@ -1,8 +1,6 @@
-﻿
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using Xamarin.Forms;
 
 namespace XamarinReactorUI
@@ -11,18 +9,22 @@ namespace XamarinReactorUI
     {
     }
 
-    public sealed class RxShellContent : RxBaseShellItem<Xamarin.Forms.ShellContent>, IRxShellContent, IEnumerable<VisualNode>
+    public sealed class RxShellContent : RxBaseShellItem<ShellContent>, IRxShellContent, IEnumerable<VisualNode>
     {
         private readonly List<VisualNode> _contents = new List<VisualNode>();
 
         public RxShellContent()
         {
-
         }
 
         public RxShellContent(VisualNode content)
         {
             _contents.Add(content);
+        }
+
+        public RxShellContent(Action<ShellContent> componentRefAction)
+            : base(componentRefAction)
+        {
         }
 
         public void Add(VisualNode node)
@@ -47,12 +49,11 @@ namespace XamarinReactorUI
 
         public IEnumerator<VisualNode> GetEnumerator()
         {
-            return _contents.GetEnumerator();            
+            return _contents.GetEnumerator();
         }
 
         protected override void OnUpdate()
         {
-
             base.OnUpdate();
         }
 
@@ -69,7 +70,5 @@ namespace XamarinReactorUI
 
     public static class RxShellContentExtensions
     {
-
     }
-
 }

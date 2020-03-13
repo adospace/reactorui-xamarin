@@ -47,6 +47,12 @@ namespace XamarinReactorUI
             _internalChildren = new List<VisualNode>(children);
         }
 
+        public RxItemsView(Action<T> componentRefAction)
+            : base(componentRefAction)
+        {
+
+        }
+
         public IEnumerator<VisualNode> GetEnumerator()
         {
             return _internalChildren.GetEnumerator();

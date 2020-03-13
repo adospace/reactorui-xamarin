@@ -22,6 +22,12 @@ namespace XamarinReactorUI
 
         }
 
+        public RxShellItem(Action<T> componentRefAction)
+            : base(componentRefAction)
+        {
+
+        }
+
         public void Add(IRxShellSection section)
         {
             _items.Add(section);

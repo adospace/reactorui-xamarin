@@ -16,9 +16,15 @@ namespace XamarinReactorUI
         bool IsAnimationPlaying { get; set; }
     }
 
-    public sealed class RxImage : RxView<Xamarin.Forms.Image>, IRxImage
+    public sealed class RxImage : RxView<Image>, IRxImage
     {
         public RxImage()
+        {
+
+        }
+
+        public RxImage(Action<Image> componentRefAction)
+            : base(componentRefAction)
         {
 
         }

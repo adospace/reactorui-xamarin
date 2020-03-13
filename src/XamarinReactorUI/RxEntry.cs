@@ -37,6 +37,12 @@ namespace XamarinReactorUI
 
         }
 
+        public RxEntry(Action<Entry> componentRefAction)
+            : base(componentRefAction)
+        {
+
+        }
+
         public ReturnType ReturnType { get; set; } = (ReturnType)Entry.ReturnTypeProperty.DefaultValue;
         public bool IsPassword { get; set; } = (bool)Entry.IsPasswordProperty.DefaultValue;
         public TextAlignment HorizontalTextAlignment { get; set; } = (TextAlignment)Entry.HorizontalTextAlignmentProperty.DefaultValue;

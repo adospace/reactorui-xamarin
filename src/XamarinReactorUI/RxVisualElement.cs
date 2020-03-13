@@ -37,8 +37,15 @@ namespace XamarinReactorUI
 
     public abstract class RxVisualElement<T> : RxElement, IRxVisualElement where T : Xamarin.Forms.VisualElement, new()
     {
+        private readonly Action<T> _componentRefAction;
+
         protected RxVisualElement()
         {
+        }
+
+        protected RxVisualElement(Action<T> componentRefAction)
+        {
+            _componentRefAction = componentRefAction;
         }
 
         protected T NativeControl { get => (T)_nativeControl; }
@@ -107,6 +114,7 @@ namespace XamarinReactorUI
         {
             _nativeControl = _nativeControl ?? new T();
             Parent.AddChild(this, NativeControl);
+            _componentRefAction?.Invoke(NativeControl);
 
             base.OnMount();
         }
@@ -115,6 +123,7 @@ namespace XamarinReactorUI
         {
             Parent.RemoveChild(this, NativeControl);
             _nativeControl = null;
+            _componentRefAction?.Invoke(null);
 
             base.OnUnmount();
         }

@@ -28,6 +28,11 @@ namespace XamarinReactorUI
         {
         }
 
+        public RxCollectionView(Action<CollectionView> componentRefAction)
+            : base(componentRefAction)
+        {
+
+        }
     }
 
 

@@ -1,9 +1,4 @@
-﻿
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System;
 using Xamarin.Forms;
 
 namespace XamarinReactorUI
@@ -22,12 +17,16 @@ namespace XamarinReactorUI
 
         public RxTabbedPage()
         {
-
         }
 
         public RxTabbedPage(TabbedPage page)
         {
             _existingPage = page;
+        }
+
+        public RxTabbedPage(Action<TabbedPage> componentRefAction)
+            : base(componentRefAction)
+        {
         }
 
         protected override void OnMount()
@@ -47,7 +46,7 @@ namespace XamarinReactorUI
             NativeControl.BarTextColor = BarTextColor;
             NativeControl.UnselectedTabColor = UnselectedTabColor;
             NativeControl.SelectedTabColor = SelectedTabColor;
-            
+
             base.OnUpdate();
         }
     }
@@ -60,15 +59,11 @@ namespace XamarinReactorUI
             return tabbedpage;
         }
 
-
-
         public static T BarTextColor<T>(this T tabbedpage, Color barTextColor) where T : IRxTabbedPage
         {
             tabbedpage.BarTextColor = barTextColor;
             return tabbedpage;
         }
-
-
 
         public static T UnselectedTabColor<T>(this T tabbedpage, Color unselectedTabColor) where T : IRxTabbedPage
         {
@@ -76,13 +71,10 @@ namespace XamarinReactorUI
             return tabbedpage;
         }
 
-
-
         public static T SelectedTabColor<T>(this T tabbedpage, Color selectedTabColor) where T : IRxTabbedPage
         {
             tabbedpage.SelectedTabColor = selectedTabColor;
             return tabbedpage;
         }
     }
-
 }

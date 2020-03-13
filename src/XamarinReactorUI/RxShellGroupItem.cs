@@ -24,6 +24,12 @@ namespace XamarinReactorUI
 
         }
 
+        public RxShellGroupItem(Action<T> componentRefAction)
+            : base(componentRefAction)
+        {
+
+        }
+
         public FlyoutDisplayOptions FlyoutDisplayOptions { get; set; } = (FlyoutDisplayOptions)ShellGroupItem.FlyoutDisplayOptionsProperty.DefaultValue;
 
         protected override void OnUpdate()

@@ -1,8 +1,6 @@
-﻿
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using Xamarin.Forms;
 
 namespace XamarinReactorUI
@@ -15,16 +13,19 @@ namespace XamarinReactorUI
     {
         private readonly List<VisualNode> _items = new List<VisualNode>();
         private readonly Dictionary<Element, ShellContent> _elementItemMap = new Dictionary<Element, ShellContent>();
-        
+
         public RxShellSection()
         {
-
         }
 
         public RxShellSection(string title)
             : base(title)
         {
+        }
 
+        public RxShellSection(Action<T> componentRefAction)
+            : base(componentRefAction)
+        {
         }
 
         public void Add(VisualNode visualNode)
@@ -69,14 +70,9 @@ namespace XamarinReactorUI
         {
             return this.GetEnumerator();
         }
-
-
     }
 
     public static class RxShellSectionExtensions
     {
-
-
     }
-
 }

@@ -21,6 +21,11 @@ namespace XamarinReactorUI
         {
 
         }
+
+        public RxTab(Action<Tab> componentRefAction)
+            : base(componentRefAction)
+        {
+        }
     }
 
     public static class RxTabExtensions

@@ -10,13 +10,18 @@ namespace XamarinReactorUI
     {
     }
 
-    public sealed class RxFlyoutItem : RxShellItem<Xamarin.Forms.FlyoutItem>, IRxFlyoutItem
+    public sealed class RxFlyoutItem : RxShellItem<FlyoutItem>, IRxFlyoutItem
     {
         public RxFlyoutItem()
         {
 
         }
 
+        public RxFlyoutItem(Action<FlyoutItem> componentRefAction)
+            : base(componentRefAction)
+        {
+
+        }
 
         protected override void OnUpdate()
         {

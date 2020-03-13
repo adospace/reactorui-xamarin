@@ -1,7 +1,4 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
 using Xamarin.Forms;
 
 namespace XamarinReactorUI
@@ -13,9 +10,14 @@ namespace XamarinReactorUI
         ScrollBarVisibility VerticalScrollBarVisibility { get; set; }
     }
 
-    public class RxScrollView : RxLayout<Xamarin.Forms.ScrollView>, IRxScrollView
+    public class RxScrollView : RxLayout<ScrollView>, IRxScrollView
     {
         public RxScrollView()
+        {
+        }
+
+        public RxScrollView(Action<ScrollView> componentRefAction)
+            : base(componentRefAction)
         {
 
         }
@@ -51,9 +53,7 @@ namespace XamarinReactorUI
 
             base.OnRemoveChild(widget, childControl);
         }
-
     }
-
 
     public static class RxScrollViewExtensions
     {
@@ -63,24 +63,16 @@ namespace XamarinReactorUI
             return scrollview;
         }
 
-
-
         public static T HorizontalScrollBarVisibility<T>(this T scrollview, ScrollBarVisibility horizontalScrollBarVisibility) where T : IRxScrollView
         {
             scrollview.HorizontalScrollBarVisibility = horizontalScrollBarVisibility;
             return scrollview;
         }
 
-
-
         public static T VerticalScrollBarVisibility<T>(this T scrollview, ScrollBarVisibility verticalScrollBarVisibility) where T : IRxScrollView
         {
             scrollview.VerticalScrollBarVisibility = verticalScrollBarVisibility;
             return scrollview;
         }
-
-
-
     }
-
 }

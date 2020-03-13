@@ -12,8 +12,15 @@ namespace XamarinReactorUI
 
     public abstract class RxNavigableElement<T> : RxElement, IRxNavigableElement where T : Xamarin.Forms.NavigableElement, new()
     {
+        private readonly Action<T> _componentRefAction;
+
         protected RxNavigableElement()
         {
+        }
+
+        protected RxNavigableElement(Action<T> componentRefAction)
+        {
+            _componentRefAction = componentRefAction;
         }
 
         protected T NativeControl { get => (T)_nativeControl; }
@@ -30,6 +37,8 @@ namespace XamarinReactorUI
             _nativeControl = _nativeControl ?? new T();
             Parent.AddChild(this, NativeControl);
 
+            _componentRefAction?.Invoke(NativeControl);
+
             base.OnMount();
         }
 
@@ -37,6 +46,8 @@ namespace XamarinReactorUI
         {
             Parent.RemoveChild(this, NativeControl);
             _nativeControl = null;
+
+            _componentRefAction?.Invoke(null);
 
             base.OnUnmount();
         }

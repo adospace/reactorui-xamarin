@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Xamarin.Forms;
 
 namespace XamarinReactorUI
@@ -11,11 +9,16 @@ namespace XamarinReactorUI
         double Spacing { get; set; }
     }
 
-    public sealed class RxStackLayout : RxLayout<Xamarin.Forms.StackLayout>, IRxStackLayout
+    public sealed class RxStackLayout : RxLayout<StackLayout>, IRxStackLayout
     {
         public RxStackLayout(params VisualNode[] children)
             : base(children)
         { }
+
+        public RxStackLayout(Action<StackLayout> componentRefAction)
+            : base(componentRefAction)
+        {
+        }
 
         public StackOrientation Orientation { get; set; } = (StackOrientation)StackLayout.OrientationProperty.DefaultValue;
         public double Spacing { get; set; } = (double)StackLayout.SpacingProperty.DefaultValue;
@@ -28,7 +31,7 @@ namespace XamarinReactorUI
             {
                 throw new InvalidOperationException($"Type '{childControl.GetType()}' not supported under '{GetType()}'");
             }
-            
+
             base.OnAddChild(widget, childControl);
         }
 

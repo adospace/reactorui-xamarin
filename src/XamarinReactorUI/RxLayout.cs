@@ -24,6 +24,12 @@ namespace XamarinReactorUI
             _internalChildren.AddRange(children);
         }
 
+        protected RxLayout(Action<T> componentRefAction)
+            : base(componentRefAction)
+        {
+
+        }
+
         private readonly List<VisualNode> _internalChildren = new List<VisualNode>();
 
         private readonly NullableField<Thickness> _padding = new NullableField<Thickness>();

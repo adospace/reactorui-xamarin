@@ -18,6 +18,12 @@ namespace XamarinReactorUI
         {
         }
 
+        protected RxView(Action<T> componentRefAction)
+            : base(componentRefAction)
+        { 
+        
+        }
+
         public LayoutOptions HorizontalOptions { get; set; } = (LayoutOptions)View.HorizontalOptionsProperty.DefaultValue;
         
         public LayoutOptions VerticalOptions { get; set; } = (LayoutOptions)View.VerticalOptionsProperty.DefaultValue;

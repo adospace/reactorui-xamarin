@@ -17,6 +17,12 @@ namespace XamarinReactorUI
         {
             ItemsSource = itemsSource;
         }
+        
+        public RxListView(Action<ListView> componentRefAction)
+            : base(componentRefAction)
+        {
+
+        }
 
         private readonly NullableField<IEnumerable> _itemsSource = new NullableField<IEnumerable>();
         public IEnumerable ItemsSource { get => _itemsSource.GetValueOrDefault(); set => _itemsSource.Value = value; }

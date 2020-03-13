@@ -1,11 +1,8 @@
-﻿
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using Xamarin.Forms;
 
 namespace XamarinReactorUI
@@ -13,17 +10,21 @@ namespace XamarinReactorUI
     public interface IRxShell
     {
         FlyoutBehavior FlyoutBehavior { get; set; }
+
         //DataTemplate MenuItemTemplate { get; set; }
         //DataTemplate ItemTemplate { get; set; }
         //Color BackgroundColor { get; set; }
         //ShellItem CurrentItem { get; set; }
         ImageSource FlyoutBackgroundImage { get; set; }
+
         Aspect FlyoutBackgroundImageAspect { get; set; }
         Color FlyoutBackgroundColor { get; set; }
         FlyoutHeaderBehavior FlyoutHeaderBehavior { get; set; }
         object FlyoutHeader { get; set; }
+
         //DataTemplate FlyoutHeaderTemplate { get; set; }
         bool FlyoutIsPresented { get; set; }
+
         ImageSource FlyoutIcon { get; set; }
         ScrollMode FlyoutVerticalScrollMode { get; set; }
     }
@@ -36,12 +37,16 @@ namespace XamarinReactorUI
 
         public RxShell()
         {
-
         }
 
         public RxShell(Shell shell)
         {
             _shell = shell;
+        }
+
+        public RxShell(Action<Shell> componentRefAction)
+            : base(componentRefAction)
+        {
         }
 
         protected override void OnMount()
@@ -93,13 +98,14 @@ namespace XamarinReactorUI
             return this.GetEnumerator();
         }
 
-
         public FlyoutBehavior FlyoutBehavior { get; set; } = (FlyoutBehavior)Shell.FlyoutBehaviorProperty.DefaultValue;
         public DataTemplate MenuItemTemplate { get; set; } = (DataTemplate)Shell.MenuItemTemplateProperty.DefaultValue;
         public DataTemplate ItemTemplate { get; set; } = (DataTemplate)Shell.ItemTemplateProperty.DefaultValue;
+
         //public Color BackgroundColor { get; set; } = (Color)Shell.BackgroundColorProperty.DefaultValue;
         //public ShellItem CurrentItem { get; set; } = (ShellItem)Shell.CurrentItemProperty.DefaultValue;
         public ImageSource FlyoutBackgroundImage { get; set; } = (ImageSource)Shell.FlyoutBackgroundImageProperty.DefaultValue;
+
         public Aspect FlyoutBackgroundImageAspect { get; set; } = (Aspect)Shell.FlyoutBackgroundImageAspectProperty.DefaultValue;
         public Color FlyoutBackgroundColor { get; set; } = (Color)Shell.FlyoutBackgroundColorProperty.DefaultValue;
         public FlyoutHeaderBehavior FlyoutHeaderBehavior { get; set; } = (FlyoutHeaderBehavior)Shell.FlyoutHeaderBehaviorProperty.DefaultValue;
@@ -138,15 +144,11 @@ namespace XamarinReactorUI
             return shell;
         }
 
-
-
         //public static T MenuItemTemplate<T>(this T shell, DataTemplate menuItemTemplate) where T : IRxShell
         //{
         //    shell.MenuItemTemplate = menuItemTemplate;
         //    return shell;
         //}
-
-
 
         //public static T ItemTemplate<T>(this T shell, DataTemplate itemTemplate) where T : IRxShell
         //{
@@ -154,15 +156,11 @@ namespace XamarinReactorUI
         //    return shell;
         //}
 
-
-
         //public static T BackgroundColor<T>(this T shell, Color backgroundColor) where T : IRxShell
         //{
         //    shell.BackgroundColor = backgroundColor;
         //    return shell;
         //}
-
-
 
         //public static T CurrentItem<T>(this T shell, ShellItem currentItem) where T : IRxShell
         //{
@@ -170,35 +168,36 @@ namespace XamarinReactorUI
         //    return shell;
         //}
 
-
-
         public static T FlyoutBackgroundImage<T>(this T shell, ImageSource flyoutBackgroundImage) where T : IRxShell
         {
             shell.FlyoutBackgroundImage = flyoutBackgroundImage;
             return shell;
         }
 
-
         public static T FlyoutBackgroun<T>(this T shell, string file) where T : IRxShell
         {
             shell.FlyoutBackgroundImage = ImageSource.FromFile(file);
             return shell;
         }
+
         public static T FlyoutBackgroun<T>(this T shell, string fileAndroid, string fileiOS) where T : IRxShell
         {
             shell.FlyoutBackgroundImage = Device.RuntimePlatform == Device.Android ? ImageSource.FromFile(fileAndroid) : ImageSource.FromFile(fileiOS);
             return shell;
         }
+
         public static T FlyoutBackgroun<T>(this T shell, string resourceName, Assembly sourceAssembly) where T : IRxShell
         {
             shell.FlyoutBackgroundImage = ImageSource.FromResource(resourceName, sourceAssembly);
             return shell;
         }
+
         public static T FlyoutBackgroun<T>(this T shell, Uri imageUri) where T : IRxShell
         {
             shell.FlyoutBackgroundImage = ImageSource.FromUri(imageUri);
             return shell;
         }
+
         public static T FlyoutBackgroun<T>(this T shell, Uri imageUri, bool cachingEnabled, TimeSpan cacheValidity) where T : IRxShell
         {
             shell.FlyoutBackgroundImage = new UriImageSource
@@ -209,12 +208,12 @@ namespace XamarinReactorUI
             };
             return shell;
         }
+
         public static T FlyoutBackgroun<T>(this T shell, Func<Stream> imageStream) where T : IRxShell
         {
             shell.FlyoutBackgroundImage = ImageSource.FromStream(imageStream);
             return shell;
         }
-
 
         public static T FlyoutBackgroundImageAspect<T>(this T shell, Aspect flyoutBackgroundImageAspect) where T : IRxShell
         {
@@ -222,15 +221,11 @@ namespace XamarinReactorUI
             return shell;
         }
 
-
-
         public static T FlyoutBackgroundColor<T>(this T shell, Color flyoutBackgroundColor) where T : IRxShell
         {
             shell.FlyoutBackgroundColor = flyoutBackgroundColor;
             return shell;
         }
-
-
 
         public static T FlyoutHeaderBehavior<T>(this T shell, FlyoutHeaderBehavior flyoutHeaderBehavior) where T : IRxShell
         {
@@ -238,15 +233,11 @@ namespace XamarinReactorUI
             return shell;
         }
 
-
-
         public static T FlyoutHeader<T>(this T shell, object flyoutHeader) where T : IRxShell
         {
             shell.FlyoutHeader = flyoutHeader;
             return shell;
         }
-
-
 
         //public static T FlyoutHeaderTemplate<T>(this T shell, DataTemplate flyoutHeaderTemplate) where T : IRxShell
         //{
@@ -254,15 +245,11 @@ namespace XamarinReactorUI
         //    return shell;
         //}
 
-
-
         public static T FlyoutIsPresented<T>(this T shell, bool flyoutIsPresented) where T : IRxShell
         {
             shell.FlyoutIsPresented = flyoutIsPresented;
             return shell;
         }
-
-
 
         public static T FlyoutIcon<T>(this T shell, ImageSource flyoutIcon) where T : IRxShell
         {
@@ -270,27 +257,30 @@ namespace XamarinReactorUI
             return shell;
         }
 
-
         public static T FlyoutIcon<T>(this T shell, string file) where T : IRxShell
         {
             shell.FlyoutIcon = ImageSource.FromFile(file);
             return shell;
         }
+
         public static T FlyoutIcon<T>(this T shell, string fileAndroid, string fileiOS) where T : IRxShell
         {
             shell.FlyoutIcon = Device.RuntimePlatform == Device.Android ? ImageSource.FromFile(fileAndroid) : ImageSource.FromFile(fileiOS);
             return shell;
         }
+
         public static T FlyoutIcon<T>(this T shell, string resourceName, Assembly sourceAssembly) where T : IRxShell
         {
             shell.FlyoutIcon = ImageSource.FromResource(resourceName, sourceAssembly);
             return shell;
         }
+
         public static T FlyoutIcon<T>(this T shell, Uri imageUri) where T : IRxShell
         {
             shell.FlyoutIcon = ImageSource.FromUri(imageUri);
             return shell;
         }
+
         public static T FlyoutIcon<T>(this T shell, Uri imageUri, bool cachingEnabled, TimeSpan cacheValidity) where T : IRxShell
         {
             shell.FlyoutIcon = new UriImageSource
@@ -301,21 +291,17 @@ namespace XamarinReactorUI
             };
             return shell;
         }
+
         public static T FlyoutIcon<T>(this T shell, Func<Stream> imageStream) where T : IRxShell
         {
             shell.FlyoutIcon = ImageSource.FromStream(imageStream);
             return shell;
         }
 
-
         public static T FlyoutVerticalScrollMode<T>(this T shell, ScrollMode flyoutVerticalScrollMode) where T : IRxShell
         {
             shell.FlyoutVerticalScrollMode = flyoutVerticalScrollMode;
             return shell;
         }
-
-
-
     }
-
 }

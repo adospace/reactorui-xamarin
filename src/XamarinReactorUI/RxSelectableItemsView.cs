@@ -33,6 +33,12 @@ namespace XamarinReactorUI
         {
         }
 
+        public RxSelectableItemsView(Action<T> componentRefAction)
+            : base(componentRefAction)
+        {
+
+        }
+
         public SelectionMode SelectionMode { get; set; } = (SelectionMode)SelectableItemsView.SelectionModeProperty.DefaultValue;
         public object SelectedItem { get; set; } = (object)SelectableItemsView.SelectedItemProperty.DefaultValue;
         public IEnumerable<object> SelectedItems { get; set; } = (IEnumerable<object>)SelectableItemsView.SelectedItemsProperty.DefaultValue;

@@ -6,6 +6,18 @@ namespace XamarinReactorUI
 {
     public class RxContext : Dictionary<string, object>
     {
+        public RxContext()
+        { }
+
+        public RxContext(Action<RxContext> builderAction)
+        {
+            if (builderAction is null)
+            {
+                throw new ArgumentNullException(nameof(builderAction));
+            }
+
+            builderAction(this);
+        }
     }
 
     public static class RxContextExtensions

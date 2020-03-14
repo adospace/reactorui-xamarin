@@ -71,7 +71,8 @@ namespace XamarinReactorUI
 
         protected override void OnMigrated()
         {
-            NativeControl.TextChanged -= NativeControl_TextChanged;
+            if (NativeControl != null)
+                NativeControl.TextChanged -= NativeControl_TextChanged;
 
             base.OnMigrated();
         }

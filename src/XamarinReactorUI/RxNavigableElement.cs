@@ -44,10 +44,12 @@ namespace XamarinReactorUI
 
         protected override void OnUnmount()
         {
-            Parent.RemoveChild(this, NativeControl);
-            _nativeControl = null;
-
-            _componentRefAction?.Invoke(null);
+            if (_nativeControl != null)
+            {
+                Parent.RemoveChild(this, _nativeControl);
+                _nativeControl = null;
+                _componentRefAction?.Invoke(null);
+            }
 
             base.OnUnmount();
         }

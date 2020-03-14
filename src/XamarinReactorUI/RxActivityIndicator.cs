@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Xamarin.Forms;
 
 namespace XamarinReactorUI
@@ -13,13 +12,14 @@ namespace XamarinReactorUI
 
     public sealed class RxActivityIndicator : RxView<ActivityIndicator>, IRxActivityIndicator
     {
+        public RxActivityIndicator()
+        {
+        }
 
         public RxActivityIndicator(Action<ActivityIndicator> componentRefAction)
             : base(componentRefAction)
         {
-
         }
-
 
         protected override IEnumerable<VisualNode> RenderChildren()
         {
@@ -40,7 +40,6 @@ namespace XamarinReactorUI
             base.OnUpdate();
         }
     }
-
 
     public static class RxActivityIndicatorExtensions
     {

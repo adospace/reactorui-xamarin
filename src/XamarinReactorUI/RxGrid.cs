@@ -82,11 +82,6 @@ namespace XamarinReactorUI
 
             base.OnUpdate();
         }
-
-        protected override IEnumerable<VisualNode> RenderChildren()
-        {
-            yield break;
-        }
     }
 
     public static class RxGridExtensions

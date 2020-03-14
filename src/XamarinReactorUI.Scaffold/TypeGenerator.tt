@@ -25,6 +25,13 @@ namespace XamarinReactorUI
         
         }
 
+        public Rx<#= TypeName() #>(Action<<#= TypeName() #>> componentRefAction)
+            : base(componentRefAction)
+        {
+
+        }
+
+
         <# foreach (var property in Properties) { #>
         public <#= property.PropertyType.Name.ToResevedWordTypeName() #> <#= property.Name #> { get; set; } = (<#= property.PropertyType.Name.ToResevedWordTypeName() #>)<#= TypeName() #>.<#= property.Name #>Property.DefaultValue;
         <# } #>

@@ -13,28 +13,32 @@ namespace XamarinReactorUI.TestApp
         {
             InitializeComponent();
 
-            //TEST1
+            //TEST 1
             //MainPage = new TestHotReloadPage();
 
-            //TEST2
+            //TEST 2
             //var mainPage = new ContentPage();
 
             //_mainPageHost = mainPage.Host(new TestCollectionViewComponent());
 
             //MainPage = mainPage;
 
-            //TEST3
+            //TEST 3
             //var mainPage = new Xamarin.Forms.Shell();
 
             //_mainPageHost = new RxHotReloadHostElement(new Shell.Test1.TestShellComponentPage() { Context = new Shell.Test1.TestShellContext() { Page = mainPage } });
 
             //MainPage = mainPage;
 
-            var mainPage = new Xamarin.Forms.Shell();
+            //TEST 4
+            //var mainPage = new Xamarin.Forms.Shell();
 
-            _mainPageHost = new RxHotReloadHostElement(new Shell.Test2.TestShellComponentPage() { Context = new Shell.Test2.TestShellContext(mainPage)  });
+            //_mainPageHost = new RxHotReloadHostElement(new Shell.Test2.TestShellComponentPage() { Context = new Shell.Test2.TestShellContext(mainPage)  });
 
-            MainPage = mainPage;
+            //MainPage = mainPage;
+
+            //TEST 5
+            MainPage = new TabbedPage.TestTabbedPage();
         }
 
         protected override void OnStart()

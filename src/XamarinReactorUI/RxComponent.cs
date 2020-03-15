@@ -26,6 +26,16 @@ namespace XamarinReactorUI
             yield return Render();
         }
 
+        internal override void MergeWith(VisualNode newNode)
+        {
+            if (newNode.GetType().FullName == GetType().FullName)
+            {
+                ((RxComponent)newNode)._isMounted = true;
+            }
+
+            base.MergeWith(newNode);
+        }
+
         protected sealed override void OnMount()
         {
             base.OnMount();
@@ -36,6 +46,23 @@ namespace XamarinReactorUI
         protected virtual void OnMounted()
         { 
         
+        }
+
+        protected sealed override void OnUnmount()
+        {
+            OnWillUnmount();
+
+            foreach (var child in Children)
+            {
+                child.Unmount();
+            }
+
+            base.OnUnmount();
+        }
+
+        private void OnWillUnmount()
+        {
+            
         }
     }
 

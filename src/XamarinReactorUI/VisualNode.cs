@@ -63,7 +63,7 @@ namespace XamarinReactorUI
 
             for (int i = newNode.Children.Count; i < Children.Count; i++)
             {
-                Children[i].OnUnmount();
+                Children[i].Unmount();
                 Children[i].Parent = null;
             }
 
@@ -82,7 +82,7 @@ namespace XamarinReactorUI
 
             for (int i = Children.Count; i < oldChildren.Count; i++)
             {
-                oldChildren[i].OnUnmount();
+                oldChildren[i].Unmount();
                 oldChildren[i].Parent = null;
             }
         }
@@ -121,6 +121,11 @@ namespace XamarinReactorUI
         protected virtual void OnMount()
         {
             _isMounted = true;
+        }
+
+        internal void Unmount()
+        {
+            OnUnmount();
         }
 
         protected virtual void OnUnmount()

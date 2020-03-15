@@ -33,14 +33,14 @@ namespace XamarinReactorUI
             _contents.Add(node);
         }
 
-        protected override void OnAddChild(RxElement widget, Element childNativeControl)
+        protected override void OnAddChild(VisualNode widget, Element childNativeControl)
         {
             NativeControl.Content = childNativeControl;
 
             base.OnAddChild(widget, childNativeControl);
         }
 
-        protected override void OnRemoveChild(RxElement widget, Element childNativeControl)
+        protected override void OnRemoveChild(VisualNode widget, Element childNativeControl)
         {
             NativeControl.Content = null;
 

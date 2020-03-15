@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Xamarin.Forms;
 
 namespace XamarinReactorUI
@@ -12,7 +13,7 @@ namespace XamarinReactorUI
         }
 
         public object Key { get; set; }
-
+        internal int ChildIndex { get; private set; }
         protected VisualNode Parent { get; private set; }
 
         private bool _invalidated = false;
@@ -26,6 +27,9 @@ namespace XamarinReactorUI
         internal bool IsLayoutCycleRequired { get; set; } = true;
         private void RequireLayoutCycle()
         {
+            if (IsLayoutCycleRequired)
+                return;
+
             IsLayoutCycleRequired = true;
             Parent?.RequireLayoutCycle();
             LayoutCycleRequest?.Invoke(this, EventArgs.Empty);
@@ -40,9 +44,12 @@ namespace XamarinReactorUI
             {
                 if (_children == null)
                 {
-                    _children = new List<VisualNode>(RenderChildren());
-                    foreach (var child in _children)
-                        child.Parent = this;
+                    _children = new List<VisualNode>(RenderChildren().Where(_ => _ != null));
+                    for (int i = 0; i < _children.Count; i++)
+                    {
+                        _children[i].ChildIndex = i;
+                        _children[i].Parent = this;
+                    }
                 }
                 return _children;
             }
@@ -139,7 +146,7 @@ namespace XamarinReactorUI
         }
 
 
-        internal void AddChild(RxElement widget, Xamarin.Forms.Element childNativeControl)
+        internal void AddChild(VisualNode widget, Element childNativeControl)
         {
             if (widget is null)
             {
@@ -154,12 +161,12 @@ namespace XamarinReactorUI
             OnAddChild(widget, childNativeControl);
         }
 
-        protected virtual void OnAddChild(RxElement widget, Xamarin.Forms.Element childNativeControl)
+        protected virtual void OnAddChild(VisualNode widget, Element childNativeControl)
         {
 
         }
 
-        internal void RemoveChild(RxElement widget, Xamarin.Forms.Element childNativeControl)
+        internal void RemoveChild(VisualNode widget, Element childNativeControl)
         {
             if (widget is null)
             {
@@ -174,7 +181,7 @@ namespace XamarinReactorUI
             OnRemoveChild(widget, childNativeControl);
         }
 
-        protected virtual void OnRemoveChild(RxElement widget, Xamarin.Forms.Element childNativeControl)
+        protected virtual void OnRemoveChild(VisualNode widget, Element childNativeControl)
         {
 
         }
@@ -185,17 +192,6 @@ namespace XamarinReactorUI
             get => _context ?? Parent?.Context;
             set => _context = value;
         }
-
-        //public T GetContext<T>() where T : IValueSet, new()
-        //{
-        //    var context = Context;
-        //    if (context is T)
-        //        return (T)context;
-
-        //    var newContext = new T();
-        //    context.CopyPropertiesTo(newContext);
-        //    return newContext;
-        //}
 
         private readonly Dictionary<string, object> _metadata = new Dictionary<string, object>();
         public void SetMetadata<T>(string key, T value)
@@ -246,6 +242,12 @@ namespace XamarinReactorUI
             }
 
             node.SetMetadata(value.GetType().FullName, value);
+            return node;
+        }
+
+        public static T WithKey<T>(this T node, object key) where T : VisualNode
+        {
+            node.Key = key;
             return node;
         }
     }

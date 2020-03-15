@@ -20,10 +20,14 @@ namespace XamarinReactorUI
             {
                 ((RxElement)newNode)._nativeControl = this._nativeControl;
                 ((RxElement)newNode)._isMounted = this._nativeControl != null;
-                this.OnMigrated();
-            }
+                OnMigrated();
 
-            base.MergeWith(newNode);
+                base.MergeWith(newNode);
+            }
+            else
+            {
+                this.Unmount();
+            }
         }
 
         protected virtual void OnMigrated()

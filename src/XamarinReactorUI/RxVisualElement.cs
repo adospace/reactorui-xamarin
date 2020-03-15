@@ -113,6 +113,7 @@ namespace XamarinReactorUI
         protected override void OnMount()
         {
             _nativeControl = _nativeControl ?? new T();
+            System.Diagnostics.Debug.WriteLine($"Mounting {Key ?? GetType()} under {Parent.Key ?? Parent.GetType()} at index {ChildIndex}");
             Parent.AddChild(this, _nativeControl);
             _componentRefAction?.Invoke(NativeControl);
 

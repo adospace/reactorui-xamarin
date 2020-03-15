@@ -93,7 +93,7 @@ namespace XamarinReactorUI
                 _itemTemplatePreseter = itemTemplatePreseter;
             }
 
-            protected sealed override void OnAddChild(RxElement widget, Xamarin.Forms.Element nativeControl)
+            protected sealed override void OnAddChild(VisualNode widget, Xamarin.Forms.Element nativeControl)
             {
                 if (nativeControl is View view)
                     _itemTemplatePreseter.Content = view;
@@ -103,7 +103,7 @@ namespace XamarinReactorUI
                 }
             }
 
-            protected sealed override void OnRemoveChild(RxElement widget, Xamarin.Forms.Element nativeControl)
+            protected sealed override void OnRemoveChild(VisualNode widget, Xamarin.Forms.Element nativeControl)
             {
                 _itemTemplatePreseter.Content = null;
             }

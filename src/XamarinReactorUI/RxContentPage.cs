@@ -47,7 +47,7 @@ namespace XamarinReactorUI
             return _contents.GetEnumerator();
         }
 
-        protected override void OnAddChild(RxElement widget, Element childControl)
+        protected override void OnAddChild(VisualNode widget, Element childControl)
         {
             if (childControl is View view)
                 NativeControl.Content = view;
@@ -59,7 +59,7 @@ namespace XamarinReactorUI
             base.OnAddChild(widget, childControl);
         }
 
-        protected override void OnRemoveChild(RxElement widget, Element childControl)
+        protected override void OnRemoveChild(VisualNode widget, Element childControl)
         {
             NativeControl.Content = null;
 

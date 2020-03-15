@@ -11,14 +11,14 @@ namespace XamarinReactorUI
     {
         public abstract VisualNode Render();
 
-        protected sealed override void OnAddChild(RxElement widget, Xamarin.Forms.Element nativeControl)
+        protected sealed override void OnAddChild(VisualNode widget, Element nativeControl)
         {
-            Parent.AddChild(widget, nativeControl);
+            Parent.AddChild(this, nativeControl);
         }
 
-        protected sealed override void OnRemoveChild(RxElement widget, Xamarin.Forms.Element nativeControl)
+        protected sealed override void OnRemoveChild(VisualNode widget, Element nativeControl)
         {
-            Parent.RemoveChild(widget, nativeControl);
+            Parent.RemoveChild(this, nativeControl);
         }
 
         protected sealed override IEnumerable<VisualNode> RenderChildren()
@@ -31,13 +31,19 @@ namespace XamarinReactorUI
             if (newNode.GetType().FullName == GetType().FullName)
             {
                 ((RxComponent)newNode)._isMounted = true;
-            }
 
-            base.MergeWith(newNode);
+                base.MergeWith(newNode);
+            }
+            else
+            {
+                Unmount();
+            }
         }
 
         protected sealed override void OnMount()
         {
+            System.Diagnostics.Debug.WriteLine($"Mounting {Key ?? GetType()} under {Parent.Key ?? Parent.GetType()} at index {ChildIndex}");
+
             base.OnMount();
 
             OnMounted();
@@ -60,7 +66,7 @@ namespace XamarinReactorUI
             base.OnUnmount();
         }
 
-        private void OnWillUnmount()
+        protected virtual void OnWillUnmount()
         {
             
         }

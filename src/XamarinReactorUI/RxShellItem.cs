@@ -33,7 +33,7 @@ namespace XamarinReactorUI
             _items.Add(section);
         }
 
-        protected override void OnAddChild(RxElement widget, Element childControl)
+        protected override void OnAddChild(VisualNode widget, Element childControl)
         {
             if (childControl is ShellSection item)
                 NativeControl.Items.Add(item);
@@ -49,7 +49,7 @@ namespace XamarinReactorUI
             base.OnAddChild(widget, childControl);
         }
 
-        protected override void OnRemoveChild(RxElement widget, Element childControl)
+        protected override void OnRemoveChild(VisualNode widget, Element childControl)
         {
             NativeControl.Items.Remove(_elementItemMap[childControl]);
 

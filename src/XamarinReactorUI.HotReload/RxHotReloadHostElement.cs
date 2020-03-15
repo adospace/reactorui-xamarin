@@ -28,11 +28,11 @@ namespace XamarinReactorUI
 
         public event EventHandler<UnhandledExceptionEventArgs> UnhandledException;
 
-        protected sealed override void OnAddChild(RxElement widget, Xamarin.Forms.Element nativeControl)
+        protected sealed override void OnAddChild(VisualNode widget, Xamarin.Forms.Element nativeControl)
         {
         }
 
-        protected sealed override void OnRemoveChild(RxElement widget, Xamarin.Forms.Element nativeControl)
+        protected sealed override void OnRemoveChild(VisualNode widget, Xamarin.Forms.Element nativeControl)
         {
         }
 

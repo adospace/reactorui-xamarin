@@ -36,9 +36,9 @@ namespace XamarinReactorUI
         protected override void OnAddChild(VisualNode widget, Element childControl)
         {
             if (childControl is ShellContent item)
-                NativeControl.Items.Add(item);
+                NativeControl.Items.Insert(widget.ChildIndex, item);
             else if (childControl is Page page)
-                NativeControl.Items.Add(new ShellContent() { Content = page });
+                NativeControl.Items.Insert(widget.ChildIndex, new ShellContent() { Content = page });
             else
             {
                 throw new InvalidOperationException($"Type '{childControl.GetType()}' not supported under '{GetType()}'");

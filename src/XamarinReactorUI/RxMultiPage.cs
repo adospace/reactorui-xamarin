@@ -22,24 +22,28 @@ namespace XamarinReactorUI
 
         }
 
-
-        protected override void OnAddChild(VisualNode widget, Element nativeControl)
+        protected override void OnAddChild(VisualNode widget, Element childControl)
         {
-            if (nativeControl is TPAGE page)
-                NativeControl.Children.Add(page);
+            if (childControl is TPAGE page)
+                NativeControl.Children.Insert(widget.ChildIndex, page);
+            else if (childControl is ToolbarItem toolbarItem)
+                NativeControl.ToolbarItems.Add(toolbarItem);
             else
             {
-                throw new InvalidOperationException($"Type '{nativeControl.GetType()}' not supported under '{GetType()}'");
+                throw new InvalidOperationException($"Type '{childControl.GetType()}' not supported under '{GetType()}'");
             }
 
-            base.OnAddChild(widget, nativeControl);
+            base.OnAddChild(widget, childControl);
         }
 
-        protected override void OnRemoveChild(VisualNode widget, Element nativeControl)
+        protected override void OnRemoveChild(VisualNode widget, Element childControl)
         {
-            NativeControl.Children.Remove((TPAGE)nativeControl);
+            if (childControl is TPAGE page)
+                NativeControl.Children.Remove(page);
+            else if (childControl is ToolbarItem toolbarItem)
+                NativeControl.ToolbarItems.Remove(toolbarItem);
 
-            base.OnRemoveChild(widget, nativeControl);
+            base.OnRemoveChild(widget, childControl);
         }
 
         public void Add(IRxPage page)

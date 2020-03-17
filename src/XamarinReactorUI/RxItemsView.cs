@@ -1,9 +1,7 @@
-﻿
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Xamarin.Forms;
 
 namespace XamarinReactorUI
@@ -21,10 +19,9 @@ namespace XamarinReactorUI
     {
         private readonly List<VisualNode> _internalChildren = new List<VisualNode>();
         private readonly List<VisualNode> _layoutChildren = new List<VisualNode>();
-        
+
         public RxItemsView()
         {
-
         }
 
         public RxItemsView(params VisualNode[] children)
@@ -50,7 +47,6 @@ namespace XamarinReactorUI
         public RxItemsView(Action<T> componentRefAction)
             : base(componentRefAction)
         {
-
         }
 
         public IEnumerator<VisualNode> GetEnumerator()
@@ -163,7 +159,6 @@ namespace XamarinReactorUI
 
             base.OnUpdate();
         }
-
     }
 
     public static class RxItemsViewExtensions
@@ -191,30 +186,28 @@ namespace XamarinReactorUI
             return itemsview;
         }
 
-
-
-
-
         public static T HorizontalScrollBarVisibility<T>(this T itemsview, ScrollBarVisibility horizontalScrollBarVisibility) where T : IRxItemsView
         {
             itemsview.HorizontalScrollBarVisibility = horizontalScrollBarVisibility;
             return itemsview;
         }
+
         public static T VerticalScrollBarVisibility<T>(this T itemsview, ScrollBarVisibility verticalScrollBarVisibility) where T : IRxItemsView
         {
             itemsview.VerticalScrollBarVisibility = verticalScrollBarVisibility;
             return itemsview;
         }
+
         public static T RemainingItemsThreshold<T>(this T itemsview, int remainingItemsThreshold) where T : IRxItemsView
         {
             itemsview.RemainingItemsThreshold = remainingItemsThreshold;
             return itemsview;
         }
+
         public static T ItemsUpdatingScrollMode<T>(this T itemsview, ItemsUpdatingScrollMode itemsUpdatingScrollMode) where T : IRxItemsView
         {
             itemsview.ItemsUpdatingScrollMode = itemsUpdatingScrollMode;
             return itemsview;
         }
     }
-
 }

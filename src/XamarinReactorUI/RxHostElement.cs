@@ -14,7 +14,7 @@ namespace XamarinReactorUI
         event EventHandler<UnhandledExceptionEventArgs> UnhandledException;
     }
 
-    public sealed class RxHostElement : RxElement, IRxHostElement
+    public sealed class RxHostElement : VisualNode, IRxHostElement
     {
         private readonly RxComponent _rootComponent;
         private readonly VisualTree _visualTree;

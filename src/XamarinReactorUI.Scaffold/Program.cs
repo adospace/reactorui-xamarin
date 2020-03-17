@@ -9,7 +9,7 @@ namespace XamarinReactorUI.Scaffold
     {
         static void Main()
         {
-            var typeToScaffold = typeof(Xamarin.Forms.DatePicker);
+            var typeToScaffold = typeof(Xamarin.Forms.ToolbarItem);
 
             var outputPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "gen");
             Directory.CreateDirectory(outputPath);

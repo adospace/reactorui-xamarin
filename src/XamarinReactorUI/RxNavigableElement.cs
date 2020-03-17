@@ -10,7 +10,7 @@ namespace XamarinReactorUI
     {
     }
 
-    public abstract class RxNavigableElement<T> : RxElement, IRxNavigableElement where T : Xamarin.Forms.NavigableElement, new()
+    public abstract class RxNavigableElement<T> : RxElement<T>, IRxNavigableElement where T : Xamarin.Forms.NavigableElement, new()
     {
         private readonly Action<T> _componentRefAction;
 
@@ -23,8 +23,6 @@ namespace XamarinReactorUI
             _componentRefAction = componentRefAction;
         }
 
-        protected T NativeControl { get => (T)_nativeControl; }
-
         protected override void OnUpdate()
         {
 
@@ -32,27 +30,27 @@ namespace XamarinReactorUI
         }
 
 
-        protected override void OnMount()
-        {
-            _nativeControl = _nativeControl ?? new T();
-            Parent.AddChild(this, NativeControl);
+        //protected override void OnMount()
+        //{
+        //    _nativeControl = _nativeControl ?? new T();
+        //    Parent.AddChild(this, NativeControl);
 
-            _componentRefAction?.Invoke(NativeControl);
+        //    _componentRefAction?.Invoke(NativeControl);
 
-            base.OnMount();
-        }
+        //    base.OnMount();
+        //}
 
-        protected override void OnUnmount()
-        {
-            if (_nativeControl != null)
-            {
-                Parent.RemoveChild(this, _nativeControl);
-                _nativeControl = null;
-                _componentRefAction?.Invoke(null);
-            }
+        //protected override void OnUnmount()
+        //{
+        //    if (_nativeControl != null)
+        //    {
+        //        Parent.RemoveChild(this, _nativeControl);
+        //        _nativeControl = null;
+        //        _componentRefAction?.Invoke(null);
+        //    }
 
-            base.OnUnmount();
-        }
+        //    base.OnUnmount();
+        //}
 
     }
 

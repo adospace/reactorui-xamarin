@@ -68,22 +68,33 @@ namespace XamarinReactorUI
         protected override void OnAddChild(VisualNode widget, Element childControl)
         {
             if (childControl is ShellItem item)
-                NativeControl.Items.Add(item);
+            {
+                NativeControl.Items.Insert(widget.ChildIndex, item);
+                _elementItemMap[childControl] = NativeControl.Items[NativeControl.Items.Count - 1];
+            }
             else if (childControl is Page page)
-                NativeControl.Items.Add(new ShellContent() { Content = page });
+            {
+                NativeControl.Items.Insert(widget.ChildIndex, new ShellContent() { Content = page });
+                _elementItemMap[childControl] = NativeControl.Items[NativeControl.Items.Count - 1];
+            }
+            else if (childControl is ToolbarItem toolbarItem)
+                NativeControl.ToolbarItems.Add(toolbarItem);
             else
             {
                 throw new InvalidOperationException($"Type '{childControl.GetType()}' not supported under '{GetType()}'");
             }
-
-            _elementItemMap[childControl] = NativeControl.Items[NativeControl.Items.Count - 1];
 
             base.OnAddChild(widget, childControl);
         }
 
         protected override void OnRemoveChild(VisualNode widget, Element childControl)
         {
-            NativeControl.Items.Remove(_elementItemMap[childControl]);
+            if (childControl is ShellItem || childControl is Page page)
+            {
+                NativeControl.Items.Remove(_elementItemMap[childControl]);
+            }
+            else if (childControl is ToolbarItem toolbarItem)
+                NativeControl.ToolbarItems.Remove(toolbarItem);
 
             base.OnRemoveChild(widget, childControl);
         }

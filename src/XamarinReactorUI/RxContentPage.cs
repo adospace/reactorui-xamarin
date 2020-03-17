@@ -39,7 +39,7 @@ namespace XamarinReactorUI
 
         public void Add(VisualNode child)
         {
-            _contents = new List<VisualNode>(new[] { child });
+            _contents.Add(child ?? throw new ArgumentNullException());
         }
 
         public IEnumerator<VisualNode> GetEnumerator()
@@ -51,6 +51,8 @@ namespace XamarinReactorUI
         {
             if (childControl is View view)
                 NativeControl.Content = view;
+            else if (childControl is ToolbarItem toolbarItem)
+                NativeControl.ToolbarItems.Add(toolbarItem);
             else
             {
                 throw new InvalidOperationException($"Type '{childControl.GetType()}' not supported under '{GetType()}'");
@@ -61,15 +63,17 @@ namespace XamarinReactorUI
 
         protected override void OnRemoveChild(VisualNode widget, Element childControl)
         {
-            NativeControl.Content = null;
+            if (childControl is View)
+                NativeControl.Content = null;
+            else if (childControl is ToolbarItem toolbarItem)
+                NativeControl.ToolbarItems.Remove(toolbarItem);
 
             base.OnRemoveChild(widget, childControl);
         }
 
         protected override IEnumerable<VisualNode> RenderChildren()
         {
-            if (_contents.Count > 0)
-                yield return _contents[0];
+            return _contents;
         }
 
         IEnumerator IEnumerable.GetEnumerator()

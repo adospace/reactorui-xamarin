@@ -27,7 +27,7 @@ namespace XamarinReactorUI
         {
             if (childControl is View view)
             {
-                System.Diagnostics.Debug.WriteLine($"StackLayout ({Key ?? GetType()}) inserting {widget.Key ?? widget.GetType()} at index {widget.ChildIndex}");
+                //System.Diagnostics.Debug.WriteLine($"StackLayout ({Key ?? GetType()}) inserting {widget.Key ?? widget.GetType()} at index {widget.ChildIndex}");
                 NativeControl.Children.Insert(widget.ChildIndex, view);
             }
             else

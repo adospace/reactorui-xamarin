@@ -13,7 +13,7 @@ namespace XamarinReactorUI
         }
 
         public object Key { get; set; }
-        internal int ChildIndex { get; private set; }
+        public int ChildIndex { get; private set; }
         protected VisualNode Parent { get; private set; }
 
         private bool _invalidated = false;

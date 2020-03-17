@@ -41,7 +41,11 @@ namespace XamarinReactorUI.TestApp
             //MainPage = new TabbedPage.TestTabbedPage();
 
             //TEST 6
-            MainPage = new Layout.TestPage();
+            //MainPage = new Layout.TestPage();
+
+            //TEST 7
+            MainPage = new Grid.GridPage();
+
         }
 
         protected override void OnStart()

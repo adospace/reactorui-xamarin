@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public class RxHotReloadHostElement : RxElement, IRxHostElement
+    public class RxHotReloadHostElement : VisualNode, IRxHostElement
     {
         private readonly HotReloadServer _server;
         private RxComponent _rootComponent;

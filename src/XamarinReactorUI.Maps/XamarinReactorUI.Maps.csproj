@@ -5,22 +5,24 @@
     <Version Condition=" '$(APPVEYOR_BUILD_VERSION)' != '' ">$(APPVEYOR_BUILD_VERSION)-beta</Version>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>adospace</Authors>
-    <Description>XamarinReactorUI is an UI framework that let you build Xamarin Forms pages using a React/Flutter inspired model. This is the assembly required to enable HotReload feature.</Description>
+    <Description>XamarinReactorUI is an UI framework that let you build Xamarin Forms pages using a React/Flutter inspired model. This is the package required to integrate Xamarin Maps</Description>
     <Copyright>Adolfo Marinucci</Copyright>
     <PackageProjectUrl>https://github.com/adospace/reactorui-xamarin</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/adospace/reactorui-xamarin</RepositoryUrl>
-    <PackageTags>xamarin forms .net react flutter ui hot reload</PackageTags>
+    <PackageTags>xamarin forms .net react flutter ui</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Xamarin.Forms" Version="4.5.0.356" />
+    <PackageReference Include="Xamarin.Forms.Maps" Version="4.5.0.356" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\XamarinReactorUI\XamarinReactorUI.csproj" />
   </ItemGroup>
+
 
 </Project>

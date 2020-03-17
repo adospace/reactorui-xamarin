@@ -35,20 +35,17 @@ namespace XamarinReactorUI
         VisualStateGroupList VisualStateGroups { get; set; }
     }
 
-    public abstract class RxVisualElement<T> : RxElement, IRxVisualElement where T : Xamarin.Forms.VisualElement, new()
+    public abstract class RxVisualElement<T> : RxElement<T>, IRxVisualElement where T : Xamarin.Forms.VisualElement, new()
     {
-        private readonly Action<T> _componentRefAction;
-
         protected RxVisualElement()
         {
         }
 
         protected RxVisualElement(Action<T> componentRefAction)
+            : base(componentRefAction)
         {
-            _componentRefAction = componentRefAction;
-        }
 
-        protected T NativeControl { get => (T)_nativeControl; }
+        }
 
         //public Style Style { get; set; } = (Style)VisualElement.StyleProperty.DefaultValue;
         public bool InputTransparent { get; set; } = (bool)VisualElement.InputTransparentProperty.DefaultValue;
@@ -110,27 +107,6 @@ namespace XamarinReactorUI
             base.OnUpdate();
         }
 
-        protected override void OnMount()
-        {
-            _nativeControl = _nativeControl ?? new T();
-            System.Diagnostics.Debug.WriteLine($"Mounting {Key ?? GetType()} under {Parent.Key ?? Parent.GetType()} at index {ChildIndex}");
-            Parent.AddChild(this, _nativeControl);
-            _componentRefAction?.Invoke(NativeControl);
-
-            base.OnMount();
-        }
-
-        protected override void OnUnmount()
-        {
-            if (_nativeControl != null)
-            {
-                Parent.RemoveChild(this, _nativeControl);
-                _nativeControl = null;
-                _componentRefAction?.Invoke(null);
-            }
-
-            base.OnUnmount();
-        }
     }
 
     public class VisualStateNamedGroup

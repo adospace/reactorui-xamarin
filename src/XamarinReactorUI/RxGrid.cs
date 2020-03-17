@@ -28,13 +28,13 @@ namespace XamarinReactorUI
         public RxGrid(string rows, string columns)
         {
             var converter = new GridLengthTypeConverter();
-            foreach (var rowDefinition in rows.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+            foreach (var rowDefinition in rows.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
                 .Select(_ => (GridLength)converter.ConvertFromInvariantString(_))
                 .Select(_ => new RowDefinition() { Height = _ }))
             {
                 RowDefinitions.Add(rowDefinition);
             }
-            foreach (var columnDefinition in columns.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+            foreach (var columnDefinition in columns.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
                 .Select(_ => (GridLength)converter.ConvertFromInvariantString(_))
                 .Select(_ => new ColumnDefinition() { Width = _ }))
             {
@@ -47,11 +47,11 @@ namespace XamarinReactorUI
             if (childControl is View view)
             {
                 Grid.SetRow(childControl, widget.GetMetadata<int>("Grid.Row"));
-                Grid.SetRowSpan(childControl, widget.GetMetadata<int>("Grid.RowSpan"));
+                Grid.SetRowSpan(childControl, widget.GetMetadata<int>("Grid.RowSpan", 1));
                 Grid.SetColumn(childControl, widget.GetMetadata<int>("Grid.Column"));
-                Grid.SetColumnSpan(childControl, widget.GetMetadata<int>("Grid.ColumnSpan"));
+                Grid.SetColumnSpan(childControl, widget.GetMetadata<int>("Grid.ColumnSpan", 1));
 
-                NativeControl.Children.Add(view);
+                NativeControl.Children.Insert(widget.ChildIndex, view);
             }
             else
             {
@@ -70,8 +70,8 @@ namespace XamarinReactorUI
 
         public double RowSpacing { get; set; } = (double)Grid.RowSpacingProperty.DefaultValue;
         public double ColumnSpacing { get; set; } = (double)Grid.ColumnSpacingProperty.DefaultValue;
-        public ColumnDefinitionCollection ColumnDefinitions { get; set; } = (ColumnDefinitionCollection)Grid.ColumnDefinitionsProperty.DefaultValue;
-        public RowDefinitionCollection RowDefinitions { get; set; } = (RowDefinitionCollection)Grid.RowDefinitionsProperty.DefaultValue;
+        public ColumnDefinitionCollection ColumnDefinitions { get; set; } = new ColumnDefinitionCollection();
+        public RowDefinitionCollection RowDefinitions { get; set; } = new RowDefinitionCollection();
 
         protected override void OnUpdate()
         {

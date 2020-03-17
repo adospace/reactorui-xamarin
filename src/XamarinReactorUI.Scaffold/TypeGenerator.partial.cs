@@ -16,6 +16,7 @@ namespace XamarinReactorUI.Scaffold
 
             var propertiesMap = _typeToScaffold.GetProperties()
                 .Where(_ => !_.PropertyType.IsGenericType)
+                .Distinct(new PropertyInfoEqualityComparer())
                 .ToDictionary(_ => _.Name, _ => _);
 
             Properties = _typeToScaffold.GetFields()

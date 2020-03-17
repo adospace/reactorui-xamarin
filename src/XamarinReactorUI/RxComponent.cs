@@ -26,6 +26,11 @@ namespace XamarinReactorUI
             yield return Render();
         }
 
+        protected sealed override void OnUpdate()
+        {
+            base.OnUpdate();
+        }
+
         internal override void MergeWith(VisualNode newNode)
         {
             if (newNode.GetType().FullName == GetType().FullName)
@@ -42,7 +47,7 @@ namespace XamarinReactorUI
 
         protected sealed override void OnMount()
         {
-            System.Diagnostics.Debug.WriteLine($"Mounting {Key ?? GetType()} under {Parent.Key ?? Parent.GetType()} at index {ChildIndex}");
+            //System.Diagnostics.Debug.WriteLine($"Mounting {Key ?? GetType()} under {Parent.Key ?? Parent.GetType()} at index {ChildIndex}");
 
             base.OnMount();
 

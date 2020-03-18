@@ -25,7 +25,7 @@ namespace XamarinReactorUI
         Keyboard Keyboard { get; set; }
     }
 
-    public sealed class RxEntry : RxInputView<Xamarin.Forms.Entry>, IRxEntry
+    public sealed class RxEntry : RxInputView<Entry>, IRxEntry
     {
         public RxEntry()
         {
@@ -83,24 +83,6 @@ namespace XamarinReactorUI
             return entry;
         }
 
-        //public static T ReturnCommand<T>(this T entry, ICommand returnCommand) where T : IRxEntry
-        //{
-        //    entry.ReturnCommand = returnCommand;
-        //    return entry;
-        //}
-
-        //public static T ReturnCommandParameter<T>(this T entry, object returnCommandParameter) where T : IRxEntry
-        //{
-        //    entry.ReturnCommandParameter = returnCommandParameter;
-        //    return entry;
-        //}
-
-        //public static T Placeholder<T>(this T entry, string placeholder) where T : IRxEntry
-        //{
-        //    entry.Placeholder = placeholder;
-        //    return entry;
-        //}
-
         public static T PlaceholderColor<T>(this T entry, Color placeholderColor) where T : IRxEntry
         {
             entry.PlaceholderColor = placeholderColor;
@@ -112,18 +94,6 @@ namespace XamarinReactorUI
             entry.IsPassword = isPassword;
             return entry;
         }
-
-        //public static T Text<T>(this T entry, string text) where T : IRxEntry
-        //{
-        //    entry.Text = text;
-        //    return entry;
-        //}
-
-        //public static T TextColor<T>(this T entry, Color textColor) where T : IRxEntry
-        //{
-        //    entry.TextColor = textColor;
-        //    return entry;
-        //}
 
         public static T CharacterSpacing<T>(this T entry, double characterSpacing) where T : IRxEntry
         {

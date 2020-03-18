@@ -13,6 +13,8 @@ namespace XamarinReactorUI
         Thickness Padding { get; set; }
         string Title { get; set; }
         ImageSource IconImageSource { get; set; }
+        Action BackButtonAction { get; set; }
+        bool IsBackButtonEnabled { get; set; }
     }
 
     public abstract class RxPage<T> : RxVisualElement<T>, IRxPage where T : Xamarin.Forms.Page, new()
@@ -32,6 +34,22 @@ namespace XamarinReactorUI
         public string Title { get; set; } = (string)Page.TitleProperty.DefaultValue;
         public ImageSource IconImageSource { get; set; } = (ImageSource)Page.IconImageSourceProperty.DefaultValue;
 
+        public Action BackButtonAction { get; set; }
+        public bool IsBackButtonEnabled { get; set; } = true;
+
+        private Command _backButtonCommand;
+        public Command BackButtonCommand
+        {
+            get
+            {
+                if (BackButtonAction != null)
+                {
+                    _backButtonCommand = _backButtonCommand ?? new Command(BackButtonAction);
+                }
+
+                return _backButtonCommand;
+            }
+        }
 
         protected override void OnUpdate()
         {
@@ -41,12 +59,30 @@ namespace XamarinReactorUI
             NativeControl.Title = Title;
             NativeControl.IconImageSource = IconImageSource;
 
+            NativeControl.SetValue(Shell.BackButtonBehaviorProperty, new BackButtonBehavior()
+            { 
+                IsEnabled = IsBackButtonEnabled,
+                Command = BackButtonCommand
+            });
+
             base.OnUpdate();
         }
     }
 
     public static class RxPageExtensions
     {
+        public static T OnBackButtonClicked<T>(this T page, Action action) where T : IRxPage
+        {
+            page.BackButtonAction = action;
+            return page;
+        }
+
+        public static T IsBackButtonEnabled<T>(this T page, bool enabled) where T : IRxPage
+        {
+            page.IsBackButtonEnabled = enabled;
+            return page;
+        }
+
         public static T BackgroundImageSource<T>(this T page, ImageSource backgroundImageSource) where T : IRxPage
         {
             page.BackgroundImageSource = backgroundImageSource;

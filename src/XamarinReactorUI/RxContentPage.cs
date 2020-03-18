@@ -31,6 +31,11 @@ namespace XamarinReactorUI
             _contentPage = contentPage;
         }
 
+        public RxContentPage(Action<ContentPage> componentRefAction)
+            : base(componentRefAction)
+        {
+        }
+
         protected override void OnMount()
         {
             _nativeControl = _contentPage;

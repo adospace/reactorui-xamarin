@@ -16,6 +16,7 @@ namespace XamarinReactorUI
         Color TextColor { get; set; }
         double CharacterSpacing { get; set; }
         Action<object, TextChangedEventArgs> TextChangedAction { get; set; }
+        Action<string> AfterTextChangedAction { get; set; }
     }
 
     public abstract class RxInputView<T> : RxView<T>, IRxInputView where T : InputView, new()
@@ -45,10 +46,12 @@ namespace XamarinReactorUI
         public Color TextColor { get; set; } = (Color)InputView.TextColorProperty.DefaultValue;
         public double CharacterSpacing { get; set; } = (double)InputView.CharacterSpacingProperty.DefaultValue;
         public Action<object, TextChangedEventArgs> TextChangedAction { get; set; }
+        public Action<string> AfterTextChangedAction { get; set; }
 
         protected override void OnUpdate()
         {
-            NativeControl.Text = Text;
+            if (NativeControl.Text != Text)
+                NativeControl.Text = Text;
             NativeControl.Keyboard = Keyboard;
             NativeControl.IsSpellCheckEnabled = IsSpellCheckEnabled;
             NativeControl.MaxLength = MaxLength;
@@ -60,8 +63,16 @@ namespace XamarinReactorUI
 
             if (TextChangedAction != null)
                 NativeControl.TextChanged += NativeControl_TextChanged;
-
+            if (AfterTextChangedAction != null)
+                NativeControl.Unfocused += NativeControl_Unfocused;
+            
             base.OnUpdate();
+        }
+
+        private void NativeControl_Unfocused(object sender, FocusEventArgs e)
+        {
+            if (NativeControl.Text != Text)
+                AfterTextChangedAction?.Invoke(NativeControl.Text);
         }
 
         private void NativeControl_TextChanged(object sender, TextChangedEventArgs e)
@@ -73,6 +84,8 @@ namespace XamarinReactorUI
         {
             if (NativeControl != null)
                 NativeControl.TextChanged -= NativeControl_TextChanged;
+            if (NativeControl != null) 
+                NativeControl.Unfocused -= NativeControl_Unfocused;
 
             base.OnMigrated();
         }
@@ -91,6 +104,12 @@ namespace XamarinReactorUI
 
     public static class RxInputViewExtensions
     {
+        public static T OnAfterTextChanged<T>(this T entry, Action<string> action) where T : IRxInputView
+        {
+            entry.AfterTextChangedAction = action;
+            return entry;
+        }
+
         public static T OnTextChanged<T>(this T entry, Action<object, TextChangedEventArgs> textChangedAction) where T : IRxInputView
         {
             entry.TextChangedAction = textChangedAction;

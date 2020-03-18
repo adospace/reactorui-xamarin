@@ -42,6 +42,20 @@ namespace XamarinReactorUI
             }
         }
 
+        public RxGrid(RowDefinitionCollection rows, ColumnDefinitionCollection columns)
+        {
+            RowDefinitions = rows;
+            ColumnDefinitions = columns;
+        }
+
+        public RxGrid(RowDefinition[] rows, ColumnDefinition[] columns)
+        {
+            foreach (var row in rows)
+                RowDefinitions.Add(row);
+            foreach (var column in columns)
+                ColumnDefinitions.Add(column);
+        }
+
         protected override void OnAddChild(VisualNode widget, Xamarin.Forms.Element childControl)
         {
             if (childControl is View view)

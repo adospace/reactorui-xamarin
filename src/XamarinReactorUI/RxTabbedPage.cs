@@ -14,6 +14,7 @@ namespace XamarinReactorUI
     public sealed class RxTabbedPage : RxMultiPage<TabbedPage, Page>, IRxTabbedPage
     {
         private readonly TabbedPage _existingPage;
+        public RxContentPage _samplingForm;
 
         public RxTabbedPage()
         {

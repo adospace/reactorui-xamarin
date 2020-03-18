@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29728.190
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XamarinReactorUI", "..\XamarinReactorUI\XamarinReactorUI.csproj", "{BD5FB431-ACB6-41FB-88A8-6EBD32311512}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XamarinReactorUI.Maps", "..\XamarinReactorUI.Maps\XamarinReactorUI.Maps.csproj", "{15890226-26A1-4D30-AFF5-76BD2DA80812}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XamarinReactorUI.HotReload", "..\XamarinReactorUI.HotReload\XamarinReactorUI.HotReload.csproj", "{6B323D4C-3B98-4878-ABAE-6C92B2D849F5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BD5FB431-ACB6-41FB-88A8-6EBD32311512}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD5FB431-ACB6-41FB-88A8-6EBD32311512}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD5FB431-ACB6-41FB-88A8-6EBD32311512}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD5FB431-ACB6-41FB-88A8-6EBD32311512}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15890226-26A1-4D30-AFF5-76BD2DA80812}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15890226-26A1-4D30-AFF5-76BD2DA80812}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15890226-26A1-4D30-AFF5-76BD2DA80812}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15890226-26A1-4D30-AFF5-76BD2DA80812}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B323D4C-3B98-4878-ABAE-6C92B2D849F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B323D4C-3B98-4878-ABAE-6C92B2D849F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B323D4C-3B98-4878-ABAE-6C92B2D849F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B323D4C-3B98-4878-ABAE-6C92B2D849F5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {07E760C9-49CE-424A-AD92-D4424B0F97D9}
+	EndGlobalSection
+EndGlobal

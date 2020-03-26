@@ -11,7 +11,7 @@ namespace XamarinReactorUI
         private RxComponent _rootComponent;
         //private bool _pendingStop = false;
         private byte[] _latestAssemblyRaw;
-        private VisualTree _visualTree;
+        //private VisualTree _visualTree;
 
         public RxHotReloadHostElement(RxComponent rootComponent)
             : this(rootComponent, 45820)
@@ -23,7 +23,7 @@ namespace XamarinReactorUI
             _rootComponent = rootComponent ?? throw new ArgumentNullException(nameof(rootComponent));
             _server = new HotReloadServer(serverPort);
             _server.ReceivedAssembly += ReceivedAssemblyFromHost;
-            _visualTree = new VisualTree(this);
+            //_visualTree = new VisualTree(this);
         }
 
         public event EventHandler<UnhandledExceptionEventArgs> UnhandledException;
@@ -40,15 +40,21 @@ namespace XamarinReactorUI
         {
             //_pendingStop = false;
             //Device.BeginInvokeOnMainThread(OnLayout);
-            OnLayout();
+            OnLayoutCycleRequested();
 
-            _visualTree.LayoutCycleRequest += VisualTree_LayoutCycleRequest;
+            //_visualTree.LayoutCycleRequest += VisualTree_LayoutCycleRequest;
             _server.Run();
         }
 
-        private void VisualTree_LayoutCycleRequest(object sender, EventArgs e)
+        //private void VisualTree_LayoutCycleRequest(object sender, EventArgs e)
+        //{
+        //    Device.BeginInvokeOnMainThread(OnLayout);
+        //}
+
+        protected internal override void OnLayoutCycleRequested()
         {
-            Device.BeginInvokeOnMainThread(OnLayout);
+            Device.BeginInvokeOnMainThread(OnLayout); 
+            base.OnLayoutCycleRequested();
         }
 
         private void ReceivedAssemblyFromHost(object sender, ReceivedAssemblyEventArgs e)
@@ -62,7 +68,7 @@ namespace XamarinReactorUI
 
         public void Stop()
         {
-            _visualTree.LayoutCycleRequest -= VisualTree_LayoutCycleRequest;
+            //_visualTree.LayoutCycleRequest -= VisualTree_LayoutCycleRequest;
 
             _server.Stop();
             //_pendingStop = true;
@@ -80,7 +86,7 @@ namespace XamarinReactorUI
 
             try
             {
-                _visualTree.Layout();
+                Layout();
             }
             catch (Exception ex)
             {

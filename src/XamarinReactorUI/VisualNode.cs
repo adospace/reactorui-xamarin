@@ -20,6 +20,7 @@ namespace XamarinReactorUI
         protected void Invalidate()
         {
             _invalidated = true;
+             
             RequireLayoutCycle();
             //System.Diagnostics.Debug.WriteLine($"{this}->Invalidated()");
         }
@@ -32,10 +33,15 @@ namespace XamarinReactorUI
 
             IsLayoutCycleRequired = true;
             Parent?.RequireLayoutCycle();
-            LayoutCycleRequest?.Invoke(this, EventArgs.Empty);
+            OnLayoutCycleRequested();
         }
 
-        internal event EventHandler LayoutCycleRequest;
+        internal protected virtual void OnLayoutCycleRequested()
+        { 
+        
+        }
+
+        //internal event EventHandler LayoutCycleRequest;
 
         private IReadOnlyList<VisualNode> _children = null;
         internal IReadOnlyList<VisualNode> Children
@@ -104,6 +110,8 @@ namespace XamarinReactorUI
             if (!IsLayoutCycleRequired)
                 return;
 
+            IsLayoutCycleRequired = false;
+
             if (_invalidated)
             {
                 //System.Diagnostics.Debug.WriteLine($"{this}->Layout(Invalidated)");
@@ -122,7 +130,6 @@ namespace XamarinReactorUI
             foreach (var child in Children)
                 child.Layout();
 
-            IsLayoutCycleRequired = false;
         }
 
         protected virtual void OnMount()

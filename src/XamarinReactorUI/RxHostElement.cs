@@ -5,32 +5,24 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public interface IRxHostElement
-    {
-        void Run();
-
-        void Stop();
-
-        event EventHandler<UnhandledExceptionEventArgs> UnhandledException;
-    }
 
     public sealed class RxHostElement : VisualNode, IRxHostElement
     {
         private readonly RxComponent _rootComponent;
-        private readonly VisualTree _visualTree;
+        //private readonly VisualTree _visualTree;
 
         public RxHostElement(RxComponent rootComponent)
         {
             _rootComponent = rootComponent ?? throw new ArgumentNullException(nameof(rootComponent));
-            _visualTree = new VisualTree(this);
+            //_visualTree = new VisualTree(this);
         }
 
-        protected sealed override void OnAddChild(VisualNode widget, Xamarin.Forms.Element nativeControl)
+        protected sealed override void OnAddChild(VisualNode widget, Element nativeControl)
         {
             
         }
 
-        protected sealed override void OnRemoveChild(VisualNode widget, Xamarin.Forms.Element nativeControl)
+        protected sealed override void OnRemoveChild(VisualNode widget, Element nativeControl)
         {
         }
 
@@ -38,18 +30,24 @@ namespace XamarinReactorUI
         {
             //_pendingStop = false;
             //Device.BeginInvokeOnMainThread(OnLayout);
-            _visualTree.LayoutCycleRequest += VisualTree_LayoutCycleRequest;
-            OnLayout();
+            //_visualTree.LayoutCycleRequest += VisualTree_LayoutCycleRequest;
+            OnLayoutCycleRequested();
         }
 
-        private void VisualTree_LayoutCycleRequest(object sender, EventArgs e)
+        protected internal override void OnLayoutCycleRequested()
         {
             Device.BeginInvokeOnMainThread(OnLayout);
+            base.OnLayoutCycleRequested();
         }
+
+        //private void VisualTree_LayoutCycleRequest(object sender, EventArgs e)
+        //{
+        //    Device.BeginInvokeOnMainThread(OnLayout);
+        //}
 
         public void Stop()
         {
-            _visualTree.LayoutCycleRequest += VisualTree_LayoutCycleRequest;
+            //_visualTree.LayoutCycleRequest += VisualTree_LayoutCycleRequest;
             //_pendingStop = true;
         }
 
@@ -64,7 +62,7 @@ namespace XamarinReactorUI
 
             try
             {
-                _visualTree.Layout();
+                Layout();
             }
             catch (Exception ex)
             {

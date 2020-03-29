@@ -6,7 +6,7 @@ namespace XamarinReactorUI.TestApp.Grid
     {
         public override VisualNode Render()
         {
-            return new RxContentPage(Context.Get<ContentPage>("Page"))
+            return new RxContentPage()
             {
                 new RxGrid("* *", "*")
                 {

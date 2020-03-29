@@ -67,6 +67,11 @@ namespace XamarinReactorUI
 
             base.OnUpdate();
         }
+
+        public override INavigation Navigation()
+        {
+            return NativeControl?.Navigation ?? base.Navigation();
+        }
     }
 
     public static class RxPageExtensions

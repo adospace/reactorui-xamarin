@@ -5,32 +5,32 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI.TestApp.Grid
 {
-    public class GridPage : ContentPage
-    {
-        private RxHotReloadHostElement _componentHost;
+    //public class GridPage : ContentPage
+    //{
+    //    private RxHotReloadHostElement _componentHost;
 
-        public GridPage()
-        {
-            var context = new RxContext
-            {
-                ["Page"] = this
-            };
-            _componentHost = new RxHotReloadHostElement(new GridPageComponent() { Context = context });
-        }
+    //    public GridPage()
+    //    {
+    //        var context = new RxContext
+    //        {
+    //            ["Page"] = this
+    //        };
+    //        _componentHost = new RxHotReloadHostElement(new GridPageComponent() { Context = context });
+    //    }
 
-        protected override void OnAppearing()
-        {
-            _componentHost.Run();
+    //    protected override void OnAppearing()
+    //    {
+    //        _componentHost.Run();
 
-            base.OnAppearing();
-        }
+    //        base.OnAppearing();
+    //    }
 
-        protected override void OnDisappearing()
-        {
-            _componentHost.Stop();
+    //    protected override void OnDisappearing()
+    //    {
+    //        _componentHost.Stop();
 
-            base.OnDisappearing();
-        }
+    //        base.OnDisappearing();
+    //    }
 
-    }
+    //}
 }

@@ -112,7 +112,7 @@ namespace XamarinReactorUI
                 var context = _rootComponent.Context;
                 _rootComponent = (RxComponent)Activator.CreateInstance(type);
 
-                _rootComponent.Context = context;
+                //_rootComponent.Context = context;
                 Invalidate();
             }
             catch (Exception ex)

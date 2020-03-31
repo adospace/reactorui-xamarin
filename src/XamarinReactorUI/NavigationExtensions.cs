@@ -8,16 +8,32 @@ namespace XamarinReactorUI
 {
     public static class NavigationExtensions
     {
-        public static Task PushAsync<T>(this INavigation navigation) where T : RxComponent, new() 
-            => navigation.PushAsync(RxPageHost.CreatePage<T>());
+        public static async Task<Page> PushAsync<T>(this INavigation navigation) where T : RxComponent, new()
+        {
+            var page = RxPageHost<T>.CreatePage();
+            await navigation.PushAsync(page);
+            return page;
+        }
 
-        public static Task PushAsync<T>(this INavigation navigation, bool animated) where T : RxComponent, new() 
-            => navigation.PushAsync(RxPageHost.CreatePage<T>(), animated);
+        public static async Task<Page> PushAsync<T>(this INavigation navigation, bool animated) where T : RxComponent, new()
+        {
+            var page = RxPageHost<T>.CreatePage();
+            await navigation.PushAsync(page, animated);
+            return page;
+        }
 
-        public static Task PushModalAsync<T>(this INavigation navigation) where T : RxComponent, new()
-            => navigation.PushModalAsync(RxPageHost.CreatePage<T>());
+        public static async Task<Page> PushModalAsync<T>(this INavigation navigation) where T : RxComponent, new()
+        {
+            var page = RxPageHost<T>.CreatePage();
+            await navigation.PushModalAsync(page);
+            return page;
+        }
 
-        public static Task PushModalAsync<T>(this INavigation navigation, bool animated) where T : RxComponent, new()
-            => navigation.PushModalAsync(RxPageHost.CreatePage<T>(), animated);
+        public static async Task<Page> PushModalAsync<T>(this INavigation navigation, bool animated) where T : RxComponent, new()
+        {
+            var page = RxPageHost<T>.CreatePage();
+            await navigation.PushModalAsync(page, animated);
+            return page;
+        }
     }
 }

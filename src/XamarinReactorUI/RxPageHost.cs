@@ -5,20 +5,19 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    internal class RxPageHost : VisualNode, IRxHostElement
+    internal class RxPageHost<T> : VisualNode, IRxHostElement where T : RxComponent, new()
     {
-        private readonly RxComponent _component;
+        private RxComponent _component;
         private bool _sleeping;
         private Page _componentPage;
 
-        private RxPageHost(RxComponent component)
+        private RxPageHost()
         {
-            _component = component ?? throw new ArgumentNullException(nameof(component));
         }
 
-        public static Page CreatePage<T>() where T : RxComponent, new()
+        public static Page CreatePage()
         {
-            var host = new RxPageHost(new T());
+            var host = new RxPageHost<T>();
             host.Run();
             return host._componentPage;
         }
@@ -37,13 +36,13 @@ namespace XamarinReactorUI
             }
         }
 
-        private void OnComponentPage_Disappearing(object sender, EventArgs e)
+        private void OnComponentPage_Appearing(object sender, EventArgs e)
         {
             _sleeping = false;
             OnLayoutCycleRequested();
         }
 
-        private void OnComponentPage_Appearing(object sender, EventArgs e)
+        private void OnComponentPage_Disappearing(object sender, EventArgs e)
         {
             _sleeping = true;
         }
@@ -61,6 +60,9 @@ namespace XamarinReactorUI
 
         public void Run()
         {
+            _component = _component ?? RxApplication.Instance.ComponentLoader.LoadComponent<T>();
+            RxApplication.Instance.ComponentLoader.ComponentAssemblyChanged += OnComponentAssemblyChanged;
+
             OnLayout();
 
             if (_componentPage == null)
@@ -69,8 +71,15 @@ namespace XamarinReactorUI
             }
         }
 
+        private void OnComponentAssemblyChanged(object sender, EventArgs e)
+        {
+            _component = RxApplication.Instance.ComponentLoader.LoadComponent<T>();
+            OnLayoutCycleRequested();
+        }
+
         public void Stop()
         {
+            RxApplication.Instance.ComponentLoader.ComponentAssemblyChanged -= OnComponentAssemblyChanged;
             _sleeping = true;
         }
 

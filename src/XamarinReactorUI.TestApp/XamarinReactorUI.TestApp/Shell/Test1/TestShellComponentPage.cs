@@ -6,21 +6,11 @@ using XamarinReactorUI.TestApp.HelloWorld;
 
 namespace XamarinReactorUI.TestApp.Shell.Test1
 {
-    public class TestShellContext : RxContext
-    {
-        public TestShellContext(Xamarin.Forms.Shell page)
-        {
-            this["Page"] = page;
-        }
-    }
-
     public class TestShellComponentPage : RxComponent
     {
         public override VisualNode Render()
         {
-            var page = Context.Get<Xamarin.Forms.Shell>("Page");
-
-            return new RxShell(page)
+            return new RxShell()
             {
                 new RxContentPage()
                 {

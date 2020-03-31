@@ -1,35 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Xamarin.Forms;
+﻿//using System;
+//using System.Collections.Generic;
+//using System.Text;
+//using Xamarin.Forms;
 
-namespace XamarinReactorUI.TestApp.Layout
-{
-    public class TestPage : ContentPage
-    {
-        private RxHotReloadHostElement _componentHost;
+//namespace XamarinReactorUI.TestApp.Layout
+//{
+//    public class TestPage : ContentPage
+//    {
+//        private RxHotReloadHostElement _componentHost;
 
-        public TestPage()
-        {
-            var context = new RxContext
-            {
-                ["Page"] = this
-            };
-            _componentHost = new RxHotReloadHostElement(new TestPageComponent() { Context = context });
-        }
+//        public TestPage()
+//        {
+//            var context = new RxContext
+//            {
+//                ["Page"] = this
+//            };
+//            _componentHost = new RxHotReloadHostElement(new TestPageComponent() { Context = context });
+//        }
 
-        protected override void OnAppearing()
-        {
-            _componentHost.Run();
+//        protected override void OnAppearing()
+//        {
+//            _componentHost.Run();
 
-            base.OnAppearing();
-        }
+//            base.OnAppearing();
+//        }
 
-        protected override void OnDisappearing()
-        {
-            _componentHost.Stop();
+//        protected override void OnDisappearing()
+//        {
+//            _componentHost.Stop();
 
-            base.OnDisappearing();
-        }
-    }
-}
+//            base.OnDisappearing();
+//        }
+//    }
+//}

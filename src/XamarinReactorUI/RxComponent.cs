@@ -8,6 +8,11 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
+    public interface IRxComponent
+    {
+        RxContext Context { get; }
+    }
+
     public abstract class RxComponent : VisualNode
     {
         public abstract VisualNode Render();
@@ -75,6 +80,21 @@ namespace XamarinReactorUI
         protected virtual void OnWillUnmount()
         {
             
+        }
+
+        public INavigation Navigation
+            => RxApplication.Instance.Navigation;
+
+        public RxContext Context => RxApplication.Instance.Context;
+
+    }
+
+    public static class RxComponentExtensions
+    {
+        public static T WithContext<T>(this T node, string key, object value) where T : IRxComponent
+        {
+            node.Context[key] = value;
+            return node;
         }
     }
 

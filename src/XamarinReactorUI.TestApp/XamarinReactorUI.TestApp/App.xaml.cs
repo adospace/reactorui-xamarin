@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using XamarinReactorUI.HotReload;
 
 namespace XamarinReactorUI.TestApp
 {
@@ -25,18 +26,10 @@ namespace XamarinReactorUI.TestApp
             //MainPage = mainPage;
 
             //TEST 3
-            //var mainPage = new Xamarin.Forms.Shell();
-
-            //_mainPageHost = new RxHotReloadHostElement(new Shell.Test1.TestShellComponentPage() { Context = new Shell.Test1.TestShellContext() { Page = mainPage } });
-
-            //MainPage = mainPage;
+            //_rxApp = RxApplication.Create<Shell.Test1.TestShellComponentPage>(this).WithHotReload();
 
             //TEST 4
-            //var mainPage = new Xamarin.Forms.Shell();
-
-            //_mainPageHost = new RxHotReloadHostElement(new Shell.Test2.TestShellComponentPage() { Context = new Shell.Test2.TestShellContext(mainPage)  });
-
-            //MainPage = mainPage;
+            _rxApp = RxApplication.Create<Shell.Test2.TestShellComponentPage>(this).WithHotReload();
 
             //TEST 5
             //MainPage = new TabbedPage.TestTabbedPage();
@@ -51,7 +44,7 @@ namespace XamarinReactorUI.TestApp
             //_rxApp = new RxApplication(this, new Grid.GridPageComponent());
 
             //TEST 9
-            _rxApp = new RxApplication(this, new Navigation.MainPageComponent());
+            //_rxApp = RxApplication.Create<Navigation.MainPageComponent>(this).WithHotReload();
         }
 
         protected override void OnStart()

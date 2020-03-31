@@ -193,13 +193,6 @@ namespace XamarinReactorUI
 
         }
 
-        private RxContext _context;
-        public RxContext Context
-        {
-            get => _context ?? Parent?.Context;
-            set => _context = value;
-        }
-
         private readonly Dictionary<string, object> _metadata = new Dictionary<string, object>();
         public void SetMetadata<T>(string key, T value)
         {
@@ -232,8 +225,6 @@ namespace XamarinReactorUI
         public T GetMetadata<T>(T defaultValue = default) 
             => GetMetadata(typeof(T).FullName, defaultValue);
 
-        public virtual INavigation Navigation()
-            => Parent?.Navigation();
     }
 
     public static class VisualNodeExtensions
@@ -260,5 +251,6 @@ namespace XamarinReactorUI
             node.Key = key;
             return node;
         }
+
     }
 }

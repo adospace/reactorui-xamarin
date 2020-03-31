@@ -5,16 +5,60 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public class RxApplication : VisualNode, IRxHostElement
+    public abstract class RxApplication : VisualNode, IRxHostElement
+    { 
+        public static RxApplication Instance { get; private set; }
+        protected readonly Application _application;
+
+        internal IComponentLoader ComponentLoader { get; set; } = new LocalComponentLoader();
+
+        protected RxApplication(Application application)
+        {
+            if (Instance != null)
+            {
+                throw new InvalidOperationException("Only one instance of RxApplication is permitted");
+            }
+
+            Instance = this;
+
+            _application = application ?? throw new ArgumentNullException(nameof(application));
+        }
+
+        public event EventHandler<UnhandledExceptionEventArgs> UnhandledException;
+
+        protected void FireUnhandledExpectionEvent(Exception ex)
+        {
+            UnhandledException?.Invoke(this, new UnhandledExceptionEventArgs(ex, false));
+            System.Diagnostics.Debug.WriteLine(ex);
+        }
+
+        public abstract void Run();
+
+        public abstract void Stop();
+
+        public static RxApplication Create<T>(Application application) where T : RxComponent, new() 
+            => new RxApplication<T>(application);
+
+        public RxApplication WithContext(string key, object value)
+        {
+            Context[key] = value;
+            return this;
+        }
+
+        public INavigation Navigation =>  _application.MainPage?.Navigation;
+
+        public RxContext Context { get; } = new RxContext();
+
+    }
+
+    public class RxApplication<T> : RxApplication where T : RxComponent, new()
     {
-        private readonly Application _application;
-        private readonly RxComponent _rootComponent;
+        private RxComponent _rootComponent;
         private bool _sleeping;
 
-        public RxApplication(Application application, RxComponent rootComponent)
+        internal RxApplication(Application application)
+            :base(application)
         {
-            _application = application ?? throw new ArgumentNullException(nameof(application));
-            _rootComponent = rootComponent;
         }
 
         protected sealed override void OnAddChild(VisualNode widget, Element nativeControl)
@@ -32,14 +76,23 @@ namespace XamarinReactorUI
             _application.MainPage = null;
         }
 
-        public void Run()
+        public override void Run()
         {
+            _rootComponent = _rootComponent ?? ComponentLoader.LoadComponent<T>();
+            ComponentLoader.ComponentAssemblyChanged += OnComponentAssemblyChanged;
             _sleeping = false;
             OnLayoutCycleRequested();
         }
 
-        public void Stop()
+        private void OnComponentAssemblyChanged(object sender, EventArgs e)
         {
+            _rootComponent = ComponentLoader.LoadComponent<T>();
+            OnLayoutCycleRequested();
+        }
+
+        public override void Stop()
+        {
+            ComponentLoader.ComponentAssemblyChanged -= OnComponentAssemblyChanged;
             _sleeping = true;
         }
 
@@ -52,8 +105,6 @@ namespace XamarinReactorUI
             base.OnLayoutCycleRequested();
         }
 
-        public event EventHandler<UnhandledExceptionEventArgs> UnhandledException;
-
         private void OnLayout()
         {
             try
@@ -62,8 +113,7 @@ namespace XamarinReactorUI
             }
             catch (Exception ex)
             {
-                UnhandledException?.Invoke(this, new UnhandledExceptionEventArgs(ex, false));
-                System.Diagnostics.Debug.WriteLine(ex);
+                FireUnhandledExpectionEvent(ex);
             }
         }
 
@@ -72,10 +122,6 @@ namespace XamarinReactorUI
             yield return _rootComponent;
         }
 
-        public override INavigation Navigation()
-        {
-            return _application.MainPage?.Navigation;
-        }
     }
 }
 

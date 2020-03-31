@@ -7,15 +7,13 @@ namespace XamarinReactorUI.TestApp.Navigation
 {
     public class MainPageComponent : RxComponent
     {
-        private NavigationPage _pageRef;
-
         public override VisualNode Render()
         {
-            return new RxNavigationPage(pageRef => _pageRef = pageRef)
+            return new RxNavigationPage()
             {
                 new RxContentPage()
                 {
-                    new RxButton("Move To Child Page")
+                    new RxButton("Move To Page")
                         .VCenter()
                         .HCenter()
                         .OnClick(OpenChildPage)
@@ -26,7 +24,7 @@ namespace XamarinReactorUI.TestApp.Navigation
 
         private async void OpenChildPage()
         {
-            await Navigation().PushAsync<ChildPageComponent>();
+            await Navigation.PushAsync<ChildPageComponent>();
         }
     }
 }

@@ -26,7 +26,7 @@ namespace XamarinReactorUI
 
         public event EventHandler<UnhandledExceptionEventArgs> UnhandledException;
 
-        protected void FireUnhandledExpectionEvent(Exception ex)
+        internal void FireUnhandledExpectionEvent(Exception ex)
         {
             UnhandledException?.Invoke(this, new UnhandledExceptionEventArgs(ex, false));
             System.Diagnostics.Debug.WriteLine(ex);
@@ -82,18 +82,27 @@ namespace XamarinReactorUI
             ComponentLoader.ComponentAssemblyChanged += OnComponentAssemblyChanged;
             _sleeping = false;
             OnLayoutCycleRequested();
+            ComponentLoader.Run();
         }
 
         private void OnComponentAssemblyChanged(object sender, EventArgs e)
         {
-            _rootComponent = ComponentLoader.LoadComponent<T>();
-            OnLayoutCycleRequested();
+            try
+            {
+                _rootComponent = ComponentLoader.LoadComponent<T>();
+                Invalidate();
+            }
+            catch (Exception ex)
+            {
+                FireUnhandledExpectionEvent(ex);
+            }
         }
 
         public override void Stop()
         {
             ComponentLoader.ComponentAssemblyChanged -= OnComponentAssemblyChanged;
             _sleeping = true;
+            ComponentLoader.Stop();
         }
 
         protected internal override void OnLayoutCycleRequested()

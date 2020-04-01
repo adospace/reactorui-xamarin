@@ -9,5 +9,9 @@ namespace XamarinReactorUI
         RxComponent LoadComponent<T>() where T : RxComponent, new();
 
         event EventHandler ComponentAssemblyChanged;
+
+        void Run();
+
+        void Stop();
     }
 }

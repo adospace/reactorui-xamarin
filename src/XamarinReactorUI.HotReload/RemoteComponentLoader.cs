@@ -30,6 +30,16 @@ namespace XamarinReactorUI.HotReload
             ComponentAssemblyChanged?.Invoke(this, EventArgs.Empty);
         }
 
+        public void Run()
+        {
+            _server.Run();
+        }
+
+        public void Stop()
+        {
+            _server.Stop();
+        }
+
 
         //private void LoadLatestAssembly()
         //{

@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace XamarinReactorUI.HotReloadConsole
 {
@@ -19,11 +20,12 @@ namespace XamarinReactorUI.HotReloadConsole
 
             [Option('p', "port", Required = false, HelpText = "xamarin-reactorui hot reload server port mapped to emulator port.")]
             public int Port { get; set; } = 45820;
+
+            [Option('m', "monitor", Required = false, HelpText = "Monitor assembly.")]
+            public bool Monitor { get; set; } = true;
         }
 
         private static int _remoteServerPort;
-        private static CancellationToken _cancellationToken;
-        private static FileSystemWatcher _watcher;
         private static DateTime _lastWriteTime;
 
         static int Main(string[] args)
@@ -32,33 +34,18 @@ namespace XamarinReactorUI.HotReloadConsole
             if (!ExecutePortForwardCommmand())
                 return -1;
 
-
-            var cancellationTokenSource = new CancellationTokenSource();
-            _cancellationToken = cancellationTokenSource.Token;
-
             Parser.Default.ParseArguments<Options>(args)
                    .WithParsed(o =>
                    {
                        _remoteServerPort = o.Port;
-                       StartMonitoring(o.AssemblyPath);
-                       Console.WriteLine($"Start listening '{o.AssemblyPath}'");
+                       if (o.Monitor)
+                       {
+                           Monitor(o.AssemblyPath);
+                       }
+                       else
+                       { 
+                       }
                    });
-
-            // Wait for the user to quit the program.
-            Console.WriteLine("Press Cancel Key to quit");
-            //while (Console.Read() != 'q') ;
-
-            Console.CancelKeyPress += (s, e) =>
-            {
-                e.Cancel = true;
-                cancellationTokenSource.Cancel();
-            };
-
-            cancellationTokenSource.Token.WaitHandle.WaitOne();
-
-            cancellationTokenSource.Cancel();
-
-            _watcher?.Dispose();
 
             return 0;
         }
@@ -108,10 +95,14 @@ namespace XamarinReactorUI.HotReloadConsole
             return true;
         }
 
-        private static void StartMonitoring(string assemblyPath)
+        private static void Monitor(string assemblyPath)
         {
+            var cancellationTokenSource = new CancellationTokenSource();
+
+            Console.WriteLine($"Start listening '{assemblyPath}'");
+
             // Create a new FileSystemWatcher and set its properties.
-            _watcher = new FileSystemWatcher
+            using var watcher = new FileSystemWatcher
             {
                 Path = Path.GetDirectoryName(assemblyPath),
 
@@ -128,14 +119,27 @@ namespace XamarinReactorUI.HotReloadConsole
             };
 
             // Add event handlers.
-            _watcher.Changed += OnChanged;
+            watcher.Changed += OnChanged;
             //watcher.Created += OnChanged;
             //watcher.Deleted += OnChanged;
             //watcher.Renamed += OnRenamed;
 
             // Begin watching.
-            _watcher.EnableRaisingEvents = true;
+            watcher.EnableRaisingEvents = true;
 
+            // Wait for the user to quit the program.
+            Console.WriteLine("Press Cancel Key to quit");
+            //while (Console.Read() != 'q') ;
+
+            Console.CancelKeyPress += (s, e) =>
+            {
+                e.Cancel = true;
+                cancellationTokenSource.Cancel();
+            };
+
+            cancellationTokenSource.Token.WaitHandle.WaitOne();
+
+            cancellationTokenSource.Cancel();
         }
 
         private static bool _sending = false;
@@ -151,6 +155,13 @@ namespace XamarinReactorUI.HotReloadConsole
             _lastWriteTime = lastWriteTime;
             _sending = true;
 
+            await SendAssemblyToEmulator(e.FullPath);
+
+            _sending = false;
+        }
+
+        private static async Task SendAssemblyToEmulator(string assemblyPath)
+        {
             var client = new TcpClient();
 
             try
@@ -159,7 +170,7 @@ namespace XamarinReactorUI.HotReloadConsole
 
                 await client.ConnectAsync(IPAddress.Loopback, _remoteServerPort);
 
-                var assemblyRaw = await File.ReadAllBytesAsync(e.FullPath);
+                var assemblyRaw = await File.ReadAllBytesAsync(assemblyPath);
 
                 var binaryWriter = new BinaryWriter(client.GetStream());
 
@@ -180,7 +191,6 @@ namespace XamarinReactorUI.HotReloadConsole
             finally
             {
                 client.Close();
-                _sending = false;
             }
         }
 

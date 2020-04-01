@@ -73,8 +73,15 @@ namespace XamarinReactorUI
 
         private void OnComponentAssemblyChanged(object sender, EventArgs e)
         {
-            _component = RxApplication.Instance.ComponentLoader.LoadComponent<T>();
-            OnLayoutCycleRequested();
+            try
+            {
+                _component = RxApplication.Instance.ComponentLoader.LoadComponent<T>();
+                Invalidate();
+            }
+            catch (Exception ex)
+            {
+                RxApplication.Instance.FireUnhandledExpectionEvent(ex);
+            }
         }
 
         public void Stop()

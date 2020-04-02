@@ -21,7 +21,7 @@ namespace XamarinReactorUI.TestApp.HelloWorld
             {
                 new RxLabel($"Clicked {State.Counter} times!")
                     .HCenter(),
-                new RxButton("Click here!")
+                new RxButton("Click here")
                     .OnClick(IncrementCounter)
                     .HCenter()
                     .VEnd()

@@ -25,7 +25,7 @@ namespace XamarinReactorUI
         {
             var stream = _connectedClient.GetStream();
             var binaryReader = new BinaryReader(stream);
-
+            var binaryWriter = new BinaryWriter(stream);
             try
             {
                 int length = binaryReader.ReadInt32();
@@ -35,6 +35,10 @@ namespace XamarinReactorUI
                 var assemblyRaw = binaryReader.ReadBytes(length);
 
                 _server.OnReceivedAssembly(assemblyRaw);
+
+                binaryWriter.Write(true);
+
+                binaryWriter.Flush();
             }
             catch (OperationCanceledException)
             {

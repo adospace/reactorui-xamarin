@@ -178,6 +178,12 @@ namespace XamarinReactorUI.HotReloadConsole
 
                 binaryWriter.Write(assemblyRaw);
 
+                binaryWriter.Flush();
+
+                var binaryReader = new BinaryReader(client.GetStream());
+
+                binaryReader.ReadBoolean();
+
                 Console.WriteLine($"File sent");
             }
             catch (OperationCanceledException)

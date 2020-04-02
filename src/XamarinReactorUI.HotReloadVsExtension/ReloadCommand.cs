@@ -112,29 +112,37 @@ namespace XamarinReactorUI.HotReloadVsExtension
             //string message = string.Format(CultureInfo.CurrentCulture, "Inside {0}.MenuItemCallback()", this.GetType().FullName);
             //string title = "ItemContextCommand";
 
-            object selectedObject = null;
+            //object selectedObject = null;
 
-            IVsMonitorSelection monitorSelection =
-                    (IVsMonitorSelection)Package.GetGlobalService(
-                    typeof(SVsShellMonitorSelection));
+            //IVsMonitorSelection monitorSelection =
+            //        (IVsMonitorSelection)Package.GetGlobalService(
+            //        typeof(SVsShellMonitorSelection));
 
-            monitorSelection.GetCurrentSelection(out IntPtr hierarchyPointer,
-                                                 out uint projectItemId,
-                                                 out IVsMultiItemSelect multiItemSelect,
-                                                 out IntPtr selectionContainerPointer);
+            //monitorSelection.GetCurrentSelection(out IntPtr hierarchyPointer,
+            //                                     out uint projectItemId,
+            //                                     out IVsMultiItemSelect multiItemSelect,
+            //                                     out IntPtr selectionContainerPointer);
 
 
-            if (Marshal.GetTypedObjectForIUnknown(
-                                                 hierarchyPointer,
-                                                 typeof(IVsHierarchy)) is IVsHierarchy selectedHierarchy)
-            {
-                ErrorHandler.ThrowOnFailure(selectedHierarchy.GetProperty(
-                                                  projectItemId,
-                                                  (int)__VSHPROPID.VSHPROPID_ExtObject,
-                                                  out selectedObject));
-            }
+            //if (Marshal.GetTypedObjectForIUnknown(
+            //                                     hierarchyPointer,
+            //                                     typeof(IVsHierarchy)) is IVsHierarchy selectedHierarchy)
+            //{
+            //    ErrorHandler.ThrowOnFailure(selectedHierarchy.GetProperty(
+            //                                      projectItemId,
+            //                                      (int)__VSHPROPID.VSHPROPID_ExtObject,
+            //                                      out selectedObject));
+            //}
 
-            Project selectedProject = selectedObject as Project;
+            //Project selectedProject = selectedObject as Project;
+
+            var activeSolutionProjects = (Array)_dte.ActiveSolutionProjects;
+
+            if (activeSolutionProjects.Length != 1)
+                return;
+
+            var selectedProject = (Project)activeSolutionProjects.GetValue(0);
+
 
             string projectPath = selectedProject.FullName;
 
@@ -147,6 +155,8 @@ namespace XamarinReactorUI.HotReloadVsExtension
 
             if (Path.GetExtension(outputFilePath) != ".dll")
                 return;
+
+           
 
             var generalPane = GetVsOutputWindow();
 
@@ -268,6 +278,12 @@ namespace XamarinReactorUI.HotReloadVsExtension
                 binaryWriter.Write(assemblyRaw.Length);
 
                 binaryWriter.Write(assemblyRaw);
+
+                binaryWriter.Flush();
+
+                var binaryReader = new BinaryReader(client.GetStream());
+
+                binaryReader.ReadBoolean();
 
                 outputPane.OutputString($"New assembly ({assemblyRaw.Length} bytes) sent{Environment.NewLine}");
             }

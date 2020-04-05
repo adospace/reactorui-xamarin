@@ -29,10 +29,18 @@ namespace XamarinReactorUI.TestApp.Busy
         {
             return new RxContentPage()
             {
+                State.IsBusy ?
                 new BusyComponent()
                     .Message("Loading")
-                    .IsBusy(State.IsBusy)
+                    .IsBusy(true)
+                :
+                RenderPage()
             };
         }
+
+        private VisualNode RenderPage()
+            => new RxLabel("Done!")
+                    .VCenter()
+                    .HCenter();
     }
 }

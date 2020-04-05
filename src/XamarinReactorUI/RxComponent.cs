@@ -61,8 +61,8 @@ namespace XamarinReactorUI
         }
 
         protected virtual void OnMounted()
-        { 
-        
+        {
+
         }
 
         protected sealed override void OnUnmount()
@@ -85,7 +85,8 @@ namespace XamarinReactorUI
         public INavigation Navigation
             => RxApplication.Instance.Navigation;
 
-        public RxContext Context => RxApplication.Instance.Context;
+        public RxContext Context 
+            => RxApplication.Instance.Context;
 
     }
 

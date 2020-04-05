@@ -75,8 +75,16 @@ namespace XamarinReactorUI
         {
             try
             {
-                _component = RxApplication.Instance.ComponentLoader.LoadComponent<T>();
-                Invalidate();
+                var newComponent = RxApplication.Instance.ComponentLoader.LoadComponent<T>();
+                if (newComponent != null)
+                {
+                    _component = newComponent;
+                    Invalidate();
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine($"Unable to hot relead component {typeof(T).FullName}: type not found in received assembly");
+                }
             }
             catch (Exception ex)
             {
@@ -100,7 +108,7 @@ namespace XamarinReactorUI
             base.OnLayoutCycleRequested();
         }
 
-        public event EventHandler<UnhandledExceptionEventArgs> UnhandledException;
+        //public event EventHandler<UnhandledExceptionEventArgs> UnhandledException;
 
         private void OnLayout()
         {
@@ -110,7 +118,8 @@ namespace XamarinReactorUI
             }
             catch (Exception ex)
             {
-                UnhandledException?.Invoke(this, new UnhandledExceptionEventArgs(ex, false));
+                RxApplication.Instance?.FireUnhandledExpectionEvent(ex);
+                //UnhandledException?.Invoke(this, new UnhandledExceptionEventArgs(ex, false));
                 System.Diagnostics.Debug.WriteLine(ex);
             }
         }

@@ -75,6 +75,12 @@ namespace XamarinReactorUI.HotReload
                 return new T();
 
             var type = _latestAssembly.GetType(typeof(T).FullName);
+
+            if (type == null)
+            {
+                return null;
+                //throw new InvalidOperationException($"Unable to hot relead component {typeof(T).FullName}: type not found in received assembly");
+            }
             
             return(RxComponent)Activator.CreateInstance(type);
         }

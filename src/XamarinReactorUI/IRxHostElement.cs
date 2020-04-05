@@ -8,6 +8,6 @@ namespace XamarinReactorUI
 
         void Stop();
 
-        event EventHandler<UnhandledExceptionEventArgs> UnhandledException;
+        //event EventHandler<UnhandledExceptionEventArgs> UnhandledException;
     }
 }

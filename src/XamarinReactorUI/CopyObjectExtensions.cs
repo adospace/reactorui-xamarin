@@ -8,24 +8,24 @@ namespace XamarinReactorUI
 {
     public static class CopyObjectExtensions
     {
-        public static void CopyPropertiesTo<T, TU>(this T source, TU dest)
-        {
-            var sourceProps = typeof(T).GetProperties()
-                .Where(x => x.CanRead)
-                .ToList();
-            var destProps = typeof(TU).GetProperties()
-                .Where(x => x.CanWrite)
-                .ToList();
+        //public static void CopyPropertiesTo<T, TU>(this T source, TU dest)
+        //{
+        //    var sourceProps = typeof(T).GetProperties()
+        //        .Where(x => x.CanRead)
+        //        .ToList();
+        //    var destProps = typeof(TU).GetProperties()
+        //        .Where(x => x.CanWrite)
+        //        .ToList();
 
-            foreach (var sourceProp in sourceProps)
-            {
-                var p = destProps.FirstOrDefault(x => x.Name == sourceProp.Name);
-                if (p != null)
-                { 
-                    p.SetValue(dest, sourceProp.GetValue(source, null), null);
-                }
-            }
-        }
+        //    foreach (var sourceProp in sourceProps)
+        //    {
+        //        var p = destProps.FirstOrDefault(x => x.Name == sourceProp.Name);
+        //        if (p != null)
+        //        { 
+        //            p.SetValue(dest, sourceProp.GetValue(source, null), null);
+        //        }
+        //    }
+        //}
 
         public static void CopyPropertiesTo<T>(this T source, object dest, PropertyInfo[] destProps)
         {

@@ -24,11 +24,11 @@ namespace XamarinReactorUI
             _application = application ?? throw new ArgumentNullException(nameof(application));
         }
 
-        public event EventHandler<UnhandledExceptionEventArgs> UnhandledException;
+        public Action<UnhandledExceptionEventArgs> UnhandledException { get; set; }
 
         internal void FireUnhandledExpectionEvent(Exception ex)
         {
-            UnhandledException?.Invoke(this, new UnhandledExceptionEventArgs(ex, false));
+            UnhandledException?.Invoke(new UnhandledExceptionEventArgs(ex, false));
             System.Diagnostics.Debug.WriteLine(ex);
         }
 
@@ -42,6 +42,12 @@ namespace XamarinReactorUI
         public RxApplication WithContext(string key, object value)
         {
             Context[key] = value;
+            return this;
+        }
+
+        public RxApplication OnUnhandledException(Action<UnhandledExceptionEventArgs> action)
+        {
+            UnhandledException = action;
             return this;
         }
 
@@ -89,8 +95,16 @@ namespace XamarinReactorUI
         {
             try
             {
-                _rootComponent = ComponentLoader.LoadComponent<T>();
-                Invalidate();
+                var newComponent = ComponentLoader.LoadComponent<T>();
+                if (newComponent != null)
+                {
+                    _rootComponent = newComponent;
+                    Invalidate();
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine($"Unable to hot relead component {typeof(T).FullName}: type not found in received assembly");
+                }
             }
             catch (Exception ex)
             {

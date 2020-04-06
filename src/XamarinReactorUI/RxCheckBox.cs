@@ -43,11 +43,11 @@ namespace XamarinReactorUI
             CheckedChangedAction?.Invoke(sender, e);
         }
 
-        protected override void OnMigrated()
+        protected override void OnMigrated(VisualNode newNode)
         {
             NativeControl.CheckedChanged -= NativeControl_CheckedChanged;
 
-            base.OnMigrated();
+            base.OnMigrated(newNode);
         }
 
         protected override IEnumerable<VisualNode> RenderChildren()

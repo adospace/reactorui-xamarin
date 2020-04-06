@@ -63,14 +63,14 @@ namespace XamarinReactorUI
             DateChangedAction?.Invoke(sender, e);            
         }
 
-        protected override void OnMigrated()
+        protected override void OnMigrated(VisualNode newNode)
         {
             if (NativeControl != null)
             {
                 NativeControl.DateSelected -= NativeControl_DateSelected;
             }
 
-            base.OnMigrated();
+            base.OnMigrated(newNode);
         }
 
         protected override void OnUnmount()

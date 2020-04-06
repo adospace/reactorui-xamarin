@@ -67,12 +67,12 @@ namespace XamarinReactorUI
             }
         }
 
-        protected override void OnMigrated()
+        protected override void OnMigrated(VisualNode newNode)
         {
             NativeControl.SelectionChanged -= NativeControl_SelectionChanged;
             NativeControl.SelectionChangedCommand = null;
 
-            base.OnMigrated();
+            base.OnMigrated(newNode);
         }
 
     }

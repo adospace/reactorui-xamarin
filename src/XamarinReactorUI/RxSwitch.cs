@@ -46,11 +46,11 @@ namespace XamarinReactorUI
             ToggledChangedAction?.Invoke(sender, e);
         }
 
-        protected override void OnMigrated()
+        protected override void OnMigrated(VisualNode newNode)
         {
             NativeControl.Toggled -= NativeControl_Toggled;
 
-            base.OnMigrated();
+            base.OnMigrated(newNode);
         }
 
         protected override IEnumerable<VisualNode> RenderChildren()

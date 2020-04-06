@@ -73,6 +73,16 @@ namespace XamarinReactorUI
 
             base.OnUpdate();
         }
+
+        protected override void OnMigrated(VisualNode newNode)
+        {
+            var newEntry = (RxEntry)newNode;
+
+            newEntry.CursorPosition = NativeControl.CursorPosition;
+            newEntry.SelectionLength = NativeControl.SelectionLength;
+
+            base.OnMigrated(newNode);
+        }
     }
 
     public static class RxEntryExtensions

@@ -48,6 +48,8 @@ namespace XamarinReactorUI
         public Action<object, TextChangedEventArgs> TextChangedAction { get; set; }
         public Action<string> AfterTextChangedAction { get; set; }
 
+        private bool IsFocused { get; set; }
+
         protected override void OnUpdate()
         {
             if (NativeControl.Text != Text)
@@ -60,6 +62,9 @@ namespace XamarinReactorUI
             NativeControl.PlaceholderColor = PlaceholderColor;
             NativeControl.TextColor = TextColor;
             NativeControl.CharacterSpacing = CharacterSpacing;
+
+            if (IsFocused)
+                NativeControl.Focus();
 
             if (TextChangedAction != null)
                 NativeControl.TextChanged += NativeControl_TextChanged;
@@ -80,14 +85,15 @@ namespace XamarinReactorUI
             TextChangedAction?.Invoke(sender, e);
         }
 
-        protected override void OnMigrated()
+        protected override void OnMigrated(VisualNode newNode)
         {
             if (NativeControl != null)
                 NativeControl.TextChanged -= NativeControl_TextChanged;
             if (NativeControl != null) 
                 NativeControl.Unfocused -= NativeControl_Unfocused;
 
-            base.OnMigrated();
+
+            base.OnMigrated(newNode);
         }
 
         protected override void OnUnmount()

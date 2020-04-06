@@ -62,10 +62,10 @@ namespace XamarinReactorUI
             ClickedAction?.Invoke();
         }
 
-        protected override void OnMigrated()
+        protected override void OnMigrated(VisualNode newNode)
         {
             NativeControl.Clicked -= NativeControl_Clicked;
-            base.OnMigrated();
+            base.OnMigrated(newNode);
         }
 
         protected override IEnumerable<VisualNode> RenderChildren()

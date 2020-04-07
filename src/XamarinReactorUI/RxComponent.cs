@@ -17,13 +17,46 @@ namespace XamarinReactorUI
     {
         public abstract VisualNode Render();
 
+        public Page _containerPage;
+
+        private RxComponent GetAncestorComponent()
+        {
+            var current = Parent;
+            while (current != null && !(current is RxComponent))
+                current = current.Parent;
+
+            return current as RxComponent;
+        }
+
+        protected Page ContainerPage
+        {
+            get
+            {
+                return _containerPage ?? GetAncestorComponent()?.ContainerPage;
+            }
+            set
+            {
+                _containerPage = value;
+            }
+        }
+
         protected sealed override void OnAddChild(VisualNode widget, Element nativeControl)
         {
+            if (nativeControl is Page page)
+            {
+                ContainerPage = page;
+            }
+
             Parent.AddChild(this, nativeControl);
         }
 
         protected sealed override void OnRemoveChild(VisualNode widget, Element nativeControl)
         {
+            if (ContainerPage == nativeControl)
+            {
+                ContainerPage = null;
+            }
+
             Parent.RemoveChild(this, nativeControl);
         }
 

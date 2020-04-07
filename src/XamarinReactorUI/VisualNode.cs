@@ -14,7 +14,7 @@ namespace XamarinReactorUI
 
         public object Key { get; set; }
         public int ChildIndex { get; private set; }
-        protected VisualNode Parent { get; private set; }
+        internal VisualNode Parent { get; private set; }
 
         private bool _invalidated = false;
         protected void Invalidate()
@@ -224,6 +224,7 @@ namespace XamarinReactorUI
 
         public T GetMetadata<T>(T defaultValue = default) 
             => GetMetadata(typeof(T).FullName, defaultValue);
+
 
     }
 

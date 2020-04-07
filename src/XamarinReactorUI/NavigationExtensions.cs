@@ -8,30 +8,30 @@ namespace XamarinReactorUI
 {
     public static class NavigationExtensions
     {
-        public static async Task<Page> PushAsync<T>(this INavigation navigation) where T : RxComponent, new()
+        public static async Task<Page> PushAsync<T>(this INavigation navigation, Action<RxComponent> componentInitializer = null) where T : RxComponent, new()
         {
-            var page = RxPageHost<T>.CreatePage();
+            var page = RxPageHost<T>.CreatePage(componentInitializer);
             await navigation.PushAsync(page);
             return page;
         }
 
-        public static async Task<Page> PushAsync<T>(this INavigation navigation, bool animated) where T : RxComponent, new()
+        public static async Task<Page> PushAsync<T>(this INavigation navigation, bool animated, Action<RxComponent> componentInitializer = null) where T : RxComponent, new()
         {
-            var page = RxPageHost<T>.CreatePage();
+            var page = RxPageHost<T>.CreatePage(componentInitializer);
             await navigation.PushAsync(page, animated);
             return page;
         }
 
-        public static async Task<Page> PushModalAsync<T>(this INavigation navigation) where T : RxComponent, new()
+        public static async Task<Page> PushModalAsync<T>(this INavigation navigation, Action<RxComponent> componentInitializer = null) where T : RxComponent, new()
         {
-            var page = RxPageHost<T>.CreatePage();
+            var page = RxPageHost<T>.CreatePage(componentInitializer);
             await navigation.PushModalAsync(page);
             return page;
         }
 
-        public static async Task<Page> PushModalAsync<T>(this INavigation navigation, bool animated) where T : RxComponent, new()
+        public static async Task<Page> PushModalAsync<T>(this INavigation navigation, bool animated, Action<RxComponent> componentInitializer = null) where T : RxComponent, new()
         {
-            var page = RxPageHost<T>.CreatePage();
+            var page = RxPageHost<T>.CreatePage(componentInitializer);
             await navigation.PushModalAsync(page, animated);
             return page;
         }

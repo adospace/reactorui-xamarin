@@ -10,14 +10,16 @@ namespace XamarinReactorUI
         private RxComponent _component;
         private bool _sleeping;
         private Page _componentPage;
+        private readonly Action<RxComponent> _componentInitializer;
 
-        private RxPageHost()
+        private RxPageHost(Action<RxComponent> componentInitializer)
         {
+            _componentInitializer = componentInitializer;
         }
 
-        public static Page CreatePage()
+        public static Page CreatePage(Action<RxComponent> componentInitializer = null)
         {
-            var host = new RxPageHost<T>();
+            var host = new RxPageHost<T>(componentInitializer);
             host.Run();
             return host._componentPage;
         }
@@ -61,6 +63,11 @@ namespace XamarinReactorUI
         public void Run()
         {
             _component = _component ?? RxApplication.Instance.ComponentLoader.LoadComponent<T>();
+            if (_component != null)
+            {
+                _componentInitializer?.Invoke((T)_component);
+            }
+
             RxApplication.Instance.ComponentLoader.ComponentAssemblyChanged += OnComponentAssemblyChanged;
 
             OnLayout();
@@ -79,6 +86,8 @@ namespace XamarinReactorUI
                 if (newComponent != null)
                 {
                     _component = newComponent;
+                    _componentInitializer?.Invoke(_component);
+
                     Invalidate();
                 }
                 else

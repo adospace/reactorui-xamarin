@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
@@ -99,6 +101,101 @@ namespace XamarinReactorUI.HotReloadVsExtension
             Instance._outputWindow = outputWindow;
         }
 
+        private IReadOnlyList<Project> GetFormsProjects()
+        {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
+            var projectsFound = new List<Project>();
+            
+            /*
+TargetFrameworkMoniker=.NETStandard,Version=v2.0
+TargetFramework=131072
+            */
+
+
+            var allProjectsInSolution = _dte.Solution.Projects;
+            foreach (var project in allProjectsInSolution.Cast<Project>())
+            {
+                var targetFrameworkIsNetStandard = project.Properties.Cast<Property>().Any(_ => _.Name == "TargetFrameworkMoniker" && _.Value.ToString().IndexOf(".NETStandard", StringComparison.OrdinalIgnoreCase) > -1);
+                if (!targetFrameworkIsNetStandard)
+                    continue;
+
+                //var optimizeIsEnabled = project.ConfigurationManager.ActiveConfiguration.Properties.Cast<Property>().Any(_ => _.Name == "Optimize" && (bool)_.Value);
+                //if (optimizeIsEnabled) //i.e. is in release mode
+                //    continue;
+
+
+                //bool optimizeIsEnabled = false;
+                //foreach (Property property in project.ConfigurationManager.ActiveConfiguration.Properties)
+                //{
+                //    try
+                //    {
+                //        System.Diagnostics.Debug.WriteLine($"{property.Name}={property.Value}");
+                //    }
+                //    catch (Exception ex)
+                //    {
+                //        System.Diagnostics.Debug.WriteLine($"{property.Name}={ex.Message}");
+                //    }
+                //    //if (prop.Name == "Optimize")
+                //    //{
+                //    //    optimizeIsEnabled = (bool)property.Value;
+                //    //    break;
+                //    //}
+                //}
+
+                //if (optimizeIsEnabled) //i.e. is in release mode
+                //    continue;
+
+                var vsproject = project.Object as VSLangProj.VSProject;
+                
+                var referenceReactorUIHotReloadPackage = vsproject.References.Cast<VSLangProj.Reference>().Any(_ => _.Name == "XamarinReactorUI.HotReload");
+                if (!referenceReactorUIHotReloadPackage)
+                    continue;
+
+                projectsFound.Add(project);
+            }
+
+            return projectsFound;
+
+            //System.Diagnostics.Debug.WriteLine($"Project={project.UniqueName} Properties");
+            //foreach (var property in )
+            //{
+            //    try
+            //    {
+            //        System.Diagnostics.Debug.WriteLine($"{property.Name}={property.Value}");
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        System.Diagnostics.Debug.WriteLine($"{property.Name}={ex.Message}");
+            //    }
+            //}
+
+            //System.Diagnostics.Debug.WriteLine($"Project={project.UniqueName} References");
+
+            //var vsproject = project.Object as VSLangProj.VSProject;
+            //foreach (VSLangProj.Reference reference in vsproject.References)
+            //{
+            //    //if (reference.SourceProject == null)
+            //    //{
+            //    //    System.Diagnostics.Debug.WriteLine(reference.Name);
+
+            //    //}
+            //    //else
+            //    //{
+            //    //    // This is a project reference
+            //    //    System.Diagnostics.Debug.WriteLine(reference.Name);
+            //    //}
+
+            //    //if (reference.Name == "XamarinReactorUI.HotReload")
+            //    //    return project;
+
+            //    System.Diagnostics.Debug.WriteLine($"{reference.Name}({reference.SourceProject == null})");
+            //}
+            //}
+
+            //return projectsFound;
+        }
+
         /// <summary>
         /// This function is the callback used to execute the command when the menu item is clicked.
         /// See the constructor to see how the menu item is associated with this function using
@@ -109,40 +206,16 @@ namespace XamarinReactorUI.HotReloadVsExtension
         private void Execute(object sender, EventArgs e)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
-            //string message = string.Format(CultureInfo.CurrentCulture, "Inside {0}.MenuItemCallback()", this.GetType().FullName);
-            //string title = "ItemContextCommand";
+            var generalPane = GetVsOutputWindow();
 
-            //object selectedObject = null;
+            var selectedProject = GetFormsProjects().FirstOrDefault();
 
-            //IVsMonitorSelection monitorSelection =
-            //        (IVsMonitorSelection)Package.GetGlobalService(
-            //        typeof(SVsShellMonitorSelection));
-
-            //monitorSelection.GetCurrentSelection(out IntPtr hierarchyPointer,
-            //                                     out uint projectItemId,
-            //                                     out IVsMultiItemSelect multiItemSelect,
-            //                                     out IntPtr selectionContainerPointer);
-
-
-            //if (Marshal.GetTypedObjectForIUnknown(
-            //                                     hierarchyPointer,
-            //                                     typeof(IVsHierarchy)) is IVsHierarchy selectedHierarchy)
-            //{
-            //    ErrorHandler.ThrowOnFailure(selectedHierarchy.GetProperty(
-            //                                      projectItemId,
-            //                                      (int)__VSHPROPID.VSHPROPID_ExtObject,
-            //                                      out selectedObject));
-            //}
-
-            //Project selectedProject = selectedObject as Project;
-
-            var activeSolutionProjects = (Array)_dte.ActiveSolutionProjects;
-
-            if (activeSolutionProjects.Length != 1)
+            if (selectedProject == null)
+            {
+                generalPane.OutputString($"Solution doesn't contain a valid ReactorUI hot reload project (ensure it references XamarinReactorUI.HotReload package and call WithHotReload() on RxApplication)...{Environment.NewLine}");
+                generalPane.Activate(); // Brings this pane into view
                 return;
-
-            var selectedProject = (Project)activeSolutionProjects.GetValue(0);
-
+            }
 
             string projectPath = selectedProject.FullName;
 
@@ -150,18 +223,12 @@ namespace XamarinReactorUI.HotReloadVsExtension
                 selectedProject.ConfigurationManager.ActiveConfiguration.Properties.Item("OutputPath").Value.ToString(),
                 selectedProject.Properties.Item("OutputFileName").Value.ToString());
 
-            //string outputFileName = selectedProject.Properties.Item("OutputFileName").Value.ToString();
-            //string outputPath = selectedProject.ConfigurationManager.ActiveConfiguration.Properties.Item("OutputPath").Value.ToString();
-
             if (Path.GetExtension(outputFilePath) != ".dll")
                 return;
 
-           
-
-            var generalPane = GetVsOutputWindow();
-
             generalPane.Activate(); // Brings this pane into view
             generalPane.OutputString($"Building {outputFilePath}...{Environment.NewLine}");
+            generalPane.Activate(); // Brings this pane into view
 
             _dte.Solution.SolutionBuild.BuildProject(selectedProject.ConfigurationManager.ActiveConfiguration.ConfigurationName, selectedProject.UniqueName, true);
 
@@ -262,13 +329,15 @@ namespace XamarinReactorUI.HotReloadVsExtension
         private static void SendAssemblyToEmulator(string assemblyPath, IVsOutputWindowPane outputPane)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
-            
-            var client = new TcpClient();
+
+            var client = new TcpClient
+            {
+                ReceiveTimeout = 5000,
+                SendTimeout = 5000
+            };
 
             try
             {
-                //Console.WriteLine($"File changed, sending new assembly to emulator");
-
                 client.Connect(IPAddress.Loopback, 45820);
 
                 var assemblyRaw = File.ReadAllBytes(assemblyPath);
@@ -293,7 +362,6 @@ namespace XamarinReactorUI.HotReloadVsExtension
             }
             catch (Exception ex)
             {
-                //Console.WriteLine(ex);
                 outputPane.OutputString(ex.ToString());
             }
             finally

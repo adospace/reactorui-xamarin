@@ -9,17 +9,15 @@ namespace XamarinReactorUI
     {
         private RxComponent _component;
         private bool _sleeping;
-        private Page _componentPage;
-        private readonly Action<RxComponent> _componentInitializer;
+        protected Page _componentPage;
 
-        private RxPageHost(Action<RxComponent> componentInitializer)
+        protected RxPageHost()
         {
-            _componentInitializer = componentInitializer;
         }
 
-        public static Page CreatePage(Action<RxComponent> componentInitializer = null)
+        public static Page CreatePage()
         {
-            var host = new RxPageHost<T>(componentInitializer);
+            var host = new RxPageHost<T>();
             host.Run();
             return host._componentPage;
         }
@@ -60,13 +58,14 @@ namespace XamarinReactorUI
             _componentPage = null;
         }
 
+        protected virtual RxComponent InitializeComponent(RxComponent component)
+        {
+            return component;
+        }
+
         public void Run()
         {
-            _component = _component ?? RxApplication.Instance.ComponentLoader.LoadComponent<T>();
-            if (_component != null)
-            {
-                _componentInitializer?.Invoke((T)_component);
-            }
+            _component = _component ?? InitializeComponent(RxApplication.Instance.ComponentLoader.LoadComponent<T>());
 
             RxApplication.Instance.ComponentLoader.ComponentAssemblyChanged += OnComponentAssemblyChanged;
 
@@ -86,7 +85,6 @@ namespace XamarinReactorUI
                 if (newComponent != null)
                 {
                     _component = newComponent;
-                    _componentInitializer?.Invoke(_component);
 
                     Invalidate();
                 }
@@ -137,5 +135,30 @@ namespace XamarinReactorUI
         {
             yield return _component;
         }
+    }
+
+    internal class RxPageHost<T, P> : RxPageHost<T> where T : RxComponent, new() where P : class, IProps, new()
+    {
+        private readonly Action<P> _propsInitializer;
+
+        protected RxPageHost(Action<P> stateInitializer)
+        {
+            _propsInitializer = stateInitializer;
+        }
+
+        public static Page CreatePage(Action<P> stateInitializer) 
+        {
+            var host = new RxPageHost<T, P>(stateInitializer);
+            host.Run();
+            return host._componentPage;
+        }
+
+        protected override RxComponent InitializeComponent(RxComponent component)
+        {
+            var componentWithProps = (RxComponentWithProps<P>)component;
+            _propsInitializer?.Invoke(componentWithProps.Props);
+            return component;
+        }
+
     }
 }

@@ -112,7 +112,8 @@ namespace XamarinReactorUI.Maps
 
         protected override void OnMigrated(VisualNode newNode)
         {
-            NativeControl.MapClicked -= NativeControl_MapClicked;
+            if (NativeControl != null)
+                NativeControl.MapClicked -= NativeControl_MapClicked;
             base.OnMigrated(newNode);
         }
     }

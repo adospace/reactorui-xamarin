@@ -27,7 +27,7 @@ namespace XamarinReactorUI
         //    }
         //}
 
-        public static void CopyPropertiesTo<T>(this T source, object dest, PropertyInfo[] destProps)
+        internal static void CopyPropertiesTo<T>(this T source, object dest, PropertyInfo[] destProps)
         {
             var sourceProps = typeof(T).GetProperties()
                 .Where(x => x.CanRead)

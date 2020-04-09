@@ -45,7 +45,8 @@ namespace XamarinReactorUI
 
         protected override void OnMigrated(VisualNode newNode)
         {
-            NativeControl.CheckedChanged -= NativeControl_CheckedChanged;
+            if (NativeControl != null)
+                NativeControl.CheckedChanged -= NativeControl_CheckedChanged;
 
             base.OnMigrated(newNode);
         }

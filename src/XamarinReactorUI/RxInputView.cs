@@ -88,9 +88,10 @@ namespace XamarinReactorUI
         protected override void OnMigrated(VisualNode newNode)
         {
             if (NativeControl != null)
+            {
                 NativeControl.TextChanged -= NativeControl_TextChanged;
-            if (NativeControl != null) 
                 NativeControl.Unfocused -= NativeControl_Unfocused;
+            }
 
 
             base.OnMigrated(newNode);

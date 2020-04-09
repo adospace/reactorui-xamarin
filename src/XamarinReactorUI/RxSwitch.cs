@@ -48,7 +48,8 @@ namespace XamarinReactorUI
 
         protected override void OnMigrated(VisualNode newNode)
         {
-            NativeControl.Toggled -= NativeControl_Toggled;
+            if (NativeControl != null)
+                NativeControl.Toggled -= NativeControl_Toggled;
 
             base.OnMigrated(newNode);
         }

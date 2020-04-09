@@ -69,8 +69,11 @@ namespace XamarinReactorUI
 
         protected override void OnMigrated(VisualNode newNode)
         {
-            NativeControl.SelectionChanged -= NativeControl_SelectionChanged;
-            NativeControl.SelectionChangedCommand = null;
+            if (NativeControl != null)
+            {
+                NativeControl.SelectionChanged -= NativeControl_SelectionChanged;
+                NativeControl.SelectionChangedCommand = null;
+            }
 
             base.OnMigrated(newNode);
         }

@@ -86,9 +86,9 @@ namespace XamarinReactorUI
 
         public event EventHandler<ReceivedAssemblyEventArgs> ReceivedAssembly;
 
-        internal void OnReceivedAssembly(byte[] assemblyRaw)
+        internal void OnReceivedAssembly(byte[] assemblyRaw, byte[] assemblySymbolStoreRaw)
         {
-            ReceivedAssembly?.Invoke(this, new ReceivedAssemblyEventArgs(assemblyRaw));
+            ReceivedAssembly?.Invoke(this, new ReceivedAssemblyEventArgs(assemblyRaw, assemblySymbolStoreRaw));
         }
     }
 }

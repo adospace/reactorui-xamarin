@@ -10,6 +10,10 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using EnvDTE;
+//using Microsoft.Build.Evaluation;
+//using Microsoft.Build.Execution;
+//using Microsoft.Build.Framework;
+//using Microsoft.Build.Logging;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -49,8 +53,23 @@ namespace XamarinReactorUI.HotReloadVsExtension
             commandService = commandService ?? throw new ArgumentNullException(nameof(commandService));
 
             var menuCommandID = new CommandID(CommandSet, CommandId);
-            var menuItem = new MenuCommand(this.Execute, menuCommandID);
+            var menuItem = new OleMenuCommand(this.Execute, menuCommandID);
+            menuItem.BeforeQueryStatus += MenuItem_BeforeQueryStatus;
             commandService.AddCommand(menuItem);
+        }
+
+        private void MenuItem_BeforeQueryStatus(object sender, EventArgs e)
+        {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
+            var menuCommand = sender as Microsoft.VisualStudio.Shell.OleMenuCommand;
+
+            menuCommand.Visible = _dte.Solution.IsOpen;
+
+            menuCommand.Enabled =
+                _dte.Solution.IsOpen &&
+                _dte.Solution.SolutionBuild.BuildState != vsBuildState.vsBuildStateInProgress &&
+                GetFormsProjects().Count >= 1;
         }
 
         /// <summary>
@@ -101,11 +120,11 @@ namespace XamarinReactorUI.HotReloadVsExtension
             Instance._outputWindow = outputWindow;
         }
 
-        private IReadOnlyList<Project> GetFormsProjects()
+        private IReadOnlyList<EnvDTE.Project> GetFormsProjects()
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            var projectsFound = new List<Project>();
+            var projectsFound = new List<EnvDTE.Project>();
             
             /*
 TargetFrameworkMoniker=.NETStandard,Version=v2.0
@@ -114,19 +133,13 @@ TargetFramework=131072
 
 
             var allProjectsInSolution = _dte.Solution.Projects;
-            foreach (var project in allProjectsInSolution.Cast<Project>())
+            foreach (var project in allProjectsInSolution.Cast<EnvDTE.Project>())
             {
-                var targetFrameworkIsNetStandard = project.Properties.Cast<Property>().Any(_ => _.Name == "TargetFrameworkMoniker" && _.Value.ToString().IndexOf(".NETStandard", StringComparison.OrdinalIgnoreCase) > -1);
-                if (!targetFrameworkIsNetStandard)
+                if (project.Properties == null)
                     continue;
 
-                //var optimizeIsEnabled = project.ConfigurationManager.ActiveConfiguration.Properties.Cast<Property>().Any(_ => _.Name == "Optimize" && (bool)_.Value);
-                //if (optimizeIsEnabled) //i.e. is in release mode
-                //    continue;
-
-
                 //bool optimizeIsEnabled = false;
-                //foreach (Property property in project.ConfigurationManager.ActiveConfiguration.Properties)
+                //foreach (Property property in project.Properties.Cast<Property>().Where(_=>_.Name.IndexOf("target", StringComparison.OrdinalIgnoreCase) > -1))
                 //{
                 //    try
                 //    {
@@ -142,6 +155,17 @@ TargetFramework=131072
                 //    //    break;
                 //    //}
                 //}
+
+                var targetFrameworkIsNetStandard = project.Properties.Cast<Property>().Any(_ => _.Name == "TargetFrameworkMoniker" && _.Value.ToString().IndexOf(".NETStandard", StringComparison.OrdinalIgnoreCase) > -1);
+                if (!targetFrameworkIsNetStandard)
+                    continue;
+
+                //var optimizeIsEnabled = project.ConfigurationManager.ActiveConfiguration.Properties.Cast<Property>().Any(_ => _.Name == "Optimize" && (bool)_.Value);
+                //if (optimizeIsEnabled) //i.e. is in release mode
+                //    continue;
+
+
+
 
                 //if (optimizeIsEnabled) //i.e. is in release mode
                 //    continue;
@@ -203,16 +227,20 @@ TargetFramework=131072
         /// </summary>
         /// <param name="sender">Event sender.</param>
         /// <param name="e">Event args.</param>
-        private void Execute(object sender, EventArgs e)
+        private async void Execute(object sender, EventArgs e)
         {
-            ThreadHelper.ThrowIfNotOnUIThread();
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+            //ThreadHelper.ThrowIfNotOnUIThread();
             var generalPane = GetVsOutputWindow();
 
             var selectedProject = GetFormsProjects().FirstOrDefault();
 
             if (selectedProject == null)
             {
-                generalPane.OutputString($"Solution doesn't contain a valid ReactorUI hot reload project (ensure it references XamarinReactorUI.HotReload package and call WithHotReload() on RxApplication)...{Environment.NewLine}");
+                generalPane.OutputString($"Solution doesn't contain a valid ReactorUI hot reload project{Environment.NewLine}");
+                generalPane.OutputString($"1) Ensure it references XamarinReactorUI.HotReload package and call WithHotReload() on RxApplication{Environment.NewLine}");
+                generalPane.OutputString($"2) Ensure that Visual Studio has finished loading the solution{Environment.NewLine}");
                 generalPane.Activate(); // Brings this pane into view
                 return;
             }
@@ -230,14 +258,20 @@ TargetFramework=131072
             generalPane.OutputString($"Building {outputFilePath}...{Environment.NewLine}");
             generalPane.Activate(); // Brings this pane into view
 
-            _dte.Solution.SolutionBuild.BuildProject(selectedProject.ConfigurationManager.ActiveConfiguration.ConfigurationName, selectedProject.UniqueName, true);
+            //_dte.Solution.SolutionBuild.BuildProject(selectedProject.ConfigurationManager.ActiveConfiguration.ConfigurationName, selectedProject.UniqueName, true);
 
-            generalPane.OutputString($"Sending to emulator...{Environment.NewLine}");
-            generalPane.Activate(); // Brings this pane into view
+            _dte.Documents.SaveAll();
+
+            if (!RunMsBuild(selectedProject, generalPane))
+            {
+                generalPane.OutputString($"Unable to build Xamarin Forms project, it may contains errors{Environment.NewLine}");
+                generalPane.Activate(); // Brings this pane into view
+                return;
+            }
 
             ExecutePortForwardCommmand(generalPane);
 
-            SendAssemblyToEmulator(outputFilePath, generalPane);
+            await SendAssemblyToEmulatorAsync(outputFilePath, generalPane);
 
             // Show a message box to prove we were here
             //VsShellUtilities.ShowMessageBox(
@@ -268,10 +302,30 @@ TargetFramework=131072
             //    OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
         }
 
-        private IVsOutputWindowPane GetVsOutputWindow()
+        private static bool RunMsBuild(Project project, IVsOutputWindowPane outputPane)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
+            var parameters = new Microsoft.Build.Execution.BuildParameters(new Microsoft.Build.Evaluation.ProjectCollection())
+            {
+                //Loggers = new Microsoft.Build.Framework.ILogger[] { new Microsoft.Build.Logging.ConsoleLogger() }
+                Loggers = new Microsoft.Build.Framework.ILogger[] { new OutputPaneLogger(outputPane) }
+            };
+            var globalProperty = new Dictionary<string, string>() {
+                {"Configuration", project.ConfigurationManager.ActiveConfiguration.ConfigurationName },
+                //{"Platform", project.ConfigurationManager.ActiveConfiguration.PlatformName },
+            };
+
+            var result = Microsoft.Build.Execution.BuildManager.DefaultBuildManager.Build(
+                parameters,
+                new Microsoft.Build.Execution.BuildRequestData(project.FullName, globalProperty, null, new [] { "Build" }, null));
+
+            return result.OverallResult == Microsoft.Build.Execution.BuildResultCode.Success;
+        }
+
+        private IVsOutputWindowPane GetVsOutputWindow()
+        {
+            ThreadHelper.ThrowIfNotOnUIThread();
 
             Guid generalPaneGuid = VSConstants.GUID_OutWindowDebugPane; // P.S. There's also the GUID_OutWindowDebugPane available. (GUID_OutWindowGeneralPane)
             _outputWindow.GetPane(ref generalPaneGuid, out IVsOutputWindowPane generalPane);
@@ -326,48 +380,81 @@ TargetFramework=131072
             return true;
         }
 
-        private static void SendAssemblyToEmulator(string assemblyPath, IVsOutputWindowPane outputPane)
+        private static async Task SendAssemblyToEmulatorAsync(string assemblyPath, IVsOutputWindowPane outputPane)
         {
-            ThreadHelper.ThrowIfNotOnUIThread();
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+            //ThreadHelper.ThrowIfNotOnUIThread();
+
+            outputPane.OutputString($"Sending to emulator...");
+            outputPane.Activate(); // Brings this pane into view
 
             var client = new TcpClient
             {
-                ReceiveTimeout = 5000,
-                SendTimeout = 5000
+                ReceiveTimeout = 15000,
+                SendTimeout = 15000
             };
 
             try
             {
-                client.Connect(IPAddress.Loopback, 45820);
+                await client.ConnectAsync(IPAddress.Loopback, 45820);
 
-                var assemblyRaw = File.ReadAllBytes(assemblyPath);
+                var assemblyRaw = await FileUtil.ReadAllFileAsync(assemblyPath);
 
-                var binaryWriter = new BinaryWriter(client.GetStream());
+                var networkStream = client.GetStream();
 
-                binaryWriter.Write(assemblyRaw.Length);
+                var lengthBytes = BitConverter.GetBytes(assemblyRaw.Length);
+                await networkStream.WriteAsync(lengthBytes, 0, lengthBytes.Length);
+                
+                await networkStream.WriteAsync(assemblyRaw, 0, assemblyRaw.Length);
 
-                binaryWriter.Write(assemblyRaw);
+                await networkStream.FlushAsync();
 
-                binaryWriter.Flush();
+                var assemblySymbolStorePath = Path.Combine(Path.GetDirectoryName(assemblyPath), Path.GetFileNameWithoutExtension(assemblyPath) + ".pdb");
 
-                var binaryReader = new BinaryReader(client.GetStream());
+                if (File.Exists(assemblySymbolStorePath))
+                {
+                    var assemblySynmbolStoreRaw = await FileUtil.ReadAllFileAsync(assemblySymbolStorePath);
 
-                binaryReader.ReadBoolean();
+                    lengthBytes = BitConverter.GetBytes(assemblySynmbolStoreRaw.Length);
 
-                outputPane.OutputString($"New assembly ({assemblyRaw.Length} bytes) sent{Environment.NewLine}");
-            }
-            catch (OperationCanceledException)
-            {
+                    await networkStream.WriteAsync(lengthBytes, 0, lengthBytes.Length);
 
+                    await networkStream.WriteAsync(assemblySynmbolStoreRaw, 0, assemblySynmbolStoreRaw.Length);
+
+                    await networkStream.FlushAsync();
+                }
+                else
+                {
+                    lengthBytes = BitConverter.GetBytes(0);
+
+                    await networkStream.WriteAsync(lengthBytes, 0, lengthBytes.Length);
+
+                    await networkStream.FlushAsync();
+                }
+
+                var booleanBuffer = new byte[1];
+                if (await networkStream.ReadAsync(booleanBuffer, 0, 1) == 0)
+                    throw new SocketException();
+
+                outputPane.OutputStringThreadSafe($"sent ({assemblyRaw.Length} bytes){Environment.NewLine}");
             }
             catch (Exception ex)
             {
-                outputPane.OutputString(ex.ToString());
+                outputPane.OutputStringThreadSafe($@"
+Unable to connect to ReactorUI Hot Reload module
+Please ensure that:
+1) Only one device is running among emulators and physical devices
+2) Application is running either in debug or release mode
+3) RxApplication call WithHotReload()
+Socket exception: {ex.Message}
+");
             }
             finally
             {
                 client.Close();
             }
+
+            outputPane.Activate();
         }
     }
 }

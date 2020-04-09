@@ -19,7 +19,7 @@ namespace XamarinReactorUI.TestApp.HelloWorld
         {
             return new RxStackLayout()
             {
-                new RxLabel($"Clicked {State.Counter} times!")
+                new RxLabel($"Tapped {State.Counter} times!")
                     .HCenter(),
                 new RxButton("Click here")
                     .OnClick(IncrementCounter)
@@ -27,12 +27,13 @@ namespace XamarinReactorUI.TestApp.HelloWorld
                     .VEnd()
             }
             .HFillAndExpand()
-            .HCenterAndExpand()
+            .VCenterAndExpand()
             .Margin(10);
         }
 
         private void IncrementCounter()
         {
+            System.Diagnostics.Debug.WriteLine("IncrementCounter");
             SetState(s => s.Counter++);
         }
     }

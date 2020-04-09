@@ -26,7 +26,7 @@ namespace XamarinReactorUI.HotReload
 
         private void ReceivedAssemblyFromHost(object sender, ReceivedAssemblyEventArgs e)
         {
-            _latestAssembly = Assembly.Load(e.AssemblyRaw);
+            _latestAssembly = e.AssemblySymbolStoreRaw == null ? Assembly.Load(e.AssemblyRaw) : Assembly.Load(e.AssemblyRaw, e.AssemblySymbolStoreRaw);
             ComponentAssemblyChanged?.Invoke(this, EventArgs.Empty);
         }
 

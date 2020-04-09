@@ -33,8 +33,15 @@ namespace XamarinReactorUI
                     return;
 
                 var assemblyRaw = binaryReader.ReadBytes(length);
+                byte[] assemblySymbolStoreRaw = null;
 
-                _server.OnReceivedAssembly(assemblyRaw);
+                length = binaryReader.ReadInt32();
+                if (length > 0)
+                {
+                    assemblySymbolStoreRaw = binaryReader.ReadBytes(length);
+                }
+
+                _server.OnReceivedAssembly(assemblyRaw, assemblySymbolStoreRaw);
 
                 binaryWriter.Write(true);
 

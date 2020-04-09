@@ -26,7 +26,7 @@ namespace XamarinReactorUI.TestApp
             //MainPage = mainPage;
 
             //TEST 3
-            //_rxApp = RxApplication.Create<Shell.Test1.TestShellComponentPage>(this).WithHotReload();
+            _rxApp = RxApplication.Create<Shell.Test1.TestShellComponentPage>(this).WithHotReload();
 
             //TEST 4
             //_rxApp = RxApplication.Create<Shell.Test2.TestShellComponentPage>(this).WithHotReload();
@@ -50,7 +50,7 @@ namespace XamarinReactorUI.TestApp
             //_rxApp = RxApplication.Create<ElementRef.MainPage>(this).WithHotReload();
 
             //TEST 11
-            _rxApp = RxApplication.Create<Busy.BusyPageComponent>(this).WithHotReload();
+            //_rxApp = RxApplication.Create<Busy.BusyPageComponent>(this).WithHotReload();
         }
 
         protected override void OnStart()

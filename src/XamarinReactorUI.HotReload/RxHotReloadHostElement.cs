@@ -1,129 +1,136 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using Xamarin.Forms;
+﻿//using System;
+//using System.Collections.Generic;
+//using System.Reflection;
+//using Xamarin.Forms;
 
-namespace XamarinReactorUI
-{
-    public class RxHotReloadHostElement : VisualNode, IRxHostElement
-    {
-        private readonly HotReloadServer _server;
-        private RxComponent _rootComponent;
-        //private bool _pendingStop = false;
-        private byte[] _latestAssemblyRaw;
-        //private VisualTree _visualTree;
+//namespace XamarinReactorUI
+//{
+//    public class RxHotReloadHostElement : VisualNode, IRxHostElement
+//    {
+//        private readonly HotReloadServer _server;
+//        private RxComponent _rootComponent;
+//        //private bool _pendingStop = false;
+//        private byte[] _latestAssemblyRaw;
+//        private byte[] _latestAssemblySymbolStoreRaw;
 
-        public RxHotReloadHostElement(RxComponent rootComponent)
-            : this(rootComponent, 45820)
-        {
-        }
+//        //private VisualTree _visualTree;
 
-        public RxHotReloadHostElement(RxComponent rootComponent, int serverPort, params object[] args)
-        {
-            _rootComponent = rootComponent ?? throw new ArgumentNullException(nameof(rootComponent));
-            _server = new HotReloadServer(serverPort);
-            _server.ReceivedAssembly += ReceivedAssemblyFromHost;
-            //_visualTree = new VisualTree(this);
-        }
+//        public RxHotReloadHostElement(RxComponent rootComponent)
+//            : this(rootComponent, 45820)
+//        {
+//        }
 
-        public event EventHandler<UnhandledExceptionEventArgs> UnhandledException;
+//        public RxHotReloadHostElement(RxComponent rootComponent, int serverPort, params object[] args)
+//        {
+//            _rootComponent = rootComponent ?? throw new ArgumentNullException(nameof(rootComponent));
+//            _server = new HotReloadServer(serverPort);
+//            _server.ReceivedAssembly += ReceivedAssemblyFromHost;
+//            //_visualTree = new VisualTree(this);
+//        }
 
-        protected sealed override void OnAddChild(VisualNode widget, Xamarin.Forms.Element nativeControl)
-        {
-        }
+//        public event EventHandler<UnhandledExceptionEventArgs> UnhandledException;
 
-        protected sealed override void OnRemoveChild(VisualNode widget, Xamarin.Forms.Element nativeControl)
-        {
-        }
+//        protected sealed override void OnAddChild(VisualNode widget, Xamarin.Forms.Element nativeControl)
+//        {
+//        }
 
-        public void Run()
-        {
-            //_pendingStop = false;
-            //Device.BeginInvokeOnMainThread(OnLayout);
-            OnLayoutCycleRequested();
+//        protected sealed override void OnRemoveChild(VisualNode widget, Xamarin.Forms.Element nativeControl)
+//        {
+//        }
 
-            //_visualTree.LayoutCycleRequest += VisualTree_LayoutCycleRequest;
-            _server.Run();
-        }
+//        public void Run()
+//        {
+//            //_pendingStop = false;
+//            //Device.BeginInvokeOnMainThread(OnLayout);
+//            OnLayoutCycleRequested();
 
-        //private void VisualTree_LayoutCycleRequest(object sender, EventArgs e)
-        //{
-        //    Device.BeginInvokeOnMainThread(OnLayout);
-        //}
+//            //_visualTree.LayoutCycleRequest += VisualTree_LayoutCycleRequest;
+//            _server.Run();
+//        }
 
-        protected internal override void OnLayoutCycleRequested()
-        {
-            Device.BeginInvokeOnMainThread(OnLayout); 
-            base.OnLayoutCycleRequested();
-        }
+//        //private void VisualTree_LayoutCycleRequest(object sender, EventArgs e)
+//        //{
+//        //    Device.BeginInvokeOnMainThread(OnLayout);
+//        //}
 
-        private void ReceivedAssemblyFromHost(object sender, ReceivedAssemblyEventArgs e)
-        {
-            lock (this)
-            {
-                _latestAssemblyRaw = e.AssemblyRaw;
-            }
-            Device.BeginInvokeOnMainThread(OnLayout);
-        }
+//        protected internal override void OnLayoutCycleRequested()
+//        {
+//            Device.BeginInvokeOnMainThread(OnLayout); 
+//            base.OnLayoutCycleRequested();
+//        }
 
-        public void Stop()
-        {
-            //_visualTree.LayoutCycleRequest -= VisualTree_LayoutCycleRequest;
+//        private void ReceivedAssemblyFromHost(object sender, ReceivedAssemblyEventArgs e)
+//        {
+//            lock (this)
+//            {
+//                _latestAssemblyRaw = e.AssemblyRaw;
+//                _latestAssemblySymbolStoreRaw = e.AssemblySymbolStoreRaw;
+//            }
+//            Device.BeginInvokeOnMainThread(OnLayout);
+//        }
 
-            _server.Stop();
-            //_pendingStop = true;
-        }
+//        public void Stop()
+//        {
+//            //_visualTree.LayoutCycleRequest -= VisualTree_LayoutCycleRequest;
 
-        private void OnLayout()
-        {
-            //if (_pendingStop)
-            //    return;
+//            _server.Stop();
+//            //_pendingStop = true;
+//        }
 
-            if (_latestAssemblyRaw != null)
-            {
-                LoadLatestAssembly();
-            }
+//        private void OnLayout()
+//        {
+//            //if (_pendingStop)
+//            //    return;
 
-            try
-            {
-                Layout();
-            }
-            catch (Exception ex)
-            {
-                UnhandledException?.Invoke(this, new UnhandledExceptionEventArgs(ex, false));
-            }
+//            if (_latestAssemblyRaw != null)
+//            {
+//                LoadLatestAssembly();
+//            }
 
-            //Device.BeginInvokeOnMainThread(OnLayout);
-        }
+//            try
+//            {
+//                Layout();
+//            }
+//            catch (Exception ex)
+//            {
+//                UnhandledException?.Invoke(this, new UnhandledExceptionEventArgs(ex, false));
+//            }
 
-        private void LoadLatestAssembly()
-        {
-            byte[] latestAssemblyRaw;
-            lock (this)
-            {
-                latestAssemblyRaw = _latestAssemblyRaw;
-                _latestAssemblyRaw = null;
-            }
+//            //Device.BeginInvokeOnMainThread(OnLayout);
+//        }
 
-            try
-            {
-                var assembly = Assembly.Load(latestAssemblyRaw);
-                var type = assembly.GetType(_rootComponent.GetType().FullName);
-                var context = _rootComponent.Context;
-                _rootComponent = (RxComponent)Activator.CreateInstance(type);
+//        private void LoadLatestAssembly()
+//        {
+//            byte[] latestAssemblyRaw;
+//            byte[] latestAssemblySymbolStoreRaw;
 
-                //_rootComponent.Context = context;
-                Invalidate();
-            }
-            catch (Exception ex)
-            {
-                UnhandledException?.Invoke(this, new UnhandledExceptionEventArgs(ex, false));
-            }
-        }
+//            lock (this)
+//            {
+//                latestAssemblyRaw = _latestAssemblyRaw;
+//                latestAssemblySymbolStoreRaw = _latestAssemblySymbolStoreRaw;
+//                _latestAssemblyRaw = null;
+//                _latestAssemblySymbolStoreRaw = null;
+//            }
 
-        protected override IEnumerable<VisualNode> RenderChildren()
-        {
-            yield return _rootComponent;
-        }
-    }
-}
+//            try
+//            {
+//                var assembly = _latestAssemblySymbolStoreRaw == null ? Assembly.Load(latestAssemblyRaw) : Assembly.Load(latestAssemblyRaw, latestAssemblySymbolStoreRaw);
+//                var type = assembly.GetType(_rootComponent.GetType().FullName);
+//                var context = _rootComponent.Context;
+//                _rootComponent = (RxComponent)Activator.CreateInstance(type);
+
+//                //_rootComponent.Context = context;
+//                Invalidate();
+//            }
+//            catch (Exception ex)
+//            {
+//                UnhandledException?.Invoke(this, new UnhandledExceptionEventArgs(ex, false));
+//            }
+//        }
+
+//        protected override IEnumerable<VisualNode> RenderChildren()
+//        {
+//            yield return _rootComponent;
+//        }
+//    }
+//}

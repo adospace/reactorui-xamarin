@@ -26,7 +26,7 @@ namespace XamarinReactorUI.TestApp
             //MainPage = mainPage;
 
             //TEST 3
-            _rxApp = RxApplication.Create<Shell.Test1.TestShellComponentPage>(this).WithHotReload();
+            //_rxApp = RxApplication.Create<Shell.Test1.TestShellComponentPage>(this).WithHotReload();
 
             //TEST 4
             //_rxApp = RxApplication.Create<Shell.Test2.TestShellComponentPage>(this).WithHotReload();
@@ -44,7 +44,7 @@ namespace XamarinReactorUI.TestApp
             //_rxApp = new RxApplication(this, new Grid.GridPageComponent());
 
             //TEST 9
-            //_rxApp = RxApplication.Create<Navigation.MainPageComponent>(this).WithHotReload();
+            _rxApp = RxApplication.Create<Navigation.MainPageComponent>(this).WithHotReload();
 
             //TEST 10
             //_rxApp = RxApplication.Create<ElementRef.MainPage>(this).WithHotReload();

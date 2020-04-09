@@ -4,7 +4,7 @@ using System.Text;
 
 namespace XamarinReactorUI.TestApp.HelloWorld
 {
-    public class TestComponentState : IValueSet
+    public class TestComponentState : IState
     {
         public int Counter { get; set; }
     }

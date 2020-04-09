@@ -2,7 +2,7 @@
 
 namespace XamarinReactorUI.TestApp.Busy
 {
-    public class BusyPageState : IValueSet
+    public class BusyPageState : IState
     {
         public bool IsBusy { get; set; }
     }

@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI.TestApp.Layout
 {
-    public class NumericsFormState : IValueSet
+    public class NumericsFormState : IState
     {
         public int Field3 { get; set; }
         public int Field4 { get; set; }

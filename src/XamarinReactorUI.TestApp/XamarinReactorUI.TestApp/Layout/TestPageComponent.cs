@@ -2,7 +2,7 @@
 
 namespace XamarinReactorUI.TestApp.Layout
 {
-    public class TestPageState : IValueSet
+    public class TestPageState : IState
     { 
         public bool ToggleLayout { get; set; }
     }

@@ -14,10 +14,10 @@ namespace XamarinReactorUI
 
         protected RxApplication(Application application)
         {
-            if (Instance != null)
-            {
-                throw new InvalidOperationException("Only one instance of RxApplication is permitted");
-            }
+            //if (Instance != null)
+            //{
+            //    throw new InvalidOperationException("Only one instance of RxApplication is permitted");
+            //}
 
             Instance = this;
 

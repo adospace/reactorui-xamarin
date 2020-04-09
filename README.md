@@ -11,4 +11,4 @@ ReactorUI is an alternative UI framework written on top of Xamarin Forms highly 
 
 [ReactorUI for Xamarin Documentation](https://adospace.gitbook.io/reactorui/)
 
-![ReactorUI Hot Reload in action](images/ReactorUI_HRDemo.gif)
+![ReactorUI Hot Reload in action](images/ReactorUI_HotReloadDebugDemo.gif)

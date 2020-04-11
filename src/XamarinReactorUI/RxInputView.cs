@@ -15,7 +15,7 @@ namespace XamarinReactorUI
         Color PlaceholderColor { get; set; }
         Color TextColor { get; set; }
         double CharacterSpacing { get; set; }
-        Action<object, TextChangedEventArgs> TextChangedAction { get; set; }
+        Action<TextChangedEventArgs> TextChangedAction { get; set; }
         Action<string> AfterTextChangedAction { get; set; }
     }
 
@@ -45,7 +45,7 @@ namespace XamarinReactorUI
         public Color PlaceholderColor { get; set; } = (Color)InputView.PlaceholderColorProperty.DefaultValue;
         public Color TextColor { get; set; } = (Color)InputView.TextColorProperty.DefaultValue;
         public double CharacterSpacing { get; set; } = (double)InputView.CharacterSpacingProperty.DefaultValue;
-        public Action<object, TextChangedEventArgs> TextChangedAction { get; set; }
+        public Action<TextChangedEventArgs> TextChangedAction { get; set; }
         public Action<string> AfterTextChangedAction { get; set; }
 
         private bool IsFocused { get; set; }
@@ -82,7 +82,7 @@ namespace XamarinReactorUI
 
         private void NativeControl_TextChanged(object sender, TextChangedEventArgs e)
         {
-            TextChangedAction?.Invoke(sender, e);
+            TextChangedAction?.Invoke(e);
         }
 
         protected override void OnMigrated(VisualNode newNode)
@@ -117,7 +117,7 @@ namespace XamarinReactorUI
             return entry;
         }
 
-        public static T OnTextChanged<T>(this T entry, Action<object, TextChangedEventArgs> textChangedAction) where T : IRxInputView
+        public static T OnTextChanged<T>(this T entry, Action<TextChangedEventArgs> textChangedAction) where T : IRxInputView
         {
             entry.TextChangedAction = textChangedAction;
             return entry;

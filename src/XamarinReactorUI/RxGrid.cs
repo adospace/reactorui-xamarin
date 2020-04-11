@@ -48,7 +48,7 @@ namespace XamarinReactorUI
             ColumnDefinitions = columns;
         }
 
-        public RxGrid(RowDefinition[] rows, ColumnDefinition[] columns)
+        public RxGrid(IEnumerable<RowDefinition> rows, IEnumerable<ColumnDefinition> columns)
         {
             foreach (var row in rows)
                 RowDefinitions.Add(row);
@@ -56,15 +56,10 @@ namespace XamarinReactorUI
                 ColumnDefinitions.Add(column);
         }
 
-        protected override void OnAddChild(VisualNode widget, Xamarin.Forms.Element childControl)
+        protected override void OnAddChild(VisualNode widget, Element childControl)
         {
             if (childControl is View view)
             {
-                Grid.SetRow(childControl, widget.GetMetadata<int>("Grid.Row"));
-                Grid.SetRowSpan(childControl, widget.GetMetadata<int>("Grid.RowSpan", 1));
-                Grid.SetColumn(childControl, widget.GetMetadata<int>("Grid.Column"));
-                Grid.SetColumnSpan(childControl, widget.GetMetadata<int>("Grid.ColumnSpan", 1));
-
                 NativeControl.Children.Insert(widget.ChildIndex, view);
             }
             else
@@ -75,7 +70,7 @@ namespace XamarinReactorUI
             base.OnAddChild(widget, childControl);
         }
 
-        protected override void OnRemoveChild(VisualNode widget, Xamarin.Forms.Element childControl)
+        protected override void OnRemoveChild(VisualNode widget, Element childControl)
         {
             NativeControl.Children.Remove((View)childControl);
 
@@ -172,28 +167,48 @@ namespace XamarinReactorUI
             return grid;
         }
 
-
         public static T GridRow<T>(this T view, int rowIndex) where T : VisualNode
         {
-            view.SetMetadata("Grid.Row", rowIndex);
+            if (view is IRxElement element)
+                element.SetAttachedProperty(Grid.RowProperty, rowIndex);
+            else
+            {
+                throw new NotSupportedException($"Type '{typeof(T)}' doesn't support attached properties");
+            }
+
             return view;
         }
 
         public static T GridRowSpan<T>(this T view, int rowSpan) where T : VisualNode
         {
-            view.SetMetadata("Grid.RowSpan", rowSpan);
+            if (view is IRxElement element)
+                element.SetAttachedProperty(Grid.RowSpanProperty, rowSpan);
+            else
+            {
+                throw new NotSupportedException($"Type '{typeof(T)}' doesn't support attached properties");
+            }
             return view;
         }
 
         public static T GridColumn<T>(this T view, int columnIndex) where T : VisualNode
         {
-            view.SetMetadata("Grid.Column", columnIndex);
+            if (view is IRxElement element)
+                element.SetAttachedProperty(Grid.ColumnProperty, columnIndex);
+            else
+            {
+                throw new NotSupportedException($"Type '{typeof(T)}' doesn't support attached properties");
+            }
             return view;
         }
 
         public static T GridColumnSpan<T>(this T view, int columnSpan) where T : VisualNode
         {
-            view.SetMetadata("Grid.ColumnSpan", columnSpan);
+            if (view is IRxElement element)
+                element.SetAttachedProperty(Grid.ColumnSpanProperty, columnSpan);
+            else
+            {
+                throw new NotSupportedException($"Type '{typeof(T)}' doesn't support attached properties");
+            }
             return view;
         }
     }

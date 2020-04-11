@@ -15,7 +15,7 @@ namespace XamarinReactorUI
         string FontFamily { get; set; }
         double FontSize { get; set; }
         FontAttributes FontAttributes { get; set; }
-        Action<object, DateChangedEventArgs> DateChangedAction { get; set; }
+        Action<DateChangedEventArgs> DateChangedAction { get; set; }
     }
 
     public class RxDatePicker : RxView<Xamarin.Forms.DatePicker>, IRxDatePicker
@@ -38,7 +38,7 @@ namespace XamarinReactorUI
         public string FontFamily { get; set; } = (string)DatePicker.FontFamilyProperty.DefaultValue;
         public double FontSize { get; set; } = (double)DatePicker.FontSizeProperty.DefaultValue;
         public FontAttributes FontAttributes { get; set; } = (FontAttributes)DatePicker.FontAttributesProperty.DefaultValue;
-        public Action<object, DateChangedEventArgs> DateChangedAction { get; set; }
+        public Action<DateChangedEventArgs> DateChangedAction { get; set; }
 
         protected override void OnUpdate()
         {
@@ -60,7 +60,7 @@ namespace XamarinReactorUI
 
         private void NativeControl_DateSelected(object sender, DateChangedEventArgs e)
         {
-            DateChangedAction?.Invoke(sender, e);            
+            DateChangedAction?.Invoke(e);            
         }
 
         protected override void OnMigrated(VisualNode newNode)
@@ -89,7 +89,7 @@ namespace XamarinReactorUI
 
     public static class RxDatePickerExtensions
     {
-        public static T OnDateSelected<T>(this T datepicker, Action<object, DateChangedEventArgs> action) where T : IRxDatePicker
+        public static T OnDateChanged<T>(this T datepicker, Action<DateChangedEventArgs> action) where T : IRxDatePicker
         {
             datepicker.DateChangedAction = action;
             return datepicker;

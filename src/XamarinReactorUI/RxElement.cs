@@ -7,7 +7,7 @@ namespace XamarinReactorUI
 {
     public interface IRxElement
     {
-
+        void SetAttachedProperty(BindableProperty property, object value);
     }
 
     public abstract class RxElement<T> : VisualNode, IRxElement where T : Element, new()
@@ -70,12 +70,17 @@ namespace XamarinReactorUI
 
         protected override void OnUpdate()
         {
-
+            foreach (var attachedProperty in _attachedProperties)
+            { 
+                NativeControl.SetValue(attachedProperty.Key, attachedProperty.Value);
+            }
 
             base.OnUpdate();
         }
 
+        private readonly Dictionary<BindableProperty, object> _attachedProperties = new Dictionary<BindableProperty, object>();
+
+        public void SetAttachedProperty(BindableProperty property, object value)
+            => _attachedProperties[property] = value;
     }
-
-
 }

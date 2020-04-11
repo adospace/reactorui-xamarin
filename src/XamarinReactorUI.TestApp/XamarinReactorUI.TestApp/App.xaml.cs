@@ -44,13 +44,16 @@ namespace XamarinReactorUI.TestApp
             //_rxApp = new RxApplication(this, new Grid.GridPageComponent());
 
             //TEST 9
-            _rxApp = RxApplication.Create<Navigation.MainPageComponent>(this).WithHotReload();
+            //_rxApp = RxApplication.Create<Navigation.MainPageComponent>(this).WithHotReload();
 
             //TEST 10
             //_rxApp = RxApplication.Create<ElementRef.MainPage>(this).WithHotReload();
 
             //TEST 11
             //_rxApp = RxApplication.Create<Busy.BusyPageComponent>(this).WithHotReload();
+
+            //TEST 12
+            _rxApp = RxApplication.Create<ComponentWithChildren.PageComponent>(this).WithHotReload();
         }
 
         protected override void OnStart()

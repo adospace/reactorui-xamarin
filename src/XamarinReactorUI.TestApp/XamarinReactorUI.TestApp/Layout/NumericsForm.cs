@@ -32,15 +32,15 @@ namespace XamarinReactorUI.TestApp.Layout
             {
                 new RxLabel("Field 3"),
                 new RxEntry(State.Field3.ToString())
-                    .OnTextChanged((s,e) => SetState(_=>_.Field3 = int.Parse(e.NewTextValue)))
+                    .OnTextChanged((e) => SetState(_=>_.Field3 = int.Parse(e.NewTextValue)))
                     .Keyboard(Keyboard.Numeric),
                 new RxLabel("Field 4"),
                 new RxEntry(State.Field4.ToString())
-                    .OnTextChanged((s,e) => SetState(_=>_.Field4 = int.Parse(e.NewTextValue)))
+                    .OnTextChanged((e) => SetState(_=>_.Field4 = int.Parse(e.NewTextValue)))
                     .Keyboard(Keyboard.Numeric),
                 new RxLabel("Field 5"),
                 new RxEntry(State.Field5.ToString())
-                    .OnTextChanged((s,e) => SetState(_=>_.Field5 = int.Parse(e.NewTextValue)))
+                    .OnTextChanged((e) => SetState(_=>_.Field5 = int.Parse(e.NewTextValue)))
                     .Keyboard(Keyboard.Numeric),
             };
         }

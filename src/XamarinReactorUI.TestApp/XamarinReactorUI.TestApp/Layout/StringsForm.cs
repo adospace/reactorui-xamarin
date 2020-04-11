@@ -31,10 +31,10 @@ namespace XamarinReactorUI.TestApp.Layout
             {
                 new RxLabel("Field 1"),
                 new RxEntry(State.Field1)
-                    .OnTextChanged((s,e) => State.Field1 = e.NewTextValue),
+                    .OnTextChanged((e) => State.Field1 = e.NewTextValue),
                 new RxLabel("Field 2"),
                 new RxEntry(State.Field2)
-                    .OnTextChanged((s,e) => State.Field2 = e.NewTextValue),
+                    .OnTextChanged((e) => State.Field2 = e.NewTextValue),
             };
         }
     }

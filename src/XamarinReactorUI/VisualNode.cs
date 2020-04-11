@@ -224,8 +224,6 @@ namespace XamarinReactorUI
 
         public T GetMetadata<T>(T defaultValue = default) 
             => GetMetadata(typeof(T).FullName, defaultValue);
-
-
     }
 
     public static class VisualNodeExtensions

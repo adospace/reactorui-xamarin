@@ -54,5 +54,4 @@ namespace XamarinReactorUI.TestApp.ComponentWithChildren
             };
         }
     }
-
 }

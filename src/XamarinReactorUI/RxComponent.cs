@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -13,9 +14,29 @@ namespace XamarinReactorUI
         RxContext Context { get; }
     }
 
-    public abstract class RxComponent : VisualNode
+    public abstract class RxComponent : VisualNode, IEnumerable<VisualNode>
     {
         public abstract VisualNode Render();
+
+        private readonly List<VisualNode> _children = new List<VisualNode>();
+
+        public IEnumerator<VisualNode> GetEnumerator()
+        {
+            return _children.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        public void Add(IEnumerable<VisualNode> children)
+        {
+            _children.AddRange(children);
+        }
+
+        protected new IReadOnlyList<VisualNode> Children()
+            => _children;
 
         private Page _containerPage;
 
@@ -102,7 +123,7 @@ namespace XamarinReactorUI
         {
             OnWillUnmount();
 
-            foreach (var child in Children)
+            foreach (var child in base.Children)
             {
                 child.Unmount();
             }

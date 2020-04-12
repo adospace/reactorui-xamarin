@@ -7,26 +7,9 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI.TestApp.ComponentWithChildren
 {
-    public class WrapGrid : RxComponent, IEnumerable<VisualNode>
+    public class WrapGrid : RxComponent
     {
-        private readonly List<VisualNode> _children = new List<VisualNode>();
         private int _columnCount = 4;
-
-        public IEnumerator<VisualNode> GetEnumerator()
-        {
-            return _children.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        public void Add(IEnumerable<VisualNode> children)
-        {
-            _children.AddRange(children);
-        }
-
         public WrapGrid ColumnCount(int columnCount)
         {
             _columnCount = columnCount;
@@ -37,7 +20,7 @@ namespace XamarinReactorUI.TestApp.ComponentWithChildren
         {
             int rowIndex = 0, colIndex = 0;
 
-            int rowCount = Math.DivRem(_children.Count, _columnCount, out var divRes);
+            int rowCount = Math.DivRem(Children().Count, _columnCount, out var divRes);
             if (divRes > 0)
                 rowCount++;
 
@@ -45,7 +28,7 @@ namespace XamarinReactorUI.TestApp.ComponentWithChildren
                 Enumerable.Range(1, rowCount).Select(_ => new RowDefinition() { Height = GridLength.Auto }),
                 Enumerable.Range(1, _columnCount).Select(_ => new ColumnDefinition()))
             {
-                _children.Select(child =>
+                Children().Select(child =>
                 {
                     child.GridRow(rowIndex);
                     child.GridColumn(colIndex);

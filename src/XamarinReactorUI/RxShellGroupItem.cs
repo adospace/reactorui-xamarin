@@ -1,7 +1,4 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
 using Xamarin.Forms;
 
 namespace XamarinReactorUI
@@ -15,19 +12,16 @@ namespace XamarinReactorUI
     {
         public RxShellGroupItem()
         {
-
         }
 
         public RxShellGroupItem(string title)
             : base(title)
         {
-
         }
 
         public RxShellGroupItem(Action<T> componentRefAction)
             : base(componentRefAction)
         {
-
         }
 
         public FlyoutDisplayOptions FlyoutDisplayOptions { get; set; } = (FlyoutDisplayOptions)ShellGroupItem.FlyoutDisplayOptionsProperty.DefaultValue;
@@ -38,8 +32,6 @@ namespace XamarinReactorUI
 
             base.OnUpdate();
         }
-
-
     }
 
     public static class RxShellGroupItemExtensions
@@ -49,9 +41,5 @@ namespace XamarinReactorUI
             shellgroupitem.FlyoutDisplayOptions = flyoutDisplayOptions;
             return shellgroupitem;
         }
-
-
-
     }
-
 }

@@ -18,19 +18,18 @@ namespace XamarinReactorUI
     <# } #>
     }
 
-    public class Rx<#= TypeName() #> : RxView<Xamarin.Forms.<#= TypeName() #>>, IRx<#= TypeName() #>
+    public class Rx<#= TypeName() #><T> : RxView<T>, IRx<#= TypeName() #> where T : Xamarin.Forms.<#= TypeName() #>, new()
     {
         public Rx<#= TypeName() #>()
         { 
         
         }
 
-        public Rx<#= TypeName() #>(Action<<#= TypeName() #>> componentRefAction)
+        public Rx<#= TypeName() #>(Action<T> componentRefAction)
             : base(componentRefAction)
         {
 
         }
-
 
         <# foreach (var property in Properties) { #>
         public <#= property.PropertyType.Name.ToResevedWordTypeName() #> <#= property.Name #> { get; set; } = (<#= property.PropertyType.Name.ToResevedWordTypeName() #>)<#= TypeName() #>.<#= property.Name #>Property.DefaultValue;
@@ -48,6 +47,20 @@ namespace XamarinReactorUI
         protected override IEnumerable<VisualNode> RenderChildren()
         {
             yield break;
+        }
+    }
+
+    public class Rx<#= TypeName() #> : Rx<#= TypeName() #><Xamarin.Forms.<#= TypeName() #>>
+    {
+        public Rx<#= TypeName() #>()
+        { 
+        
+        }
+
+        public Rx<#= TypeName() #>(Action<<#= TypeName() #>> componentRefAction)
+            : base(componentRefAction)
+        {
+
         }
     }
 

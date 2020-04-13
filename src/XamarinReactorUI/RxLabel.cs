@@ -24,7 +24,7 @@ namespace XamarinReactorUI
         TextType TextType { get; set; }
     }
 
-    public sealed class RxLabel : RxView<Xamarin.Forms.Label>, IRxLabel
+    public class RxLabel<T> : RxView<T>, IRxLabel where T : Label, new()
     {
         public RxLabel()
         {
@@ -82,6 +82,26 @@ namespace XamarinReactorUI
         protected override IEnumerable<VisualNode> RenderChildren()
         {
             yield break;
+        }
+    }
+
+    public class RxLabel : RxLabel<Label>
+    {
+        public RxLabel()
+        {
+
+        }
+
+        public RxLabel(string text)
+            :base(text)
+        {
+
+        }
+
+        public RxLabel(Action<Xamarin.Forms.Label> componentRefAction)
+            : base(componentRefAction)
+        {
+
         }
     }
 

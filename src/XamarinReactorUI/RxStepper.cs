@@ -13,13 +13,13 @@ namespace XamarinReactorUI
         Action<ValueChangedEventArgs> ValueChangedAction { get; set; }
     }
 
-    public class RxStepper : RxView<Xamarin.Forms.Stepper>, IRxStepper
+    public class RxStepper<T> : RxView<T>, IRxStepper where T : Stepper, new()
     {
         public RxStepper()
         {
         }
 
-        public RxStepper(Action<Stepper> componentRefAction)
+        public RxStepper(Action<T> componentRefAction)
             : base(componentRefAction)
         {
         }
@@ -73,6 +73,18 @@ namespace XamarinReactorUI
         protected override IEnumerable<VisualNode> RenderChildren()
         {
             yield break;
+        }
+    }
+
+    public class RxStepper : RxStepper<Stepper>
+    {
+        public RxStepper()
+        {
+        }
+
+        public RxStepper(Action<Stepper> componentRefAction)
+            : base(componentRefAction)
+        {
         }
     }
 

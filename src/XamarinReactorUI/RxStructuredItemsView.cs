@@ -15,7 +15,7 @@ namespace XamarinReactorUI
         ItemSizingStrategy ItemSizingStrategy { get; set; }
     }
 
-    public sealed class RxStructuredItemsView : RxView<Xamarin.Forms.StructuredItemsView>, IRxStructuredItemsView
+    public class RxStructuredItemsView : RxView<StructuredItemsView>, IRxStructuredItemsView
     {
         public RxStructuredItemsView()
         {

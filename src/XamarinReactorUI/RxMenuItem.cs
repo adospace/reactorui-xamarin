@@ -9,39 +9,30 @@ namespace XamarinReactorUI
 {
     public interface IRxMenuItem
     {
-        //ICommand Command { get; set; }
-        //object CommandParameter { get; set; }
         bool IsDestructive { get; set; }
         ImageSource IconImageSource { get; set; }
-        //bool IsEnabled { get; set; }
         string Text { get; set; }
     }
 
-    public class RxMenuItem : RxBaseMenuItem<MenuItem>, IRxMenuItem
+    public class RxMenuItem<T> : RxBaseMenuItem<T>, IRxMenuItem where T : MenuItem, new()
     {
         public RxMenuItem()
         {
         }
 
-        public RxMenuItem(Action<MenuItem> componentRefAction)
+        public RxMenuItem(Action<T> componentRefAction)
             : base(componentRefAction)
         {
         }
 
-        //public ICommand Command { get; set; } = (ICommand)MenuItem.CommandProperty.DefaultValue;
-        //public object CommandParameter { get; set; } = (object)MenuItem.CommandParameterProperty.DefaultValue;
         public bool IsDestructive { get; set; } = (bool)MenuItem.IsDestructiveProperty.DefaultValue;
         public ImageSource IconImageSource { get; set; } = (ImageSource)MenuItem.IconImageSourceProperty.DefaultValue;
-        //public bool IsEnabled { get; set; } = (bool)MenuItem.IsEnabledProperty.DefaultValue;
         public string Text { get; set; } = (string)MenuItem.TextProperty.DefaultValue;
 
         protected override void OnUpdate()
         {
-            //NativeControl.Command = Command;
-            //NativeControl.CommandParameter = CommandParameter;
             NativeControl.IsDestructive = IsDestructive;
             NativeControl.IconImageSource = IconImageSource;
-            //NativeControl.IsEnabled = IsEnabled;
             NativeControl.Text = Text;
 
             base.OnUpdate();
@@ -53,20 +44,21 @@ namespace XamarinReactorUI
         }
     }
 
+    public class RxMenuItem : RxMenuItem<MenuItem>
+    {
+        public RxMenuItem()
+        {
+        }
+
+        public RxMenuItem(Action<MenuItem> componentRefAction)
+            : base(componentRefAction)
+        {
+        }
+
+    }
+
     public static class RxMenuItemExtensions
     {
-        //public static T Command<T>(this T menuitem, ICommand command) where T : IRxMenuItem
-        //{
-        //    menuitem.Command = command;
-        //    return menuitem;
-        //}
-
-        //public static T CommandParameter<T>(this T menuitem, object commandParameter) where T : IRxMenuItem
-        //{
-        //    menuitem.CommandParameter = commandParameter;
-        //    return menuitem;
-        //}
-
         public static T IsDestructive<T>(this T menuitem, bool isDestructive) where T : IRxMenuItem
         {
             menuitem.IsDestructive = isDestructive;

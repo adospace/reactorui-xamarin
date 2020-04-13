@@ -11,7 +11,7 @@ namespace XamarinReactorUI
         Color BarTextColor { get; set; }
     }
 
-    public class RxNavigationPage : RxPage<NavigationPage>, IRxNavigationPage, IEnumerable<VisualNode>
+    public class RxNavigationPage<T> : RxPage<T>, IRxNavigationPage, IEnumerable<VisualNode> where T : NavigationPage, new()
     {
         private VisualNode _rootPage = null;
 
@@ -20,7 +20,7 @@ namespace XamarinReactorUI
             _rootPage = rootPage;
         }
 
-        public RxNavigationPage(Action<NavigationPage> componentRefAction, VisualNode rootPage = null)
+        public RxNavigationPage(Action<T> componentRefAction, VisualNode rootPage = null)
             : base(componentRefAction)
         {
             _rootPage = rootPage;
@@ -41,12 +41,6 @@ namespace XamarinReactorUI
 
 
             base.OnAddChild(widget, childNativeControl);
-        }
-
-        protected override void OnMount()
-        {
-            
-            //base.OnMount();
         }
 
         public void Add(VisualNode child)
@@ -84,6 +78,19 @@ namespace XamarinReactorUI
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
+        }
+    }
+
+    public class RxNavigationPage : RxNavigationPage<NavigationPage>
+    {
+        public RxNavigationPage(VisualNode rootPage = null)
+            : base(rootPage)
+        {
+        }
+
+        public RxNavigationPage(Action<NavigationPage> componentRefAction, VisualNode rootPage = null)
+            : base(componentRefAction, rootPage)
+        {
         }
     }
 

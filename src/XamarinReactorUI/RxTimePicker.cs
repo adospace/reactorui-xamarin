@@ -16,13 +16,13 @@ namespace XamarinReactorUI
         Action<TimeSpan> OnTimeChanged { get; set; }
     }
 
-    public class RxTimePicker : RxView<TimePicker>, IRxTimePicker
+    public class RxTimePicker<T> : RxView<T>, IRxTimePicker where T : TimePicker, new()
     {
         public RxTimePicker()
         {
         }
 
-        public RxTimePicker(Action<TimePicker> componentRefAction)
+        public RxTimePicker(Action<T> componentRefAction)
             : base(componentRefAction)
         {
         }
@@ -84,6 +84,18 @@ namespace XamarinReactorUI
         protected override IEnumerable<VisualNode> RenderChildren()
         {
             yield break;
+        }
+    }
+
+    public class RxTimePicker : RxTimePicker<TimePicker>
+    {
+        public RxTimePicker()
+        {
+        }
+
+        public RxTimePicker(Action<TimePicker> componentRefAction)
+            : base(componentRefAction)
+        {
         }
     }
 

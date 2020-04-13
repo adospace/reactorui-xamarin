@@ -11,29 +11,15 @@ namespace XamarinReactorUI
         Color SelectedTabColor { get; set; }
     }
 
-    public sealed class RxTabbedPage : RxMultiPage<TabbedPage, Page>, IRxTabbedPage
+    public class RxTabbedPage<T> : RxMultiPage<T, Page>, IRxTabbedPage where T : TabbedPage, new()
     {
-        private readonly TabbedPage _existingPage;
-        public RxContentPage _samplingForm;
-
         public RxTabbedPage()
         {
         }
 
-        public RxTabbedPage(TabbedPage page)
-        {
-            _existingPage = page;
-        }
-
-        public RxTabbedPage(Action<TabbedPage> componentRefAction)
+        public RxTabbedPage(Action<T> componentRefAction)
             : base(componentRefAction)
         {
-        }
-
-        protected override void OnMount()
-        {
-            _nativeControl = _existingPage;
-            base.OnMount();
         }
 
         public Color BarBackgroundColor { get; set; } = (Color)TabbedPage.BarBackgroundColorProperty.DefaultValue;
@@ -49,6 +35,18 @@ namespace XamarinReactorUI
             NativeControl.SelectedTabColor = SelectedTabColor;
 
             base.OnUpdate();
+        }
+    }
+
+    public class RxTabbedPage : RxTabbedPage<TabbedPage>
+    {
+        public RxTabbedPage()
+        {
+        }
+
+        public RxTabbedPage(Action<TabbedPage> componentRefAction)
+            : base(componentRefAction)
+        {
         }
     }
 

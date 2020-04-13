@@ -13,13 +13,13 @@ namespace XamarinReactorUI
         RowDefinitionCollection RowDefinitions { get; set; }
     }
 
-    public class RxGrid : RxLayout<Grid>, IRxGrid
+    public class RxGrid<T> : RxLayout<T>, IRxGrid where T : Grid, new()
     {
         public RxGrid()
         {
         }
 
-        public RxGrid(Action<Grid> componentRefAction)
+        public RxGrid(Action<T> componentRefAction)
             : base(componentRefAction)
         {
 
@@ -90,6 +90,34 @@ namespace XamarinReactorUI
             NativeControl.RowDefinitions = RowDefinitions;
 
             base.OnUpdate();
+        }
+    }
+
+    public class RxGrid : RxGrid<Grid>
+    {
+        public RxGrid()
+        {
+        }
+
+        public RxGrid(Action<Grid> componentRefAction)
+            : base(componentRefAction)
+        {
+
+        }
+
+        public RxGrid(string rows, string columns)
+            : base(rows, columns)
+        {
+        }
+
+        public RxGrid(RowDefinitionCollection rows, ColumnDefinitionCollection columns)
+            : base(rows, columns)
+        {
+        }
+
+        public RxGrid(IEnumerable<RowDefinition> rows, IEnumerable<ColumnDefinition> columns)
+            : base(rows, columns)
+        {
         }
     }
 

@@ -12,13 +12,13 @@ namespace XamarinReactorUI
         Action<object, ToggledEventArgs> ToggledChangedAction { get; set; }
     }
 
-    public class RxSwitch : RxView<Switch>, IRxSwitch
+    public class RxSwitch<T> : RxView<T>, IRxSwitch where T : Switch, new()
     {
         public RxSwitch()
         {
         }
 
-        public RxSwitch(Action<Switch> componentRefAction)
+        public RxSwitch(Action<T> componentRefAction)
             : base(componentRefAction)
         {
         }
@@ -36,7 +36,6 @@ namespace XamarinReactorUI
 
             if (ToggledChangedAction != null)
                 NativeControl.Toggled += NativeControl_Toggled;
-            
 
             base.OnUpdate();
         }
@@ -57,6 +56,18 @@ namespace XamarinReactorUI
         protected override IEnumerable<VisualNode> RenderChildren()
         {
             yield break;
+        }
+    }
+
+    public class RxSwitch : RxSwitch<Switch>
+    {
+        public RxSwitch()
+        {
+        }
+
+        public RxSwitch(Action<Switch> componentRefAction)
+            : base(componentRefAction)
+        {
         }
     }
 

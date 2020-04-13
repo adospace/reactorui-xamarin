@@ -11,9 +11,9 @@ namespace XamarinReactorUI
     {
     }
 
-    public sealed class RxContentPage : RxPage<Xamarin.Forms.ContentPage>, IRxContentPage, IEnumerable<VisualNode>
+    public class RxContentPage<T> : RxPage<T>, IRxContentPage, IEnumerable<VisualNode> where T : ContentPage, new()
     {
-        private List<VisualNode> _contents = new List<VisualNode>();
+        private readonly List<VisualNode> _contents = new List<VisualNode>();
         private readonly ContentPage _contentPage;
 
         public RxContentPage()
@@ -26,12 +26,12 @@ namespace XamarinReactorUI
             _contents.Add(content ?? throw new ArgumentNullException());
         }
 
-        public RxContentPage(ContentPage contentPage)
-        {
-            _contentPage = contentPage;
-        }
+        //public RxContentPage(T contentPage)
+        //{
+        //    _contentPage = contentPage;
+        //}
 
-        public RxContentPage(Action<ContentPage> componentRefAction)
+        public RxContentPage(Action<T> componentRefAction)
             : base(componentRefAction)
         {
         }
@@ -87,6 +87,30 @@ namespace XamarinReactorUI
         }
     }
 
+    public class RxContentPage : RxContentPage<ContentPage>
+    {
+        public RxContentPage()
+        {
+
+        }
+
+        public RxContentPage(VisualNode content)
+            : base(content)
+        {
+
+        }
+
+        //public RxContentPage(ContentPage contentPage)
+        //{
+        //    _contentPage = contentPage;
+        //}
+
+        public RxContentPage(Action<ContentPage> componentRefAction)
+            : base(componentRefAction)
+        {
+        }
+    }
+    
     public static class RxContentPageExtensions
     {
 

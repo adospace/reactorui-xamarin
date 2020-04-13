@@ -9,7 +9,26 @@ namespace XamarinReactorUI
     {
     }
 
-    public sealed class RxTab : RxShellSection<Xamarin.Forms.Tab>, IRxTab
+    public class RxTab<T> : RxShellSection<T>, IRxTab where T : Tab, new()
+    {
+        public RxTab()
+        {
+
+        }
+
+        public RxTab(string title)
+            : base(title)
+        {
+
+        }
+
+        public RxTab(Action<Tab> componentRefAction)
+            : base(componentRefAction)
+        {
+        }
+    }
+
+    public class RxTab : RxTab<Tab>
     {
         public RxTab()
         {

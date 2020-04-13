@@ -11,14 +11,14 @@ namespace XamarinReactorUI
         IEnumerable ItemsSource { get; set; }
     }
 
-    public sealed class RxListView : RxView<ListView>, IRxListView
+    public class RxListView<T> : RxView<T>, IRxListView where T : ListView, new()
     {
         public RxListView(IEnumerable itemsSource = null)
         {
             ItemsSource = itemsSource;
         }
         
-        public RxListView(Action<ListView> componentRefAction)
+        public RxListView(Action<T> componentRefAction)
             : base(componentRefAction)
         {
 
@@ -37,6 +37,19 @@ namespace XamarinReactorUI
         protected override IEnumerable<VisualNode> RenderChildren()
         {
             yield break;
+        }
+    }
+
+    public class RxListView : RxListView<ListView>
+    {
+        public RxListView(IEnumerable itemsSource = null)
+            : base(itemsSource)
+        {
+        }
+
+        public RxListView(Action<ListView> componentRefAction)
+            : base(componentRefAction)
+        {
         }
     }
 

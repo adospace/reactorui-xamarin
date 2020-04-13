@@ -18,7 +18,7 @@ namespace XamarinReactorUI
         Action ClickedAction { get; set; }
     }
 
-    public class RxToolbarItem : RxBaseMenuItem<ToolbarItem>, IRxToolbarItem
+    public class RxToolbarItem<T> : RxBaseMenuItem<T>, IRxToolbarItem where T : ToolbarItem, new()
     {
         public RxToolbarItem()
         {
@@ -30,7 +30,7 @@ namespace XamarinReactorUI
             Text = text;
         }
 
-        public RxToolbarItem(Action<ToolbarItem> componentRefAction)
+        public RxToolbarItem(Action<T> componentRefAction)
             : base(componentRefAction)
         {
 
@@ -73,6 +73,26 @@ namespace XamarinReactorUI
         protected override IEnumerable<VisualNode> RenderChildren()
         {
             yield break;
+        }
+    }
+
+    public class RxToolbarItem : RxToolbarItem<ToolbarItem>
+    {
+        public RxToolbarItem()
+        {
+
+        }
+
+        public RxToolbarItem(string text)
+            : base(text)
+        {
+
+        }
+
+        public RxToolbarItem(Action<ToolbarItem> componentRefAction)
+            : base(componentRefAction)
+        {
+
         }
     }
 

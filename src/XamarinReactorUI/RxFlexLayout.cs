@@ -14,13 +14,13 @@ namespace XamarinReactorUI
         FlexWrap Wrap { get; set; }
     }
 
-    public class RxFlexLayout : RxLayout<Xamarin.Forms.FlexLayout>, IRxFlexLayout
+    public class RxFlexLayout<T> : RxLayout<T>, IRxFlexLayout where T : FlexLayout, new()
     {
         public RxFlexLayout()
         {
         }
 
-        public RxFlexLayout(Action<FlexLayout> componentRefAction)
+        public RxFlexLayout(Action<T> componentRefAction)
             : base(componentRefAction)
         {
         }
@@ -66,6 +66,18 @@ namespace XamarinReactorUI
             base.OnRemoveChild(widget, childControl);
         }
 
+    }
+
+    public class RxFlexLayout : RxFlexLayout<FlexLayout>
+    {
+        public RxFlexLayout()
+        {
+        }
+
+        public RxFlexLayout(Action<FlexLayout> componentRefAction)
+            : base(componentRefAction)
+        {
+        }
     }
 
     public static class RxFlexLayoutExtensions

@@ -16,14 +16,14 @@ namespace XamarinReactorUI
         bool IsAnimationPlaying { get; set; }
     }
 
-    public sealed class RxImage : RxView<Image>, IRxImage
+    public class RxImage<T> : RxView<T>, IRxImage where T : Image, new()
     {
         public RxImage()
         {
 
         }
 
-        public RxImage(Action<Image> componentRefAction)
+        public RxImage(Action<T> componentRefAction)
             : base(componentRefAction)
         {
 
@@ -47,6 +47,20 @@ namespace XamarinReactorUI
         protected override IEnumerable<VisualNode> RenderChildren()
         {
             yield break;
+        }
+    }
+
+    public class RxImage : RxImage<Image>
+    {
+        public RxImage()
+        {
+
+        }
+
+        public RxImage(Action<Image> componentRefAction)
+            : base(componentRefAction)
+        {
+
         }
     }
 

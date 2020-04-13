@@ -7,7 +7,19 @@ namespace XamarinReactorUI
     {
     }
 
-    public sealed class RxTabBar : RxShellItem<TabBar>, IRxTabBar
+    public class RxTabBar<T> : RxShellItem<T>, IRxTabBar where T : TabBar, new()
+    {
+        public RxTabBar()
+        {
+        }
+
+        public RxTabBar(Action<T> componentRefAction)
+            : base(componentRefAction)
+        {
+        }
+    }
+
+    public class RxTabBar : RxTabBar<TabBar>
     {
         public RxTabBar()
         {

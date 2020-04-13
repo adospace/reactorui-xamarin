@@ -25,7 +25,7 @@ namespace XamarinReactorUI
         Keyboard Keyboard { get; set; }
     }
 
-    public sealed class RxEntry : RxInputView<Entry>, IRxEntry
+    public class RxEntry<T> : RxInputView<T>, IRxEntry where T : Entry, new()
     {
         public RxEntry()
         {
@@ -37,7 +37,7 @@ namespace XamarinReactorUI
 
         }
 
-        public RxEntry(Action<Entry> componentRefAction)
+        public RxEntry(Action<T> componentRefAction)
             : base(componentRefAction)
         {
 
@@ -77,13 +77,32 @@ namespace XamarinReactorUI
         protected override void OnMigrated(VisualNode newNode)
         {
             var newEntry = (RxEntry)newNode;
-            if (newEntry != null)
+            if (newEntry != null && NativeControl != null)
             {
                 newEntry.CursorPosition = NativeControl.CursorPosition;
                 newEntry.SelectionLength = NativeControl.SelectionLength;
             }
 
             base.OnMigrated(newNode);
+        }
+    }
+
+    public class RxEntry : RxEntry<Entry>
+    {
+        public RxEntry()
+        {
+        }
+
+        public RxEntry(string text)
+            : base(text)
+        {
+
+        }
+
+        public RxEntry(Action<Entry> componentRefAction)
+            : base(componentRefAction)
+        {
+
         }
     }
 

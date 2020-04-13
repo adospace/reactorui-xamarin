@@ -29,31 +29,31 @@ namespace XamarinReactorUI
         ScrollMode FlyoutVerticalScrollMode { get; set; }
     }
 
-    public sealed class RxShell : RxPage<Xamarin.Forms.Shell>, IRxShell, IEnumerable<VisualNode>
+    public class RxShell<T> : RxPage<T>, IRxShell, IEnumerable<VisualNode> where T : Shell, new()
     {
-        private readonly Shell _shell;
-        private List<VisualNode> _contents = new List<VisualNode>();
+        //private readonly Shell _shell;
+        private readonly List<VisualNode> _contents = new List<VisualNode>();
         private readonly Dictionary<Element, ShellItem> _elementItemMap = new Dictionary<Element, ShellItem>();
 
         public RxShell()
         {
         }
 
-        public RxShell(Shell shell)
-        {
-            _shell = shell;
-        }
+        //public RxShell(Shell shell)
+        //{
+        //    _shell = shell;
+        //}
 
-        public RxShell(Action<Shell> componentRefAction)
+        public RxShell(Action<T> componentRefAction)
             : base(componentRefAction)
         {
         }
 
-        protected override void OnMount()
-        {
-            _nativeControl = _shell;
-            base.OnMount();
-        }
+        //protected override void OnMount()
+        //{
+        //    _nativeControl = _shell;
+        //    base.OnMount();
+        //}
 
         public void Add(VisualNode child)
         {
@@ -144,6 +144,23 @@ namespace XamarinReactorUI
             NativeControl.FlyoutVerticalScrollMode = FlyoutVerticalScrollMode;
 
             base.OnUpdate();
+        }
+    }
+
+    public class RxShell : RxShell<Shell>
+    {
+        public RxShell()
+        {
+        }
+
+        //public RxShell(Shell shell)
+        //{
+        //    _shell = shell;
+        //}
+
+        public RxShell(Action<Shell> componentRefAction)
+            : base(componentRefAction)
+        {
         }
     }
 

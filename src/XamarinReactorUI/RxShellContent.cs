@@ -9,7 +9,7 @@ namespace XamarinReactorUI
     {
     }
 
-    public sealed class RxShellContent : RxBaseShellItem<ShellContent>, IRxShellContent, IEnumerable<VisualNode>
+    public class RxShellContent<T> : RxBaseShellItem<T>, IRxShellContent, IEnumerable<VisualNode> where T : ShellContent, new()
     {
         private readonly List<VisualNode> _contents = new List<VisualNode>();
 
@@ -22,7 +22,7 @@ namespace XamarinReactorUI
             _contents.Add(content);
         }
 
-        public RxShellContent(Action<ShellContent> componentRefAction)
+        public RxShellContent(Action<T> componentRefAction)
             : base(componentRefAction)
         {
         }
@@ -65,6 +65,23 @@ namespace XamarinReactorUI
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
+        }
+    }
+
+    public class RxShellContent : RxShellContent<ShellContent>
+    {
+        public RxShellContent()
+        {
+        }
+
+        public RxShellContent(VisualNode content)
+            : base(content)
+        {
+        }
+
+        public RxShellContent(Action<ShellContent> componentRefAction)
+            : base(componentRefAction)
+        {
         }
     }
 

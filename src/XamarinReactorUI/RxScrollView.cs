@@ -10,13 +10,13 @@ namespace XamarinReactorUI
         ScrollBarVisibility VerticalScrollBarVisibility { get; set; }
     }
 
-    public class RxScrollView : RxLayout<ScrollView>, IRxScrollView
+    public class RxScrollView<T> : RxLayout<T>, IRxScrollView where T : ScrollView, new()
     {
         public RxScrollView()
         {
         }
 
-        public RxScrollView(Action<ScrollView> componentRefAction)
+        public RxScrollView(Action<T> componentRefAction)
             : base(componentRefAction)
         {
 
@@ -52,6 +52,19 @@ namespace XamarinReactorUI
             NativeControl.Content = null;
 
             base.OnRemoveChild(widget, childControl);
+        }
+    }
+
+    public class RxScrollView : RxScrollView<ScrollView>
+    {
+        public RxScrollView()
+        {
+        }
+
+        public RxScrollView(Action<ScrollView> componentRefAction)
+            : base(componentRefAction)
+        {
+
         }
     }
 

@@ -10,14 +10,14 @@ namespace XamarinReactorUI
     {
     }
 
-    public sealed class RxFlyoutItem : RxShellItem<FlyoutItem>, IRxFlyoutItem
+    public class RxFlyoutItem<T> : RxShellItem<T>, IRxFlyoutItem where T : FlyoutItem, new()
     {
         public RxFlyoutItem()
         {
 
         }
 
-        public RxFlyoutItem(Action<FlyoutItem> componentRefAction)
+        public RxFlyoutItem(Action<T> componentRefAction)
             : base(componentRefAction)
         {
 
@@ -32,6 +32,20 @@ namespace XamarinReactorUI
         protected override IEnumerable<VisualNode> RenderChildren()
         {
             yield break;
+        }
+    }
+
+    public class RxFlyoutItem : RxFlyoutItem<FlyoutItem>
+    {
+        public RxFlyoutItem()
+        {
+
+        }
+
+        public RxFlyoutItem(Action<FlyoutItem> componentRefAction)
+            : base(componentRefAction)
+        {
+
         }
     }
 

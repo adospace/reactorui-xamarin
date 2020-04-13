@@ -9,16 +9,15 @@ namespace XamarinReactorUI
         bool IsChecked { get; set; }
         Color Color { get; set; }
         Action<object, CheckedChangedEventArgs> CheckedChangedAction { get; set; }
-
     }
 
-    public class RxCheckBox : RxView<Xamarin.Forms.CheckBox>, IRxCheckBox
+    public class RxCheckBox<T> : RxView<T>, IRxCheckBox where T : CheckBox, new()
     {
         public RxCheckBox()
         {
         }
 
-        public RxCheckBox(Action<CheckBox> componentRefAction)
+        public RxCheckBox(Action<T> componentRefAction)
             : base(componentRefAction)
         {
         }
@@ -54,6 +53,18 @@ namespace XamarinReactorUI
         protected override IEnumerable<VisualNode> RenderChildren()
         {
             yield break;
+        }
+    }
+
+    public class RxCheckBox : RxCheckBox<CheckBox>
+    {
+        public RxCheckBox()
+        {
+        }
+
+        public RxCheckBox(Action<CheckBox> componentRefAction)
+            : base(componentRefAction)
+        {
         }
     }
 

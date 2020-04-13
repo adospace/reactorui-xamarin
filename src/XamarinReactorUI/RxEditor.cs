@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Xamarin.Forms;
 
 namespace XamarinReactorUI
@@ -17,9 +18,14 @@ namespace XamarinReactorUI
         EditorAutoSizeOption AutoSize { get; set; }
     }
 
-    public class RxEditor : RxInputView<Xamarin.Forms.Editor>, IRxEditor
+    public class RxEditor<T> : RxInputView<T>, IRxEditor where T : Editor, new()
     {
         public RxEditor()
+        {
+        }
+
+        public RxEditor(Action<T> componentRefAction)
+            : base(componentRefAction)
         {
         }
 
@@ -38,6 +44,18 @@ namespace XamarinReactorUI
             NativeControl.AutoSize = AutoSize;
 
             base.OnUpdate();
+        }
+    }
+
+    public class RxEditor : RxEditor<Editor>
+    {
+        public RxEditor()
+        {
+        }
+
+        public RxEditor(Action<Editor> componentRefAction)
+            : base(componentRefAction)
+        {
         }
     }
 

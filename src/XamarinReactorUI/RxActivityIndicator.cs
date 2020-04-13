@@ -10,13 +10,13 @@ namespace XamarinReactorUI
         Color Color { get; set; }
     }
 
-    public sealed class RxActivityIndicator : RxView<ActivityIndicator>, IRxActivityIndicator
+    public class RxActivityIndicator<T> : RxView<T>, IRxActivityIndicator where T : ActivityIndicator, new()
     {
         public RxActivityIndicator()
         {
         }
 
-        public RxActivityIndicator(Action<ActivityIndicator> componentRefAction)
+        public RxActivityIndicator(Action<T> componentRefAction)
             : base(componentRefAction)
         {
         }
@@ -38,6 +38,18 @@ namespace XamarinReactorUI
             if (_color.HasValue) NativeControl.Color = _color.Value;
 
             base.OnUpdate();
+        }
+    }
+
+    public class RxActivityIndicator : RxActivityIndicator<ActivityIndicator>
+    {
+        public RxActivityIndicator()
+        {
+        }
+
+        public RxActivityIndicator(Action<ActivityIndicator> componentRefAction)
+            : base(componentRefAction)
+        {
         }
     }
 

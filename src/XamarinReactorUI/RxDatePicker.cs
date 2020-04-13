@@ -18,7 +18,7 @@ namespace XamarinReactorUI
         Action<DateChangedEventArgs> DateChangedAction { get; set; }
     }
 
-    public class RxDatePicker : RxView<Xamarin.Forms.DatePicker>, IRxDatePicker
+    public class RxDatePicker<T> : RxView<T>, IRxDatePicker where T : DatePicker, new()
     {
         public RxDatePicker()
         {
@@ -84,6 +84,18 @@ namespace XamarinReactorUI
         protected override IEnumerable<VisualNode> RenderChildren()
         {
             yield break;
+        }
+    }
+
+    public class RxDatePicker : RxDatePicker<DatePicker>
+    {
+        public RxDatePicker()
+        {
+        }
+
+        public RxDatePicker(Action<DatePicker> componentRefAction)
+            : base(componentRefAction)
+        {
         }
     }
 

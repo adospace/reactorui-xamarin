@@ -10,13 +10,13 @@ namespace XamarinReactorUI
         CornerRadius CornerRadius { get; set; }
     }
 
-    public class RxBoxView : RxView<Xamarin.Forms.BoxView>, IRxBoxView
+    public class RxBoxView<T> : RxView<T>, IRxBoxView where T : BoxView, new()
     {
         public RxBoxView()
         {
         }
 
-        public RxBoxView(Action<BoxView> componentRefAction)
+        public RxBoxView(Action<T> componentRefAction)
             : base(componentRefAction)
         {
         }
@@ -35,6 +35,18 @@ namespace XamarinReactorUI
         protected override IEnumerable<VisualNode> RenderChildren()
         {
             yield break;
+        }
+    }
+
+    public class RxBoxView : RxBoxView<BoxView>
+    {
+        public RxBoxView()
+        {
+        }
+
+        public RxBoxView(Action<BoxView> componentRefAction)
+            : base(componentRefAction)
+        {
         }
     }
 

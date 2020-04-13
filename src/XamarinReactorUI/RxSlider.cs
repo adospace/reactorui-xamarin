@@ -20,13 +20,13 @@ namespace XamarinReactorUI
         Action DragCompletedAction { get; set; }
     }
 
-    public class RxSlider : RxView<Slider>, IRxSlider
+    public class RxSlider<T> : RxView<T>, IRxSlider where T : Slider, new()
     {
         public RxSlider()
         {
         }
 
-        public RxSlider(Action<Slider> componentRefAction)
+        public RxSlider(Action<T> componentRefAction)
             : base(componentRefAction)
         {
         }
@@ -107,6 +107,18 @@ namespace XamarinReactorUI
         }
     }
 
+    public class RxSlider : RxSlider<Slider>
+    {
+        public RxSlider()
+        {
+        }
+
+        public RxSlider(Action<Slider> componentRefAction)
+            : base(componentRefAction)
+        {
+        }
+    }
+    
     public static class RxSliderExtensions
     {
         public static T OnValueChanged<T>(this T slider, Action<ValueChangedEventArgs> action) where T : IRxSlider

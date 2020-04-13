@@ -9,13 +9,13 @@ namespace XamarinReactorUI
         double Spacing { get; set; }
     }
 
-    public sealed class RxStackLayout : RxLayout<StackLayout>, IRxStackLayout
+    public class RxStackLayout<T> : RxLayout<T>, IRxStackLayout where T : StackLayout, new()
     {
         public RxStackLayout(params VisualNode[] children)
             : base(children)
         { }
 
-        public RxStackLayout(Action<StackLayout> componentRefAction)
+        public RxStackLayout(Action<T> componentRefAction)
             : base(componentRefAction)
         {
         }
@@ -51,6 +51,18 @@ namespace XamarinReactorUI
             NativeControl.Spacing = Spacing;
 
             base.OnUpdate();
+        }
+    }
+
+    public class RxStackLayout : RxStackLayout<StackLayout>
+    {
+        public RxStackLayout(params VisualNode[] children)
+            : base(children)
+        { }
+
+        public RxStackLayout(Action<StackLayout> componentRefAction)
+            : base(componentRefAction)
+        {
         }
     }
 

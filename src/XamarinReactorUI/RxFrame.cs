@@ -11,13 +11,13 @@ namespace XamarinReactorUI
         float CornerRadius { get; set; }
     }
 
-    public class RxFrame : RxContentView<Frame>, IRxFrame
+    public class RxFrame<T> : RxContentView<T>, IRxFrame where T : Frame, new()
     {
         public RxFrame()
         {
         }
 
-        public RxFrame(Action<Frame> componentRefAction)
+        public RxFrame(Action<T> componentRefAction)
             : base(componentRefAction)
         {
         }
@@ -33,6 +33,18 @@ namespace XamarinReactorUI
             NativeControl.CornerRadius = CornerRadius;
 
             base.OnUpdate();
+        }
+    }
+
+    public class RxFrame : RxFrame<Frame>
+    {
+        public RxFrame()
+        {
+        }
+
+        public RxFrame(Action<Frame> componentRefAction)
+            : base(componentRefAction)
+        {
         }
     }
 

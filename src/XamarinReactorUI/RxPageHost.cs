@@ -9,7 +9,7 @@ namespace XamarinReactorUI
     {
         private RxComponent _component;
         private bool _sleeping;
-        protected Page _componentPage;
+        public Page ContainerPage { get; private set; }
 
         protected RxPageHost()
         {
@@ -19,16 +19,16 @@ namespace XamarinReactorUI
         {
             var host = new RxPageHost<T>();
             host.Run();
-            return host._componentPage;
+            return host.ContainerPage;
         }
 
         protected sealed override void OnAddChild(VisualNode widget, Element nativeControl)
         {
             if (nativeControl is Page page)
             {
-                _componentPage = page;
-                _componentPage.Appearing += OnComponentPage_Appearing;
-                _componentPage.Disappearing += OnComponentPage_Disappearing;
+                ContainerPage = page;
+                ContainerPage.Appearing += OnComponentPage_Appearing;
+                ContainerPage.Disappearing += OnComponentPage_Disappearing;
             }
             else
             {
@@ -49,13 +49,13 @@ namespace XamarinReactorUI
 
         protected sealed override void OnRemoveChild(VisualNode widget, Element nativeControl)
         {
-            if (_componentPage != null)
+            if (ContainerPage != null)
             {
-                _componentPage.Appearing += OnComponentPage_Appearing;
-                _componentPage.Disappearing += OnComponentPage_Disappearing;
+                ContainerPage.Appearing += OnComponentPage_Appearing;
+                ContainerPage.Disappearing += OnComponentPage_Disappearing;
             }
 
-            _componentPage = null;
+            ContainerPage = null;
         }
 
         protected virtual RxComponent InitializeComponent(RxComponent component)
@@ -71,7 +71,7 @@ namespace XamarinReactorUI
 
             OnLayout();
 
-            if (_componentPage == null)
+            if (ContainerPage == null)
             {
                 throw new InvalidOperationException($"Component {_component.GetType()} doesn't render a page as root");
             }
@@ -150,7 +150,7 @@ namespace XamarinReactorUI
         {
             var host = new RxPageHost<T, P>(stateInitializer);
             host.Run();
-            return host._componentPage;
+            return host.ContainerPage;
         }
 
         protected override RxComponent InitializeComponent(RxComponent component)

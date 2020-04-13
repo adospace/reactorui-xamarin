@@ -5,10 +5,5 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="XamarinReactorUI.TestApp.App">
-    <Application.Resources>
-        <Style TargetType="Label">
-            <Setter Property="Text" Value="FromStyle"/>
-            <Setter Property="TextColor" Value="Red"/>
-        </Style>
-    </Application.Resources>
+
 </Application>

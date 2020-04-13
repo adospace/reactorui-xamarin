@@ -55,6 +55,8 @@ namespace XamarinReactorUI
 
         public RxContext Context { get; } = new RxContext();
 
+        public Page ContainerPage => _application.MainPage;
+
     }
 
     public class RxApplication<T> : RxApplication where T : RxComponent, new()

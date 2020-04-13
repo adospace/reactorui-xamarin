@@ -77,9 +77,11 @@ namespace XamarinReactorUI
         protected override void OnMigrated(VisualNode newNode)
         {
             var newEntry = (RxEntry)newNode;
-
-            newEntry.CursorPosition = NativeControl.CursorPosition;
-            newEntry.SelectionLength = NativeControl.SelectionLength;
+            if (newEntry != null)
+            {
+                newEntry.CursorPosition = NativeControl.CursorPosition;
+                newEntry.SelectionLength = NativeControl.SelectionLength;
+            }
 
             base.OnMigrated(newNode);
         }

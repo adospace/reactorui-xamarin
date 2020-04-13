@@ -16,7 +16,7 @@ namespace XamarinReactorUI.Maps
         Action<object, MapClickedEventArgs> ClickedAction { get; set; }
     }
 
-    public class RxMap : RxView<Map>, IRxMap, IEnumerable<RxPin>//, IEnumerable<VisualNode>
+    public class RxMap<T> : RxView<T>, IRxMap, IEnumerable<RxPin> where T : Map, new()
     {
         private readonly List<RxPin> _internalChildren = new List<RxPin>();
         //private readonly List<VisualNode> _layoutChildren = new List<VisualNode>();
@@ -30,7 +30,7 @@ namespace XamarinReactorUI.Maps
             Add(nodes);
         }
 
-        public RxMap(Action<Map> componentRefAction)
+        public RxMap(Action<T> componentRefAction)
             : base(componentRefAction)
         {
         }
@@ -115,6 +115,19 @@ namespace XamarinReactorUI.Maps
             if (NativeControl != null)
                 NativeControl.MapClicked -= NativeControl_MapClicked;
             base.OnMigrated(newNode);
+        }
+    }
+
+    public class RxMap : RxMap<Map>
+    {
+        public RxMap(IEnumerable<RxPin> nodes)
+            : base(nodes)
+        {
+        }
+
+        public RxMap(Action<Map> componentRefAction)
+            : base(componentRefAction)
+        {
         }
     }
 

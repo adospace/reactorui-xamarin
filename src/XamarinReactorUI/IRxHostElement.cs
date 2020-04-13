@@ -1,4 +1,5 @@
 ﻿using System;
+using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
@@ -8,6 +9,6 @@ namespace XamarinReactorUI
 
         void Stop();
 
-        //event EventHandler<UnhandledExceptionEventArgs> UnhandledException;
+        Page ContainerPage { get; }
     }
 }

@@ -30,6 +30,11 @@ namespace XamarinReactorUI
             return GetEnumerator();
         }
 
+        public void Add(VisualNode child)
+        {
+            _children.Add(child);
+        }
+
         public void Add(IEnumerable<VisualNode> children)
         {
             _children.AddRange(children);
@@ -38,45 +43,45 @@ namespace XamarinReactorUI
         protected new IReadOnlyList<VisualNode> Children()
             => _children;
 
-        private Page _containerPage;
+        //private Page _containerPage;
 
-        private RxComponent GetAncestorComponent()
+        private IRxHostElement GetPageHost()
         {
             var current = Parent;
-            while (current != null && !(current is RxComponent))
+            while (current != null && !(current is IRxHostElement))
                 current = current.Parent;
 
-            return current as RxComponent;
+            return current as IRxHostElement;
         }
 
         protected Page ContainerPage
         {
             get
             {
-                return _containerPage ?? GetAncestorComponent()?.ContainerPage;
+                return GetPageHost()?.ContainerPage;
             }
-            set
-            {
-                _containerPage = value;
-            }
+            //set
+            //{
+            //    _containerPage = value;
+            //}
         }
 
         protected sealed override void OnAddChild(VisualNode widget, Element nativeControl)
         {
-            if (nativeControl is Page page)
-            {
-                ContainerPage = page;
-            }
+            //if (nativeControl is Page page)
+            //{
+            //    ContainerPage = page;
+            //}
 
             Parent.AddChild(this, nativeControl);
         }
 
         protected sealed override void OnRemoveChild(VisualNode widget, Element nativeControl)
         {
-            if (ContainerPage == nativeControl)
-            {
-                ContainerPage = null;
-            }
+            //if (ContainerPage == nativeControl)
+            //{
+            //    ContainerPage = null;
+            //}
 
             Parent.RemoveChild(this, nativeControl);
         }

@@ -81,7 +81,8 @@ namespace XamarinReactorUI
 
         protected sealed override void OnRemoveChild(VisualNode widget, Element nativeControl)
         {
-            _application.MainPage = null;
+            //MainPage can't be set to null!
+            //_application.MainPage = null;
         }
 
         public override void Run()

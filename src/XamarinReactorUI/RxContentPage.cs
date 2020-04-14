@@ -14,7 +14,7 @@ namespace XamarinReactorUI
     public class RxContentPage<T> : RxPage<T>, IRxContentPage, IEnumerable<VisualNode> where T : ContentPage, new()
     {
         private readonly List<VisualNode> _contents = new List<VisualNode>();
-        private readonly ContentPage _contentPage;
+        //private readonly ContentPage _contentPage;
 
         public RxContentPage()
         {
@@ -36,11 +36,11 @@ namespace XamarinReactorUI
         {
         }
 
-        protected override void OnMount()
-        {
-            _nativeControl = _contentPage;
-            base.OnMount();
-        }
+        //protected override void OnMount()
+        //{
+        //    _nativeControl = _contentPage;
+        //    base.OnMount();
+        //}
 
         public void Add(VisualNode child)
         {

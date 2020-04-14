@@ -3,8 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace XamarinReactorUI
@@ -30,20 +28,18 @@ namespace XamarinReactorUI
             return GetEnumerator();
         }
 
-        public void Add(VisualNode child)
+        public void Add(params VisualNode[] nodes)
         {
-            _children.Add(child);
-        }
+            if (nodes is null)
+            {
+                throw new ArgumentNullException(nameof(nodes));
+            }
 
-        public void Add(IEnumerable<VisualNode> children)
-        {
-            _children.AddRange(children);
+            _children.AddRange(nodes);
         }
 
         protected new IReadOnlyList<VisualNode> Children()
             => _children;
-
-        //private Page _containerPage;
 
         private IRxHostElement GetPageHost()
         {
@@ -60,29 +56,15 @@ namespace XamarinReactorUI
             {
                 return GetPageHost()?.ContainerPage;
             }
-            //set
-            //{
-            //    _containerPage = value;
-            //}
         }
 
         protected sealed override void OnAddChild(VisualNode widget, Element nativeControl)
         {
-            //if (nativeControl is Page page)
-            //{
-            //    ContainerPage = page;
-            //}
-
             Parent.AddChild(this, nativeControl);
         }
 
         protected sealed override void OnRemoveChild(VisualNode widget, Element nativeControl)
         {
-            //if (ContainerPage == nativeControl)
-            //{
-            //    ContainerPage = null;
-            //}
-
             Parent.RemoveChild(this, nativeControl);
         }
 
@@ -121,7 +103,6 @@ namespace XamarinReactorUI
 
         protected virtual void OnMounted()
         {
-
         }
 
         protected sealed override void OnUnmount()
@@ -138,15 +119,13 @@ namespace XamarinReactorUI
 
         protected virtual void OnWillUnmount()
         {
-            
         }
 
         public INavigation Navigation
             => RxApplication.Instance.Navigation;
 
-        public RxContext Context 
+        public RxContext Context
             => RxApplication.Instance.Context;
-
     }
 
     public static class RxComponentExtensions
@@ -159,7 +138,7 @@ namespace XamarinReactorUI
     }
 
     internal interface IRxComponentWithState
-    { 
+    {
         object State { get; }
 
         PropertyInfo[] StateProperties { get; }
@@ -221,7 +200,7 @@ namespace XamarinReactorUI
     public abstract class RxComponentWithProps<P> : RxComponent, IRxComponentWithProps where P : class, IProps, new()
     {
         public RxComponentWithProps(P props = null)
-        { 
+        {
             Props = props ?? new P();
         }
 
@@ -283,7 +262,6 @@ namespace XamarinReactorUI
         protected RxComponent(S state = null, EmptyProps props = null)
             : base(state, props)
         {
-
         }
     }
 }

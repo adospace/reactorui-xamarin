@@ -8,7 +8,7 @@
 
         public override VisualNode Render()
         {
-            return new RxTabbedPage(Context.Get<Xamarin.Forms.TabbedPage>("ContainerPage"))
+            return new RxTabbedPage()
             {
                 new RxContentPage()
                 {

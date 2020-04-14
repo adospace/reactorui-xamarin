@@ -39,7 +39,6 @@ namespace XamarinReactorUI
                 throw new InvalidOperationException($"Root must be a Page: received {childNativeControl.GetType()}");
             }
 
-
             base.OnAddChild(widget, childNativeControl);
         }
 

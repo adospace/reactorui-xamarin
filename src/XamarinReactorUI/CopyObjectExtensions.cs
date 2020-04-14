@@ -8,25 +8,6 @@ namespace XamarinReactorUI
 {
     public static class CopyObjectExtensions
     {
-        //public static void CopyPropertiesTo<T, TU>(this T source, TU dest)
-        //{
-        //    var sourceProps = typeof(T).GetProperties()
-        //        .Where(x => x.CanRead)
-        //        .ToList();
-        //    var destProps = typeof(TU).GetProperties()
-        //        .Where(x => x.CanWrite)
-        //        .ToList();
-
-        //    foreach (var sourceProp in sourceProps)
-        //    {
-        //        var p = destProps.FirstOrDefault(x => x.Name == sourceProp.Name);
-        //        if (p != null)
-        //        { 
-        //            p.SetValue(dest, sourceProp.GetValue(source, null), null);
-        //        }
-        //    }
-        //}
-
         internal static void CopyPropertiesTo<T>(this T source, object dest, PropertyInfo[] destProps)
         {
             var sourceProps = typeof(T).GetProperties()
@@ -37,8 +18,14 @@ namespace XamarinReactorUI
             {
                 var p = destProps.FirstOrDefault(x => x.Name == sourceProp.Name);
                 if (p != null)
-                { 
-                    p.SetValue(dest, sourceProp.GetValue(source, null), null);
+                {
+                    var sourceValue = sourceProp.GetValue(source, null);
+                    if (sourceValue.GetType().IsEnum)
+                    {
+                        sourceValue = Convert.ChangeType(sourceValue, Enum.GetUnderlyingType(sourceProp.PropertyType));
+                    }
+
+                    p.SetValue(dest, sourceValue, null);
                 }
             }
 

@@ -13,9 +13,7 @@ namespace XamarinReactorUI.TestApp.HelloWorld
 
         public override VisualNode Render()
         {
-            var page = Context.Get<Xamarin.Forms.ContentPage>("Page");
-
-            return new RxContentPage(page)
+            return new RxContentPage()
             {
                 new TestComponentWithState()
             }

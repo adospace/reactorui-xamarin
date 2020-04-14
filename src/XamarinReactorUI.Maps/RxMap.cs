@@ -120,6 +120,10 @@ namespace XamarinReactorUI.Maps
 
     public class RxMap : RxMap<Map>
     {
+        public RxMap()
+        {
+        }
+
         public RxMap(IEnumerable<RxPin> nodes)
             : base(nodes)
         {

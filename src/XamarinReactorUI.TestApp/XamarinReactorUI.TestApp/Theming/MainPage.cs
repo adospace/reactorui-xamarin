@@ -13,7 +13,7 @@ namespace XamarinReactorUI.TestApp.Theming
 
     public class MainPageState : IState
     {
-        public ThemeColor ThemeColor { get; set; }
+        public ThemeColor ThemeColor { get; set; } = ThemeColor.Light;
     }
 
     public class MainPage : RxComponent<MainPageState>

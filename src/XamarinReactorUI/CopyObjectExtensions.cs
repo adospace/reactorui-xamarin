@@ -25,7 +25,14 @@ namespace XamarinReactorUI
                         sourceValue = Convert.ChangeType(sourceValue, Enum.GetUnderlyingType(sourceProp.PropertyType));
                     }
 
-                    targetProperty.SetValue(dest, sourceValue, null);
+                    try
+                    {
+                        targetProperty.SetValue(dest, sourceValue, null);
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Unable to copy property '{targetProperty.Name}' of state ({source.GetType()}) to new state after hot reload (Exception: '{ex.Message}')");
+                    }
                 }
             }
 

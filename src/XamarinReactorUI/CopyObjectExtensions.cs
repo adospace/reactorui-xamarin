@@ -16,16 +16,16 @@ namespace XamarinReactorUI
 
             foreach (var sourceProp in sourceProps)
             {
-                var p = destProps.FirstOrDefault(x => x.Name == sourceProp.Name);
-                if (p != null)
+                var targetProperty = destProps.FirstOrDefault(x => x.Name == sourceProp.Name);
+                if (targetProperty != null)
                 {
                     var sourceValue = sourceProp.GetValue(source, null);
-                    if (sourceValue.GetType().IsEnum)
+                    if (sourceValue != null && sourceValue.GetType().IsEnum)
                     {
                         sourceValue = Convert.ChangeType(sourceValue, Enum.GetUnderlyingType(sourceProp.PropertyType));
                     }
 
-                    p.SetValue(dest, sourceValue, null);
+                    targetProperty.SetValue(dest, sourceValue, null);
                 }
             }
 

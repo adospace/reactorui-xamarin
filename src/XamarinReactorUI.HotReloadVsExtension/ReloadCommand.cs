@@ -262,6 +262,7 @@ TargetFramework=131072
 
             _dte.Documents.SaveAll();
 
+            
             if (!RunMsBuild(selectedProject, generalPane))
             {
                 generalPane.OutputString($"Unable to build Xamarin Forms project, it may contains errors{Environment.NewLine}");
@@ -271,7 +272,7 @@ TargetFramework=131072
 
             ExecutePortForwardCommmand(generalPane);
 
-            await SendAssemblyToEmulatorAsync(outputFilePath, generalPane);
+            await SendAssemblyToEmulatorAsync(outputFilePath, generalPane, _dte.Debugger.CurrentMode != dbgDebugMode.dbgDesignMode);
 
             // Show a message box to prove we were here
             //VsShellUtilities.ShowMessageBox(
@@ -380,7 +381,7 @@ TargetFramework=131072
             return true;
         }
 
-        private static async Task SendAssemblyToEmulatorAsync(string assemblyPath, IVsOutputWindowPane outputPane)
+        private static async Task SendAssemblyToEmulatorAsync(string assemblyPath, IVsOutputWindowPane outputPane, bool debugging)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
             //ThreadHelper.ThrowIfNotOnUIThread();
@@ -411,7 +412,7 @@ TargetFramework=131072
 
                 var assemblySymbolStorePath = Path.Combine(Path.GetDirectoryName(assemblyPath), Path.GetFileNameWithoutExtension(assemblyPath) + ".pdb");
 
-                if (File.Exists(assemblySymbolStorePath))
+                if (File.Exists(assemblySymbolStorePath) && debugging)
                 {
                     var assemblySynmbolStoreRaw = await FileUtil.ReadAllFileAsync(assemblySymbolStorePath);
 

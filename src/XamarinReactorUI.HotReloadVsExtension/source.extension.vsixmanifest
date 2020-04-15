@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="XamarinReactorUI.HotReloadVsExtension.bb0a2e7f-f735-46e7-865e-dc7d0b7ac26e" Version="1.3" Language="en-US" Publisher="Adolfo Marinucci" />
+        <Identity Id="XamarinReactorUI.HotReloadVsExtension.bb0a2e7f-f735-46e7-865e-dc7d0b7ac26e" Version="1.4" Language="en-US" Publisher="Adolfo Marinucci" />
         <DisplayName>ReactorUI for Xamarin Forms Hot Reload</DisplayName>
         <Description xml:space="preserve">ReactorUI for Xamarin Hot Reload Extension</Description>
         <MoreInfo>https://github.com/adospace/reactorui-xamarin</MoreInfo>

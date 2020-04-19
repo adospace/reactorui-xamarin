@@ -9,7 +9,7 @@ namespace XamarinReactorUI.TestApp.CollectionView
 {
     public class TestCollectionViewComponent : RxComponent
     {
-        private IEnumerable<Monkey> _allMonkeys = Monkey.GetList();
+        private readonly IEnumerable<Monkey> _allMonkeys = Monkey.GetList();
 
         bool _largePersonListVisible = false;
         private void OnShowHideLargeList()

@@ -14,7 +14,6 @@ namespace XamarinReactorUI
     public class RxContentPage<T> : RxPage<T>, IRxContentPage, IEnumerable<VisualNode> where T : ContentPage, new()
     {
         private readonly List<VisualNode> _contents = new List<VisualNode>();
-        //private readonly ContentPage _contentPage;
 
         public RxContentPage()
         {
@@ -23,28 +22,20 @@ namespace XamarinReactorUI
 
         public RxContentPage(VisualNode content)
         {
-            _contents.Add(content ?? throw new ArgumentNullException());
+            _contents.Add(content);
         }
-
-        //public RxContentPage(T contentPage)
-        //{
-        //    _contentPage = contentPage;
-        //}
 
         public RxContentPage(Action<T> componentRefAction)
             : base(componentRefAction)
         {
         }
 
-        //protected override void OnMount()
-        //{
-        //    _nativeControl = _contentPage;
-        //    base.OnMount();
-        //}
-
         public void Add(VisualNode child)
         {
-            _contents.Add(child ?? throw new ArgumentNullException());
+            if (child is IRxView && _contents.Count > 0)
+                throw new InvalidOperationException("Content already set");
+
+            _contents.Add(child);
         }
 
         public IEnumerator<VisualNode> GetEnumerator()
@@ -99,11 +90,6 @@ namespace XamarinReactorUI
         {
 
         }
-
-        //public RxContentPage(ContentPage contentPage)
-        //{
-        //    _contentPage = contentPage;
-        //}
 
         public RxContentPage(Action<ContentPage> componentRefAction)
             : base(componentRefAction)

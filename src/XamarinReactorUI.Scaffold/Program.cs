@@ -9,7 +9,7 @@ namespace XamarinReactorUI.Scaffold
     {
         static void Main()
         {
-            var typeToScaffold = typeof(Xamarin.Forms.RefreshView);
+            var typeToScaffold = typeof(Xamarin.Forms.ViewCell);
 
             var outputPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "gen");
             Directory.CreateDirectory(outputPath);

@@ -43,9 +43,16 @@ namespace XamarinReactorUI
             yield break;
         }
 
+        public ScrollBarVisibility HorizontalScrollBarVisibility { get; set; } = (ScrollBarVisibility)ItemsView.HorizontalScrollBarVisibilityProperty.DefaultValue;
+        public ScrollBarVisibility VerticalScrollBarVisibility { get; set; } = (ScrollBarVisibility)ItemsView.VerticalScrollBarVisibilityProperty.DefaultValue;
+        public int RemainingItemsThreshold { get; set; } = (int)ItemsView.RemainingItemsThresholdProperty.DefaultValue;
+        public ItemsUpdatingScrollMode ItemsUpdatingScrollMode { get; set; } = (ItemsUpdatingScrollMode)ItemsView.ItemsUpdatingScrollModeProperty.DefaultValue;
+        public VisualStateGroupList ItemVisualStateGroups { get; set; } = new VisualStateGroupList();
+        public Action RemainingItemsThresholdReachedAction { get; set; }
+
         private class ItemTemplateNode : VisualNode
         {
-            private ItemTemplatePresenter _presenter = null;
+            private readonly ItemTemplatePresenter _presenter = null;
 
             public ItemTemplateNode(VisualNode root, ItemTemplatePresenter presenter)
             {
@@ -88,13 +95,6 @@ namespace XamarinReactorUI
                 yield return Root;
             }
         }
-
-        public ScrollBarVisibility HorizontalScrollBarVisibility { get; set; } = (ScrollBarVisibility)ItemsView.HorizontalScrollBarVisibilityProperty.DefaultValue;
-        public ScrollBarVisibility VerticalScrollBarVisibility { get; set; } = (ScrollBarVisibility)ItemsView.VerticalScrollBarVisibilityProperty.DefaultValue;
-        public int RemainingItemsThreshold { get; set; } = (int)ItemsView.RemainingItemsThresholdProperty.DefaultValue;
-        public ItemsUpdatingScrollMode ItemsUpdatingScrollMode { get; set; } = (ItemsUpdatingScrollMode)ItemsView.ItemsUpdatingScrollModeProperty.DefaultValue;
-        public VisualStateGroupList ItemVisualStateGroups { get; set; } = new VisualStateGroupList();
-        public Action RemainingItemsThresholdReachedAction { get; set; }
 
         public IEnumerable<I> Collection { get; set; }
         public Func<I, VisualNode> Template { get; set; }

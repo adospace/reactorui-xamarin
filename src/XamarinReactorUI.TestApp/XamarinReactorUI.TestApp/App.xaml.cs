@@ -19,7 +19,7 @@ namespace XamarinReactorUI.TestApp
             //MainPage = new TestHotReloadPage();
 
             //TEST 2
-            _rxApp = RxApplication.Create<CollectionView.TestCollectionViewComponent>(this).WithHotReload();
+            //_rxApp = RxApplication.Create<CollectionView.TestCollectionViewComponent>(this).WithHotReload();
 
             //TEST 3
             //_rxApp = RxApplication.Create<Shell.Test1.TestShellComponentPage>(this).WithHotReload();
@@ -53,6 +53,9 @@ namespace XamarinReactorUI.TestApp
 
             //TEST 13
             //_rxApp = RxApplication.Create<Theming.MainPage>(this).WithHotReload();
+
+            //TEST 14
+            _rxApp = RxApplication.Create<ListView.MainPage>(this).WithHotReload();
         }
 
         protected override void OnStart()

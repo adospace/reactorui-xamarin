@@ -97,6 +97,12 @@ namespace XamarinReactorUI
             return layout;
         }
 
+        public static T Padding<T>(this T layout, double left, double top, double right, double bottom) where T : IRxLayout
+        {
+            layout.Padding = new Thickness(left, top, right, bottom);
+            return layout;
+        }
+
         public static T Padding<T>(this T layout, double uniformSize) where T : IRxLayout
         {
             layout.Padding = new Thickness(uniformSize);

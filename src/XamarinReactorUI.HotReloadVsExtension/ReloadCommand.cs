@@ -386,7 +386,7 @@ TargetFramework=131072
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
             //ThreadHelper.ThrowIfNotOnUIThread();
 
-            outputPane.OutputString($"Sending to emulator...");
+            outputPane.OutputString($"Sending to emulator new assembly (debugging={debugging})...");
             outputPane.Activate(); // Brings this pane into view
 
             var client = new TcpClient

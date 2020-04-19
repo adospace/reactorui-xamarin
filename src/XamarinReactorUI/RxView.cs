@@ -48,9 +48,9 @@ namespace XamarinReactorUI
             return view;
         }
 
-        public static T Margin<T>(this T view, double left, double right, double top, double bottom) where T : IRxView
+        public static T Margin<T>(this T view, double left, double top, double right, double bottom) where T : IRxView
         {
-            view.Margin = new Thickness(left, right, top, bottom);
+            view.Margin = new Thickness(left, top, right, bottom);
             return view;
         }
 

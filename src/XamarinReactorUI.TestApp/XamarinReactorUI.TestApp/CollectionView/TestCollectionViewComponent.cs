@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Xamarin.Forms;
+using XamarinReactorUI;
 
 namespace XamarinReactorUI.TestApp.CollectionView
 {
@@ -17,45 +18,45 @@ namespace XamarinReactorUI.TestApp.CollectionView
             Invalidate();
         }
 
-        private IEnumerable<VisualNode> RenderList(IEnumerable<Monkey> persons)
-            => persons.Select(monkey => new RxStackLayout()
-                {
-                    new RxImage()
-                        .Source(new Uri(monkey.ImageUrl))
-                        
-                        .Margin(4)
-                    ,
-                    new RxStackLayout()
-                    {
-                        new RxLabel(monkey.Name)
-                            .FontSize(NamedSize.Default)
-                            .Margin(5),
-                        new RxLabel(monkey.Location)
-                            .FontSize(NamedSize.Caption)
-                            .Margin(5)
-                    }
-                }
-                .Padding(10)
-                .WithHorizontalOrientation()
-                );
-
         public override VisualNode Render()
         {
-            return 
+            return new RxContentPage()
+            {
                 new RxStackLayout()
                 {
                     new RxButton("SWITCH SMALL/LARGE LIST")
-                        .OnClick(OnShowHideLargeList),
-                        _largePersonListVisible ? 
-                        new RxCollectionView(RenderList(_allMonkeys))
-                        .VFillAndExpand()
-                        :
-                        new RxCollectionView(RenderList(_allMonkeys.Take(4)))
+                        .OnClick(this.OnShowHideLargeList),
+                        
+                        new RxCollectionView<Monkey>()
+                            .RenderCollection(
+                                _largePersonListVisible ? _allMonkeys : _allMonkeys.Take(4), 
+                                RenderMonkey)
                         .VFillAndExpand()
                 }
                 .HFillAndExpand()
-                .VFillAndExpand();
+                .VFillAndExpand()
+            };
         }
 
+        private VisualNode RenderMonkey(Monkey monkey)
+        {
+            return new RxStackLayout()
+            {
+                new RxImage()
+                    .Source(new Uri(monkey.ImageUrl))
+                    .Margin(4),
+                new RxStackLayout()
+                {
+                    new RxLabel(monkey.Name)
+                        .FontSize(NamedSize.Default)
+                        .Margin(5),
+                    new RxLabel(monkey.Location)
+                        .FontSize(NamedSize.Caption)
+                        .Margin(5)
+                }
+            }
+            .Padding(10)
+            .WithHorizontalOrientation();
+        }
     }
 }

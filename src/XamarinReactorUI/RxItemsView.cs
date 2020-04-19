@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Xamarin.Forms;
+using XamarinReactorUI.Internals;
 
 namespace XamarinReactorUI
 {
@@ -13,35 +13,24 @@ namespace XamarinReactorUI
         int RemainingItemsThreshold { get; set; }
         ItemsUpdatingScrollMode ItemsUpdatingScrollMode { get; set; }
         VisualStateGroupList ItemVisualStateGroups { get; set; }
+        Action RemainingItemsThresholdReachedAction { get; set; }
     }
 
-    public abstract class RxItemsView<T> : RxView<T>, IRxItemsView, IEnumerable<VisualNode> where T : Xamarin.Forms.ItemsView, new()
+    public interface IRxItemsView<I> : IRxItemsView
     {
-        private readonly List<VisualNode> _internalChildren = new List<VisualNode>();
-        private readonly List<VisualNode> _layoutChildren = new List<VisualNode>();
+        IEnumerable<I> Collection { get; set; }
+        Func<I, VisualNode> Template { get; set; }
+    }
 
+    public abstract class RxItemsView<T, I> : RxView<T>, IRxItemsView<I>/*, IEnumerable<VisualNode>*/ where T : Xamarin.Forms.ItemsView, new()
+    {
         public RxItemsView()
         {
         }
 
-        public RxItemsView(params VisualNode[] children)
+        public RxItemsView(IEnumerable<I> collection)
         {
-            if (children is null)
-            {
-                throw new ArgumentNullException(nameof(children));
-            }
-
-            _internalChildren = new List<VisualNode>(children);
-        }
-
-        public RxItemsView(IEnumerable<VisualNode> children)
-        {
-            if (children is null)
-            {
-                throw new ArgumentNullException(nameof(children));
-            }
-
-            _internalChildren = new List<VisualNode>(children);
+            Collection = collection;
         }
 
         public RxItemsView(Action<T> componentRefAction)
@@ -49,96 +38,55 @@ namespace XamarinReactorUI
         {
         }
 
-        public IEnumerator<VisualNode> GetEnumerator()
-        {
-            return _internalChildren.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return _internalChildren.GetEnumerator();
-        }
-
-        public void Add(VisualNode node)
-        {
-            if (node is null)
-            {
-                throw new ArgumentNullException(nameof(node));
-            }
-
-            _internalChildren.Add(node);
-        }
-
         protected override IEnumerable<VisualNode> RenderChildren()
         {
-            return _layoutChildren;
-        }
-
-        private void AddLayoutChild(ItemTemplateNode childNode)
-        {
-            _layoutChildren.Add(childNode);
-            Invalidate();
+            yield break;
         }
 
         private class ItemTemplateNode : VisualNode
         {
-            private readonly ItemTemplatePresenter _itemTemplatePreseter;
+            private ItemTemplatePresenter _presenter = null;
 
-            public ItemTemplateNode(ItemTemplatePresenter itemTemplatePreseter)
+            public ItemTemplateNode(VisualNode root, ItemTemplatePresenter presenter)
             {
-                _itemTemplatePreseter = itemTemplatePreseter;
+                Root = root;
+                _presenter = presenter;
             }
 
-            protected sealed override void OnAddChild(VisualNode widget, Xamarin.Forms.Element nativeControl)
+            private VisualNode _root;
+
+            public VisualNode Root
+            {
+                get => _root;
+                set
+                {
+                    if (_root != value)
+                    {
+                        _root = value;
+                        Invalidate();
+                    }
+                }
+            }
+
+            protected sealed override void OnAddChild(VisualNode widget, Element nativeControl)
             {
                 if (nativeControl is View view)
-                    _itemTemplatePreseter.Content = view;
+                    _presenter.Content = view;
                 else
                 {
                     throw new InvalidOperationException($"Type '{nativeControl.GetType()}' not supported under '{GetType()}'");
                 }
             }
 
-            protected sealed override void OnRemoveChild(VisualNode widget, Xamarin.Forms.Element nativeControl)
+            protected sealed override void OnRemoveChild(VisualNode widget, Element nativeControl)
             {
-                _itemTemplatePreseter.Content = null;
-            }
-
-            protected override void OnUnmount()
-            {
-                _itemTemplatePreseter.Content = null;
-                base.OnUnmount();
+                _presenter.Content = null;
             }
 
             protected override IEnumerable<VisualNode> RenderChildren()
             {
-                yield return _itemTemplatePreseter.PresentedView;
+                yield return Root;
             }
-        }
-
-        private class ItemTemplatePresenter : ContentPresenter
-        {
-            private readonly RxItemsView<T> _collectionView;
-            private ItemTemplateNode _itemTemplateNode;
-
-            public ItemTemplatePresenter(RxItemsView<T> collectionView)
-            {
-                _collectionView = collectionView;
-                VisualStateManager.SetVisualStateGroups(this, collectionView.ItemVisualStateGroups);
-            }
-
-            protected override void OnBindingContextChanged()
-            {
-                base.OnBindingContextChanged();
-
-                if (_itemTemplateNode == null && PresentedView != null)
-                {
-                    _itemTemplateNode = new ItemTemplateNode(this);
-                    _collectionView.AddLayoutChild(_itemTemplateNode);
-                }
-            }
-
-            public VisualNode PresentedView => (VisualNode)BindingContext;
         }
 
         public ScrollBarVisibility HorizontalScrollBarVisibility { get; set; } = (ScrollBarVisibility)ItemsView.HorizontalScrollBarVisibilityProperty.DefaultValue;
@@ -146,23 +94,131 @@ namespace XamarinReactorUI
         public int RemainingItemsThreshold { get; set; } = (int)ItemsView.RemainingItemsThresholdProperty.DefaultValue;
         public ItemsUpdatingScrollMode ItemsUpdatingScrollMode { get; set; } = (ItemsUpdatingScrollMode)ItemsView.ItemsUpdatingScrollModeProperty.DefaultValue;
         public VisualStateGroupList ItemVisualStateGroups { get; set; } = new VisualStateGroupList();
+        public Action RemainingItemsThresholdReachedAction { get; set; }
+
+        public IEnumerable<I> Collection { get; set; }
+        public Func<I, VisualNode> Template { get; set; }
+
+        private class ItemTemplatePresenter : ContentView
+        {
+            private ItemTemplateNode _itemTemplateNode;
+            private CustomDataTemplate _template;
+
+            public ItemTemplatePresenter(CustomDataTemplate template)
+            {
+                _template = template;
+            }
+
+            protected override void OnBindingContextChanged()
+            {
+                var item = (I)BindingContext;
+                VisualNode newRoot = null;
+                if (item != null)
+                {
+                    newRoot = _template.Owner.Template(item);
+                    _itemTemplateNode = new ItemTemplateNode(newRoot, this);
+                    _itemTemplateNode.Layout();
+                }
+
+                base.OnBindingContextChanged();
+            }
+        }
+
+        private class CustomDataTemplate
+        {
+            public DataTemplate DataTemplate { get; }
+            public RxItemsView<T, I> Owner { get; set; }
+
+            public CustomDataTemplate(RxItemsView<T, I> owner)
+            {
+                Owner = owner;
+                DataTemplate = new DataTemplate(() => new ItemTemplatePresenter(this));
+            }
+        }
+
+        private CustomDataTemplate _customDataTemplate;
 
         protected override void OnUpdate()
         {
-            NativeControl.ItemsSource = _internalChildren;
-            NativeControl.ItemTemplate = new DataTemplate(() => new ItemTemplatePresenter(this));
+            if (NativeControl.ItemsSource is ObservableItemsSource<I> existingCollection &&
+                existingCollection.ItemsSource == Collection)
+            {
+                _customDataTemplate.Owner = this;
+                existingCollection.NotifyCollectionChanged();
+            }
+            else
+            {
+                _customDataTemplate = new CustomDataTemplate(this);
+                NativeControl.ItemsSource = ObservableItemsSource<I>.Create(Collection);
+                NativeControl.ItemTemplate = _customDataTemplate.DataTemplate;
+            }
 
             NativeControl.HorizontalScrollBarVisibility = HorizontalScrollBarVisibility;
             NativeControl.VerticalScrollBarVisibility = VerticalScrollBarVisibility;
             NativeControl.RemainingItemsThreshold = RemainingItemsThreshold;
             NativeControl.ItemsUpdatingScrollMode = ItemsUpdatingScrollMode;
 
+            if (RemainingItemsThresholdReachedAction != null)
+                NativeControl.RemainingItemsThresholdReached += NativeControl_RemainingItemsThresholdReached;
+
             base.OnUpdate();
+        }
+
+        private void NativeControl_RemainingItemsThresholdReached(object sender, EventArgs e)
+        {
+            RemainingItemsThresholdReachedAction?.Invoke();
+        }
+
+        protected override void OnMigrated(VisualNode newNode)
+        {
+            if (NativeControl != null)
+            {
+                NativeControl.RemainingItemsThresholdReached -= NativeControl_RemainingItemsThresholdReached;
+            }
+
+            ((RxItemsView<T, I>)newNode)._customDataTemplate = _customDataTemplate;
+
+            base.OnMigrated(newNode);
+        }
+
+        protected override void OnUnmount()
+        {
+            if (NativeControl != null)
+            {
+                NativeControl.RemainingItemsThresholdReached -= NativeControl_RemainingItemsThresholdReached;
+            }
+
+            base.OnUnmount();
         }
     }
 
     public static class RxItemsViewExtensions
     {
+        public static T RenderCollection<T, I>(this T itemsview, IEnumerable<I> collection) where T : IRxItemsView<I>
+        {
+            itemsview.Collection = collection;
+            return itemsview;
+        }
+
+        public static T RenderCollection<T, I>(this T itemsview, IEnumerable<I> collection, Func<I, VisualNode> template) where T : IRxItemsView<I>
+        {
+            itemsview.Collection = collection;
+            itemsview.Template = template;
+            return itemsview;
+        }
+
+        public static T WithTemplate<T, I>(this T itemsview, Func<I, VisualNode> template) where T : IRxItemsView<I>
+        {
+            itemsview.Template = template;
+            return itemsview;
+        }
+
+        public static T OnRemainingItemsThresholdReached<T>(this T itemsview, Action action) where T : IRxItemsView
+        {
+            itemsview.RemainingItemsThresholdReachedAction = action;
+            return itemsview;
+        }
+
         public static T ItemVisualState<T>(this T itemsview, string groupName, string stateName, BindableProperty property, object value, string targetName = null) where T : IRxItemsView
         {
             var group = itemsview.ItemVisualStateGroups.FirstOrDefault(_ => _.Name == groupName);

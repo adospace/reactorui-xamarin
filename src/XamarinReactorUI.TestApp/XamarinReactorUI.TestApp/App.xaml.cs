@@ -19,11 +19,7 @@ namespace XamarinReactorUI.TestApp
             //MainPage = new TestHotReloadPage();
 
             //TEST 2
-            //var mainPage = new ContentPage();
-
-            //_mainPageHost = mainPage.Host(new TestCollectionViewComponent());
-
-            //MainPage = mainPage;
+            _rxApp = RxApplication.Create<CollectionView.TestCollectionViewComponent>(this).WithHotReload();
 
             //TEST 3
             //_rxApp = RxApplication.Create<Shell.Test1.TestShellComponentPage>(this).WithHotReload();
@@ -56,7 +52,7 @@ namespace XamarinReactorUI.TestApp
             //_rxApp = RxApplication.Create<ComponentWithChildren.PageComponent>(this).WithHotReload();
 
             //TEST 13
-            _rxApp = RxApplication.Create<Theming.MainPage>(this).WithHotReload();
+            //_rxApp = RxApplication.Create<Theming.MainPage>(this).WithHotReload();
         }
 
         protected override void OnStart()

@@ -7,7 +7,7 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public interface IRxSelectableItemsView
+    public interface IRxSelectableItemsView : IRxItemsView
     {
         SelectionMode SelectionMode { get; set; }
         object SelectedItem { get; set; }
@@ -16,22 +16,22 @@ namespace XamarinReactorUI
         Action<IReadOnlyList<VisualNode>, IReadOnlyList<VisualNode>> SelectionChangedAction { get; set; }
     }
 
-    public abstract class RxSelectableItemsView<T> : RxItemsView<T>, IRxSelectableItemsView where T : Xamarin.Forms.SelectableItemsView, new()
+    public abstract class RxSelectableItemsView<T, I> : RxItemsView<T, I>, IRxSelectableItemsView where T : Xamarin.Forms.SelectableItemsView, new()
     {
         public RxSelectableItemsView()
         {
 
         }
 
-        public RxSelectableItemsView(params VisualNode[] children)
-            : base(children)
-        {
-        }
+        //public RxSelectableItemsView(params VisualNode[] children)
+        //    : base(children)
+        //{
+        //}
 
-        public RxSelectableItemsView(IEnumerable<VisualNode> children)
-            : base(children)
-        {
-        }
+        //public RxSelectableItemsView(IEnumerable<VisualNode> children)
+        //    : base(children)
+        //{
+        //}
 
         public RxSelectableItemsView(Action<T> componentRefAction)
             : base(componentRefAction)

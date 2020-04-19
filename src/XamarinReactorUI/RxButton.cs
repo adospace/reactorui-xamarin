@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Xamarin.Forms;
 using static Xamarin.Forms.Button;
 using static Xamarin.Forms.Button.ButtonContentLayout;
@@ -39,7 +38,6 @@ namespace XamarinReactorUI
         public RxButton(Action<T> componentRefAction)
             : base(componentRefAction)
         {
-
         }
 
         public ButtonContentLayout ContentLayout { get; set; } = (ButtonContentLayout)Button.ContentLayoutProperty.DefaultValue;
@@ -119,7 +117,6 @@ namespace XamarinReactorUI
         public RxButton(Action<Button> componentRefAction)
             : base(componentRefAction)
         {
-
         }
     }
 
@@ -136,81 +133,101 @@ namespace XamarinReactorUI
             button.ContentLayout = new ButtonContentLayout(position, spacing);
             return button;
         }
+
         public static T Text<T>(this T button, string text) where T : IRxButton
         {
             button.Text = text;
             return button;
         }
+
         public static T TextColor<T>(this T button, Color textColor) where T : IRxButton
         {
             button.TextColor = textColor;
             return button;
         }
+
         public static T CharacterSpacing<T>(this T button, double characterSpacing) where T : IRxButton
         {
             button.CharacterSpacing = characterSpacing;
             return button;
         }
+
         public static T Font<T>(this T button, Font font) where T : IRxButton
         {
             button.Font = font;
             return button;
         }
+
         public static T FontFamily<T>(this T button, string fontFamily) where T : IRxButton
         {
             button.FontFamily = fontFamily;
             return button;
         }
+
         public static T FontSize<T>(this T button, double fontSize) where T : IRxButton
         {
             button.FontSize = fontSize;
             return button;
         }
+
         public static T FontSize<T>(this T button, NamedSize size) where T : IRxButton
         {
             button.FontSize = Device.GetNamedSize(size, typeof(Button));
             return button;
         }
+
         public static T FontAttributes<T>(this T button, FontAttributes fontAttributes) where T : IRxButton
         {
             button.FontAttributes = fontAttributes;
             return button;
         }
+
         public static T BorderWidth<T>(this T button, double borderWidth) where T : IRxButton
         {
             button.BorderWidth = borderWidth;
             return button;
         }
+
         public static T BorderColor<T>(this T button, Color borderColor) where T : IRxButton
         {
             button.BorderColor = borderColor;
             return button;
         }
+
         public static T CornerRadius<T>(this T button, int cornerRadius) where T : IRxButton
         {
             button.CornerRadius = cornerRadius;
             return button;
         }
+
         public static T ImageSource<T>(this T button, ImageSource imageSource) where T : IRxButton
         {
             button.ImageSource = imageSource;
             return button;
         }
+
         public static T Padding<T>(this T button, Thickness padding) where T : IRxButton
         {
             button.Padding = padding;
             return button;
         }
+
         public static T Padding<T>(this T button, double leftRight, double topBottom) where T : IRxButton
         {
             button.Padding = new Thickness(leftRight, topBottom);
             return button;
         }
+
+        public static T Padding<T>(this T button, double left, double top, double right, double bottom) where T : IRxButton
+        {
+            button.Padding = new Thickness(left, top, right, bottom);
+            return button;
+        }
+
         public static T Padding<T>(this T button, double uniformSize) where T : IRxButton
         {
             button.Padding = new Thickness(uniformSize);
             return button;
         }
-
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Xamarin.Forms;
 
 namespace XamarinReactorUI
@@ -28,7 +27,6 @@ namespace XamarinReactorUI
     {
         public RxLabel()
         {
-
         }
 
         public RxLabel(string text)
@@ -39,7 +37,6 @@ namespace XamarinReactorUI
         public RxLabel(Action<Xamarin.Forms.Label> componentRefAction)
             : base(componentRefAction)
         {
-
         }
 
         public TextAlignment HorizontalTextAlignment { get; set; } = (TextAlignment)Label.HorizontalTextAlignmentProperty.DefaultValue;
@@ -89,19 +86,16 @@ namespace XamarinReactorUI
     {
         public RxLabel()
         {
-
         }
 
         public RxLabel(string text)
-            :base(text)
+            : base(text)
         {
-
         }
 
         public RxLabel(Action<Xamarin.Forms.Label> componentRefAction)
             : base(componentRefAction)
         {
-
         }
     }
 
@@ -112,91 +106,113 @@ namespace XamarinReactorUI
             label.HorizontalTextAlignment = horizontalTextAlignment;
             return label;
         }
+
         public static T VerticalTextAlignment<T>(this T label, TextAlignment verticalTextAlignment) where T : IRxLabel
         {
             label.VerticalTextAlignment = verticalTextAlignment;
             return label;
         }
+
         public static T TextColor<T>(this T label, Color textColor) where T : IRxLabel
         {
             label.TextColor = textColor;
             return label;
         }
+
         public static T CharacterSpacing<T>(this T label, double characterSpacing) where T : IRxLabel
         {
             label.CharacterSpacing = characterSpacing;
             return label;
         }
+
         public static T Text<T>(this T label, string text) where T : IRxLabel
         {
             label.Text = text;
             return label;
         }
+
         public static T FontFamily<T>(this T label, string fontFamily) where T : IRxLabel
         {
             label.FontFamily = fontFamily;
             return label;
         }
+
         public static T FontSize<T>(this T label, double fontSize) where T : IRxLabel
         {
             label.FontSize = fontSize;
             return label;
         }
+
         public static T FontSize<T>(this T label, NamedSize size) where T : IRxLabel
         {
             label.FontSize = Device.GetNamedSize(size, typeof(Label));
             return label;
         }
+
         public static T FontAttributes<T>(this T label, FontAttributes fontAttributes) where T : IRxLabel
         {
             label.FontAttributes = fontAttributes;
             return label;
         }
+
         public static T TextDecorations<T>(this T label, TextDecorations textDecorations) where T : IRxLabel
         {
             label.TextDecorations = textDecorations;
             return label;
         }
+
         public static T FormattedText<T>(this T label, FormattedString formattedText) where T : IRxLabel
         {
             label.FormattedText = formattedText;
             return label;
         }
+
         public static T LineBreakMode<T>(this T label, LineBreakMode lineBreakMode) where T : IRxLabel
         {
             label.LineBreakMode = lineBreakMode;
             return label;
         }
+
         public static T LineHeight<T>(this T label, double lineHeight) where T : IRxLabel
         {
             label.LineHeight = lineHeight;
             return label;
         }
+
         public static T MaxLines<T>(this T label, int maxLines) where T : IRxLabel
         {
             label.MaxLines = maxLines;
             return label;
         }
+
         public static T Padding<T>(this T label, Thickness padding) where T : IRxLabel
         {
             label.Padding = padding;
             return label;
         }
+
         public static T Padding<T>(this T label, double leftRight, double topBottom) where T : IRxLabel
         {
             label.Padding = new Thickness(leftRight, topBottom);
             return label;
         }
+
+        public static T Padding<T>(this T label, double left, double top, double right, double bottom) where T : IRxLabel
+        {
+            label.Padding = new Thickness(left, top, right, bottom);
+            return label;
+        }
+
         public static T Padding<T>(this T label, double uniformSize) where T : IRxLabel
         {
             label.Padding = new Thickness(uniformSize);
             return label;
         }
+
         public static T TextType<T>(this T label, TextType textType) where T : IRxLabel
         {
             label.TextType = textType;
             return label;
         }
     }
-
 }

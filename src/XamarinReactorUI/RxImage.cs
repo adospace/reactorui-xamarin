@@ -1,9 +1,7 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Text;
 using Xamarin.Forms;
 
 namespace XamarinReactorUI
@@ -20,13 +18,11 @@ namespace XamarinReactorUI
     {
         public RxImage()
         {
-
         }
 
         public RxImage(Action<T> componentRefAction)
             : base(componentRefAction)
         {
-
         }
 
         public ImageSource Source { get; set; } = (ImageSource)Image.SourceProperty.DefaultValue;
@@ -54,13 +50,11 @@ namespace XamarinReactorUI
     {
         public RxImage()
         {
-
         }
 
         public RxImage(Action<Image> componentRefAction)
             : base(componentRefAction)
         {
-
         }
     }
 
@@ -72,27 +66,30 @@ namespace XamarinReactorUI
             return image;
         }
 
-
         public static T Source<T>(this T image, string file) where T : IRxImage
         {
             image.Source = ImageSource.FromFile(file);
             return image;
         }
+
         public static T Source<T>(this T image, string fileAndroid, string fileiOS) where T : IRxImage
         {
             image.Source = Device.RuntimePlatform == Device.Android ? ImageSource.FromFile(fileAndroid) : ImageSource.FromFile(fileiOS);
             return image;
         }
+
         public static T Source<T>(this T image, string resourceName, Assembly sourceAssembly) where T : IRxImage
         {
             image.Source = ImageSource.FromResource(resourceName, sourceAssembly);
             return image;
         }
+
         public static T Source<T>(this T image, Uri imageUri) where T : IRxImage
         {
             image.Source = ImageSource.FromUri(imageUri);
             return image;
         }
+
         public static T Source<T>(this T image, Uri imageUri, bool cachingEnabled, TimeSpan cacheValidity) where T : IRxImage
         {
             image.Source = new UriImageSource
@@ -103,12 +100,12 @@ namespace XamarinReactorUI
             };
             return image;
         }
+
         public static T Source<T>(this T image, Func<Stream> imageStream) where T : IRxImage
         {
             image.Source = ImageSource.FromStream(imageStream);
             return image;
         }
-
 
         public static T Aspect<T>(this T image, Aspect aspect) where T : IRxImage
         {
@@ -116,24 +113,16 @@ namespace XamarinReactorUI
             return image;
         }
 
-
-
         public static T IsOpaque<T>(this T image, bool isOpaque) where T : IRxImage
         {
             image.IsOpaque = isOpaque;
             return image;
         }
 
-
-
         public static T IsAnimationPlaying<T>(this T image, bool isAnimationPlaying) where T : IRxImage
         {
             image.IsAnimationPlaying = isAnimationPlaying;
             return image;
         }
-
-
-
     }
-
 }

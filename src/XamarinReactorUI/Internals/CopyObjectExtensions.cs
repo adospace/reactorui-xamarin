@@ -4,11 +4,11 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace XamarinReactorUI
+namespace XamarinReactorUI.Internals
 {
-    public static class CopyObjectExtensions
+    internal static class CopyObjectExtensions
     {
-        internal static void CopyPropertiesTo<T>(this T source, object dest, PropertyInfo[] destProps)
+        public static void CopyPropertiesTo<T>(this T source, object dest, PropertyInfo[] destProps)
         {
             var sourceProps = typeof(T).GetProperties()
                 .Where(x => x.CanRead)

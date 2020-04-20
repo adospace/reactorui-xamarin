@@ -12,11 +12,15 @@ namespace XamarinReactorUI
         SelectionMode SelectionMode { get; set; }
         object SelectedItem { get; set; }
         IEnumerable<object> SelectedItems { get; set; }
-        Action<VisualNode> SelectedAction { get; set; }
-        Action<IReadOnlyList<VisualNode>, IReadOnlyList<VisualNode>> SelectionChangedAction { get; set; }
     }
 
-    public abstract class RxSelectableItemsView<T, I> : RxStructuredItemsView<T, I>, IRxSelectableItemsView where T : SelectableItemsView, new()
+    public interface IRxSelectableItemsView<I> : IRxSelectableItemsView
+    {
+        Action<I> SelectedAction { get; set; }
+        Action<IReadOnlyList<I>, IReadOnlyList<I>> SelectionChangedAction { get; set; }
+    }
+
+    public abstract class RxSelectableItemsView<T, I> : RxStructuredItemsView<T, I>, IRxSelectableItemsView<I> where T : SelectableItemsView, new()
     {
         public RxSelectableItemsView()
         {
@@ -32,8 +36,8 @@ namespace XamarinReactorUI
         public SelectionMode SelectionMode { get; set; } = (SelectionMode)SelectableItemsView.SelectionModeProperty.DefaultValue;
         public object SelectedItem { get; set; } = (object)SelectableItemsView.SelectedItemProperty.DefaultValue;
         public IEnumerable<object> SelectedItems { get; set; } = (IEnumerable<object>)SelectableItemsView.SelectedItemsProperty.DefaultValue;
-        public Action<VisualNode> SelectedAction { get; set; }
-        public Action<IReadOnlyList<VisualNode>, IReadOnlyList<VisualNode>> SelectionChangedAction { get; set; }
+        public Action<I> SelectedAction { get; set; }
+        public Action<IReadOnlyList<I>, IReadOnlyList<I>> SelectionChangedAction { get; set; }
 
         protected override void OnUpdate()
         {
@@ -51,8 +55,8 @@ namespace XamarinReactorUI
         {
             if (SelectedAction != null || SelectionChangedAction != null)
             {
-                SelectedAction?.Invoke(e.CurrentSelection.Count > 0 ? (VisualNode)e.CurrentSelection[0] : null);
-                SelectionChangedAction?.Invoke(e.CurrentSelection.Cast<VisualNode>().ToList(), e.PreviousSelection.Cast<VisualNode>().ToList());
+                SelectedAction?.Invoke(e.CurrentSelection.Count > 0 ? (I)e.CurrentSelection[0] : default);
+                SelectionChangedAction?.Invoke(e.CurrentSelection.Cast<I>().ToList(), e.PreviousSelection.Cast<I>().ToList());
                 Invalidate();
             }
         }
@@ -72,13 +76,13 @@ namespace XamarinReactorUI
 
     public static class RxSelectableItemsViewExtensions
     {
-        public static T OnSelected<T>(this T collectionView, Action<VisualNode> action) where T : IRxSelectableItemsView
+        public static T OnSelected<T, I>(this T collectionView, Action<I> action) where T : IRxSelectableItemsView<I>
         {
             collectionView.SelectedAction = action;
             return collectionView;
         }
 
-        public static T OnSelectionChanged<T>(this T collectionView, Action<IReadOnlyList<VisualNode>, IReadOnlyList<VisualNode>> action) where T : IRxSelectableItemsView
+        public static T OnSelectionChanged<T, I>(this T collectionView, Action<IReadOnlyList<I>, IReadOnlyList<I>> action) where T : IRxSelectableItemsView<I>
         {
             collectionView.SelectionChangedAction = action;
             return collectionView;

@@ -108,11 +108,12 @@ namespace XamarinReactorUI
         private class ItemTemplatePresenter : ContentView
         {
             private ItemTemplateNode _itemTemplateNode;
-            private CustomDataTemplate _template;
+            private readonly CustomDataTemplate _template;
 
             public ItemTemplatePresenter(CustomDataTemplate template)
             {
                 _template = template;
+                VisualStateManager.SetVisualStateGroups(this, template.Owner.ItemVisualStateGroups);
             }
 
             protected override void OnBindingContextChanged()

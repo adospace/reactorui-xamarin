@@ -55,6 +55,8 @@ namespace XamarinReactorUI
                 NativeControl.PropertyChanged -= NativeControl_PropertyChanged;
                 NativeControl.PropertyChanging -= NativeControl_PropertyChanging;
             }
+
+            _attachedProperties.Clear();
         }
 
         protected override void OnMount()

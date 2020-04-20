@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Xamarin.Forms;
 
@@ -32,7 +33,7 @@ namespace XamarinReactorUI
 
         public void Add(VisualNode child)
         {
-            if (child is IRxView && _contents.Count > 0)
+            if (child is IRxView && _contents.OfType<IRxView>().Any())
                 throw new InvalidOperationException("Content already set");
 
             _contents.Add(child);

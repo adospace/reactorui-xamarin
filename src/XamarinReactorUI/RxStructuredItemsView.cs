@@ -15,13 +15,13 @@ namespace XamarinReactorUI
         ItemSizingStrategy ItemSizingStrategy { get; set; }
     }
 
-    public class RxStructuredItemsView : RxView<StructuredItemsView>, IRxStructuredItemsView
+    public abstract class RxStructuredItemsView<T, I> : RxItemsView<T, I>, IRxStructuredItemsView where T : StructuredItemsView, new()
     {
         public RxStructuredItemsView()
         {
         }
 
-        public RxStructuredItemsView(Action<StructuredItemsView> componentRefAction)
+        public RxStructuredItemsView(Action<T> componentRefAction)
             : base(componentRefAction)
         {
         }

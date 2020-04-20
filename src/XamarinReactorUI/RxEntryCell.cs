@@ -79,6 +79,12 @@ namespace XamarinReactorUI
         {
             _nativeControl = entry;
         }
+
+        protected internal override void OnLayoutCycleRequested()
+        {
+            Layout();
+            base.OnLayoutCycleRequested();
+        }
     }
 
     public static class RxEntryCellExtensions

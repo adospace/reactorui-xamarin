@@ -43,6 +43,12 @@ namespace XamarinReactorUI
         {
             _nativeControl = imageCell;
         }
+
+        protected internal override void OnLayoutCycleRequested()
+        {
+            Layout();
+            base.OnLayoutCycleRequested();
+        }
     }
 
     public static class RxImageCellExtensions

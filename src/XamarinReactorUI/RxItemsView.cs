@@ -87,12 +87,18 @@ namespace XamarinReactorUI
 
             protected sealed override void OnRemoveChild(VisualNode widget, Element nativeControl)
             {
-                _presenter.Content = null;
+                //_presenter.Content = null;
             }
 
             protected override IEnumerable<VisualNode> RenderChildren()
             {
                 yield return Root;
+            }
+
+            protected internal override void OnLayoutCycleRequested()
+            {
+                Layout();
+                base.OnLayoutCycleRequested();
             }
         }
 

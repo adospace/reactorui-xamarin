@@ -190,6 +190,12 @@ namespace XamarinReactorUI
             {
                 yield return Root;
             }
+
+            protected internal override void OnLayoutCycleRequested()
+            {
+                Layout();
+                base.OnLayoutCycleRequested();
+            }
         }
 
         private class ItemTemplatePresenter : ViewCell

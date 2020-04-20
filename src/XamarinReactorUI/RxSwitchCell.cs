@@ -65,6 +65,12 @@ namespace XamarinReactorUI
         {
             _nativeControl = switchCell;
         }
+
+        protected internal override void OnLayoutCycleRequested()
+        {
+            Layout();
+            base.OnLayoutCycleRequested();
+        }
     }
 
     public static class RxSwitchCellExtensions

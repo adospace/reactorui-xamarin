@@ -11,7 +11,7 @@ namespace XamarinReactorUI.TestApp.ListView
     {
         TextCell,
 
-        ImagCell,
+        ImageCell,
 
         SwitchCell,
 
@@ -46,7 +46,7 @@ namespace XamarinReactorUI.TestApp.ListView
                 new RxStackLayout()
                 {
                     RenderSwitchMode(ViewMode.TextCell),
-                    RenderSwitchMode(ViewMode.ImagCell),
+                    RenderSwitchMode(ViewMode.ImageCell),
                     RenderSwitchMode(ViewMode.SwitchCell),
                     RenderSwitchMode(ViewMode.EntryCell),
                     RenderSwitchMode(ViewMode.ViewCell),
@@ -66,7 +66,7 @@ namespace XamarinReactorUI.TestApp.ListView
                         .RowHeight(64)
                         .VFillAndExpand()
                         .HFillAndExpand();
-                case ViewMode.ImagCell:
+                case ViewMode.ImageCell:
                     return new RxImageListView<Monkey>()
                         .RenderCollection(_allMonkeys, (monkey, imageCell) => RenderMonkeyWithImageCell(monkey, imageCell))
                         .RowHeight(64)

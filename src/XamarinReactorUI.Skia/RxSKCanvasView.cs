@@ -10,6 +10,7 @@ namespace XamarinReactorUI
         bool EnableTouchEvents { get; set; }
 
         Action<SKPaintSurfaceEventArgs> PaintSurfaceAction { get; set; }
+        Action<SKTouchEventArgs> TouchAction { get; set; }
     }
 
     public class RxSKCanvasView<T> : RxView<T>, IRxSKCanvasView where T : SKCanvasView, new()
@@ -26,6 +27,7 @@ namespace XamarinReactorUI
         public bool IgnorePixelScaling { get; set; } = (bool)SKCanvasView.IgnorePixelScalingProperty.DefaultValue;
         public bool EnableTouchEvents { get; set; } = (bool)SKCanvasView.EnableTouchEventsProperty.DefaultValue;
         public Action<SKPaintSurfaceEventArgs> PaintSurfaceAction { get; set; }
+        public Action<SKTouchEventArgs> TouchAction { get; set; }
 
         protected override void OnUpdate()
         {
@@ -34,8 +36,15 @@ namespace XamarinReactorUI
 
             if (PaintSurfaceAction != null)
                 NativeControl.PaintSurface += NativeControl_PaintSurface;
+            if (TouchAction != null)
+                NativeControl.Touch += NativeControl_Touch;
 
             base.OnUpdate();
+        }
+
+        private void NativeControl_Touch(object sender, SKTouchEventArgs e)
+        {
+            TouchAction?.Invoke(e);
         }
 
         private void NativeControl_PaintSurface(object sender, SKPaintSurfaceEventArgs e)
@@ -46,7 +55,10 @@ namespace XamarinReactorUI
         protected override void OnMigrated(VisualNode newNode)
         {
             if (NativeControl != null)
+            {
                 NativeControl.PaintSurface -= NativeControl_PaintSurface;
+                NativeControl.Touch -= NativeControl_Touch;
+            }
 
             base.OnMigrated(newNode);
         }
@@ -54,7 +66,10 @@ namespace XamarinReactorUI
         protected override void OnUnmount()
         {
             if (NativeControl != null)
+            {
                 NativeControl.PaintSurface -= NativeControl_PaintSurface;
+                NativeControl.Touch -= NativeControl_Touch;
+            }
 
             base.OnUnmount();
         }
@@ -82,6 +97,12 @@ namespace XamarinReactorUI
         public static T OnPaintSurface<T>(this T skcanvasview, Action<SKPaintSurfaceEventArgs> action) where T : IRxSKCanvasView
         {
             skcanvasview.PaintSurfaceAction = action;
+            return skcanvasview;
+        }
+
+        public static T OnTouch<T>(this T skcanvasview, Action<SKTouchEventArgs> action) where T : IRxSKCanvasView
+        {
+            skcanvasview.TouchAction = action;
             return skcanvasview;
         }
 

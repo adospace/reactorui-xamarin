@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XamarinReactorUI.Maps", "Xa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XamarinReactorUI.HotReload", "XamarinReactorUI.HotReload\XamarinReactorUI.HotReload.csproj", "{6B323D4C-3B98-4878-ABAE-6C92B2D849F5}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XamarinReactorUI.Skia", "XamarinReactorUI.Skia\XamarinReactorUI.Skia.csproj", "{C3D2C7AC-6E58-4136-960A-E0833ADF610D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{6B323D4C-3B98-4878-ABAE-6C92B2D849F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B323D4C-3B98-4878-ABAE-6C92B2D849F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6B323D4C-3B98-4878-ABAE-6C92B2D849F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3D2C7AC-6E58-4136-960A-E0833ADF610D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3D2C7AC-6E58-4136-960A-E0833ADF610D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3D2C7AC-6E58-4136-960A-E0833ADF610D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3D2C7AC-6E58-4136-960A-E0833ADF610D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

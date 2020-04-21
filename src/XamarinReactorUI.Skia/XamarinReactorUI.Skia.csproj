@@ -10,7 +10,7 @@
     <PackageProjectUrl>https://github.com/adospace/reactorui-xamarin</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/adospace/reactorui-xamarin</RepositoryUrl>
-    <PackageTags>xamarin forms .net react flutter ui</PackageTags>
+    <PackageTags>xamarin forms .net react flutter ui skia</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>

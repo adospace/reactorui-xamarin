@@ -6,12 +6,12 @@ namespace XamarinReactorUI.Scaffold
 {
     internal class PropertyInfoEqualityComparer : IEqualityComparer<PropertyInfo>
     {
-        public bool Equals([AllowNull] PropertyInfo x, [AllowNull] PropertyInfo y)
+        public bool Equals(PropertyInfo x, PropertyInfo y)
         {
             return x.Name == y.Name;
         }
 
-        public int GetHashCode([DisallowNull] PropertyInfo obj)
+        public int GetHashCode(PropertyInfo obj)
         {
             return obj.Name.GetHashCode();
         }

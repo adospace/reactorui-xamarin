@@ -5,11 +5,11 @@ using System.Xml.Linq;
 
 namespace XamarinReactorUI.Scaffold
 {
-    class Program
+    public class Program
     {
-        static void Main()
+        public static void Main()
         {
-            var typeToScaffold = typeof(Xamarin.Forms.RelativeLayout);
+            var typeToScaffold = typeof(SkiaSharp.Views.Forms.SKGLView);
 
             var outputPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "gen");
             Directory.CreateDirectory(outputPath);

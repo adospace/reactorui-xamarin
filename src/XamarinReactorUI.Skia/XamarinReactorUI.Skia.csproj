@@ -5,7 +5,7 @@
     <Version Condition=" '$(APPVEYOR_BUILD_VERSION)' != '' ">$(APPVEYOR_BUILD_VERSION)-beta</Version>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>adospace</Authors>
-    <Description>XamarinReactorUI is an UI framework that let you build Xamarin Forms pages using a React/Flutter inspired model.</Description>
+    <Description>XamarinReactorUI is an UI framework that let you build Xamarin Forms pages using a React/Flutter inspired model. This is the package required to integrate Xamarin SkiaSharp View</Description>
     <Copyright>Adolfo Marinucci</Copyright>
     <PackageProjectUrl>https://github.com/adospace/reactorui-xamarin</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -16,7 +16,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="SkiaSharp.Views.Forms" Version="1.68.1.1" />
     <PackageReference Include="Xamarin.Forms" Version="4.5.0.617" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\XamarinReactorUI\XamarinReactorUI.csproj" />
   </ItemGroup>
 
 </Project>

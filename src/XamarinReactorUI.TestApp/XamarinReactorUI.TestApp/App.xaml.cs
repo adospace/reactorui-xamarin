@@ -55,7 +55,10 @@ namespace XamarinReactorUI.TestApp
             //_rxApp = RxApplication.Create<Theming.MainPage>(this).WithHotReload();
 
             //TEST 14
-            _rxApp = RxApplication.Create<ListView.MainPage>(this).WithHotReload();
+            //_rxApp = RxApplication.Create<ListView.MainPage>(this).WithHotReload();
+
+            //TEST 15
+            _rxApp = RxApplication.Create<Canvas.MainPage>(this).WithHotReload();
         }
 
         protected override void OnStart()

@@ -40,6 +40,8 @@ namespace XamarinReactorUI
                 ((RxElement<T>)newNode)._isMounted = this._nativeControl != null;
                 OnMigrated(newNode);
 
+                _componentRefAction?.Invoke(NativeControl);
+
                 base.MergeWith(newNode);
             }
             else

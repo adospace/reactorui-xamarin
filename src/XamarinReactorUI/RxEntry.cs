@@ -4,15 +4,15 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public interface IRxEntry
+    public interface IRxEntry : IRxInputView
     {
         ReturnType ReturnType { get; set; }
-        string Placeholder { get; set; }
-        Color PlaceholderColor { get; set; }
+        //string Placeholder { get; set; }
+        //Color PlaceholderColor { get; set; }
         bool IsPassword { get; set; }
-        string Text { get; set; }
-        Color TextColor { get; set; }
-        double CharacterSpacing { get; set; }
+        //string Text { get; set; }
+        //Color TextColor { get; set; }
+        //double CharacterSpacing { get; set; }
         TextAlignment HorizontalTextAlignment { get; set; }
         TextAlignment VerticalTextAlignment { get; set; }
         string FontFamily { get; set; }
@@ -22,7 +22,7 @@ namespace XamarinReactorUI
         int CursorPosition { get; set; }
         int SelectionLength { get; set; }
         ClearButtonVisibility ClearButtonVisibility { get; set; }
-        Keyboard Keyboard { get; set; }
+        //Keyboard Keyboard { get; set; }
     }
 
     public class RxEntry<T> : RxInputView<T>, IRxEntry where T : Entry, new()

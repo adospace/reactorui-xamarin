@@ -4,7 +4,7 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public interface IRxStructuredItemsView
+    public interface IRxStructuredItemsView : IRxItemsView
     {
         //Object Header { get; set; }
         //DataTemplate HeaderTemplate { get; set; }

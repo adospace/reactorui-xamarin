@@ -4,7 +4,7 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public interface IRxFlexLayout
+    public interface IRxFlexLayout : IRxLayout
     {
         FlexDirection Direction { get; set; }
         FlexJustify JustifyContent { get; set; }

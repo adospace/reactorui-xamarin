@@ -3,7 +3,7 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public interface IRxScrollView
+    public interface IRxScrollView : IRxLayout
     {
         ScrollOrientation Orientation { get; set; }
         ScrollBarVisibility HorizontalScrollBarVisibility { get; set; }

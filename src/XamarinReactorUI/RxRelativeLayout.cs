@@ -4,7 +4,7 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public interface IRxRelativeLayout
+    public interface IRxRelativeLayout : IRxLayout
     {
     }
 

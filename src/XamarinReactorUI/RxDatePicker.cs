@@ -4,7 +4,7 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public interface IRxDatePicker
+    public interface IRxDatePicker : IRxView
     {
         string Format { get; set; }
         DateTime Date { get; set; }

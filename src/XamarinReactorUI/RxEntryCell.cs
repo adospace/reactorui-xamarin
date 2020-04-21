@@ -4,7 +4,7 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public interface IRxEntryCell
+    public interface IRxEntryCell : IRxCell
     {
         string Text { get; set; }
         string Label { get; set; }

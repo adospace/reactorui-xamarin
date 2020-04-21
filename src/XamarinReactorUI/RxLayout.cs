@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public interface IRxLayout
+    public interface IRxLayout : IRxView
     {
         bool IsClippedToBounds { get; set; }
         bool CascadeInputTransparent { get; set; }
@@ -68,6 +69,28 @@ namespace XamarinReactorUI
 
             foreach (var node in nodes)
                 _internalChildren.Add(node);
+        }
+
+        public void Add(object genericNode)
+        {
+            if (genericNode == null)
+            {
+                return;
+            }
+
+            if (genericNode is VisualNode visualNode)
+            {
+                _internalChildren.Add(visualNode);
+            }
+            else if (genericNode is IEnumerable nodes)
+            {
+                foreach (var node in nodes.Cast<VisualNode>())
+                    _internalChildren.Add(node);
+            }
+            else
+            {
+                throw new NotSupportedException($"Unable to add value of type '{genericNode.GetType()}' under {typeof(T)}");
+            }        
         }
     }
 

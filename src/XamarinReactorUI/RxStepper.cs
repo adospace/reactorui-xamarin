@@ -4,7 +4,7 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public interface IRxStepper
+    public interface IRxStepper : IRxView
     {
         double Maximum { get; set; }
         double Minimum { get; set; }

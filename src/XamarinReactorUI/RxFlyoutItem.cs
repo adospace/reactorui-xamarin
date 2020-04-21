@@ -6,7 +6,7 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public interface IRxFlyoutItem
+    public interface IRxFlyoutItem : IRxShellItem
     {
     }
 

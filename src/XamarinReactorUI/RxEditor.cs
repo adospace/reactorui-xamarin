@@ -4,7 +4,7 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public interface IRxEditor
+    public interface IRxEditor : IRxInputView
     {
         string Text { get; set; }
         string FontFamily { get; set; }

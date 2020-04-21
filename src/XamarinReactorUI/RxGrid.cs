@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public interface IRxGrid
+    public interface IRxGrid : IRxLayout
     {
         double RowSpacing { get; set; }
         double ColumnSpacing { get; set; }

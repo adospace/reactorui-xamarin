@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public interface IRxShellSection
+    public interface IRxShellSection : IRxShellGroupItem
     {
     }
 

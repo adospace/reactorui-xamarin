@@ -3,7 +3,7 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public interface IRxStackLayout
+    public interface IRxStackLayout : IRxLayout
     {
         StackOrientation Orientation { get; set; }
         double Spacing { get; set; }

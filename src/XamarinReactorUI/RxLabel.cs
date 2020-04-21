@@ -4,7 +4,7 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public interface IRxLabel
+    public interface IRxLabel : IRxView
     {
         TextAlignment HorizontalTextAlignment { get; set; }
         TextAlignment VerticalTextAlignment { get; set; }

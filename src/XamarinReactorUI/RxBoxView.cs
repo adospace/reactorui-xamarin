@@ -4,7 +4,7 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public interface IRxBoxView
+    public interface IRxBoxView : IRxView
     {
         Color Color { get; set; }
         CornerRadius CornerRadius { get; set; }

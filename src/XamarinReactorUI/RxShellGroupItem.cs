@@ -3,7 +3,7 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public interface IRxShellGroupItem
+    public interface IRxShellGroupItem : IRxBaseShellItem
     {
         FlyoutDisplayOptions FlyoutDisplayOptions { get; set; }
     }

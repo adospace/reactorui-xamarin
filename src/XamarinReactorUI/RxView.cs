@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public interface IRxView
+    public interface IRxView : IRxVisualElement
     {
         LayoutOptions HorizontalOptions { get; set; }
         LayoutOptions VerticalOptions { get; set; }

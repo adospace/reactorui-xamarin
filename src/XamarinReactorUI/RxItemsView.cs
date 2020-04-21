@@ -6,7 +6,7 @@ using XamarinReactorUI.Internals;
 
 namespace XamarinReactorUI
 {
-    public interface IRxItemsView
+    public interface IRxItemsView : IRxView
     {
         ScrollBarVisibility HorizontalScrollBarVisibility { get; set; }
         ScrollBarVisibility VerticalScrollBarVisibility { get; set; }

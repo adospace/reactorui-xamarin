@@ -4,7 +4,7 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public interface IRxRefreshView
+    public interface IRxRefreshView : IRxContentView
     {
         bool IsRefreshing { get; set; }
         Color RefreshColor { get; set; }

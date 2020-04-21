@@ -4,7 +4,7 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public interface IRxInputView
+    public interface IRxInputView : IRxView
     {
         string Text { get; set; }
         Keyboard Keyboard { get; set; }

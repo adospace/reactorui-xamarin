@@ -7,7 +7,10 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public abstract class RxMultiPage<T, TPAGE> : RxPage<T>, IEnumerable<IRxPage> where T : Xamarin.Forms.MultiPage<TPAGE>, new() where TPAGE : Xamarin.Forms.Page
+    public interface IRxMultiPage : IRxPage
+    { }
+
+    public abstract class RxMultiPage<T, TPAGE> : RxPage<T>, IRxMultiPage, IEnumerable<IRxPage> where T : Xamarin.Forms.MultiPage<TPAGE>, new() where TPAGE : Xamarin.Forms.Page
     {
         private readonly List<VisualNode> _internalChildren = new List<VisualNode>();
 

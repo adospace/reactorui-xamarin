@@ -54,6 +54,11 @@ namespace XamarinReactorUI
             {
                 NativeControl.PropertyChanged -= NativeControl_PropertyChanged;
                 NativeControl.PropertyChanging -= NativeControl_PropertyChanging;
+
+                foreach (var attachedProperty in _attachedProperties)
+                {
+                    NativeControl.SetValue(attachedProperty.Key, attachedProperty.Key.DefaultValue);
+                }
             }
 
             _attachedProperties.Clear();

@@ -7,7 +7,7 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public interface IRxMenuItem
+    public interface IRxMenuItem : IRxBaseMenuItem
     {
         bool IsDestructive { get; set; }
         ImageSource IconImageSource { get; set; }

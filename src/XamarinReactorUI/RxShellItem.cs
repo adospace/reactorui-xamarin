@@ -8,7 +8,7 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public interface IRxShellItem
+    public interface IRxShellItem : IRxShellGroupItem
     {
     }
 

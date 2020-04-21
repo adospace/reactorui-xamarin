@@ -3,7 +3,7 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public interface IRxTabbedPage
+    public interface IRxTabbedPage : IRxMultiPage
     {
         Color BarBackgroundColor { get; set; }
         Color BarTextColor { get; set; }

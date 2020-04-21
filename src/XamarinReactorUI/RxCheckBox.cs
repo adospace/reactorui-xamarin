@@ -4,7 +4,7 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public interface IRxCheckBox
+    public interface IRxCheckBox : IRxView
     {
         bool IsChecked { get; set; }
         Color Color { get; set; }

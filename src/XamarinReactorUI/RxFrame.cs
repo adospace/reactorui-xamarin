@@ -4,7 +4,7 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public interface IRxFrame
+    public interface IRxFrame : IRxContentView
     {
         Color BorderColor { get; set; }
         bool HasShadow { get; set; }

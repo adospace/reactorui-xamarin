@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public interface IRxNavigationPage
+    public interface IRxNavigationPage : IRxPage
     {
         Color BarBackgroundColor { get; set; }
         Color BarTextColor { get; set; }

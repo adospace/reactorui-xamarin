@@ -5,7 +5,7 @@ using XamarinReactorUI.Internals;
 
 namespace XamarinReactorUI
 {
-    public interface IRxListView
+    public interface IRxListView : IRxView
     {
         bool IsPullToRefreshEnabled { get; set; }
         bool IsRefreshing { get; set; }

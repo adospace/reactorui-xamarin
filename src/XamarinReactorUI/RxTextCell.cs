@@ -3,7 +3,7 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public interface IRxTextCell
+    public interface IRxTextCell : IRxCell
     {
         string Text { get; set; }
         string Detail { get; set; }

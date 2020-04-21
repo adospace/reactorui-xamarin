@@ -6,7 +6,7 @@ using static Xamarin.Forms.Button.ButtonContentLayout;
 
 namespace XamarinReactorUI
 {
-    public interface IRxButton
+    public interface IRxButton : IRxView
     {
         Action ClickAction { get; set; }
         ButtonContentLayout ContentLayout { get; set; }

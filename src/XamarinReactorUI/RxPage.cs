@@ -6,7 +6,7 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public interface IRxPage
+    public interface IRxPage : IRxVisualElement
     {
         ImageSource BackgroundImageSource { get; set; }
         bool IsBusy { get; set; }
@@ -15,9 +15,10 @@ namespace XamarinReactorUI
         ImageSource IconImageSource { get; set; }
         Action BackButtonAction { get; set; }
         bool IsBackButtonEnabled { get; set; }
+        Action<SizeChangedEventArgs> SizeChangedAction { get; set; }
     }
 
-    public abstract class RxPage<T> : RxVisualElement<T>, IRxPage where T : Xamarin.Forms.Page, new()
+    public abstract class RxPage<T> : RxVisualElement<T>, IRxPage where T : Page, new()
     {
         public RxPage()
         {
@@ -33,6 +34,7 @@ namespace XamarinReactorUI
         public Thickness Padding { get; set; } = (Thickness)Page.PaddingProperty.DefaultValue;
         public string Title { get; set; } = (string)Page.TitleProperty.DefaultValue;
         public ImageSource IconImageSource { get; set; } = (ImageSource)Page.IconImageSourceProperty.DefaultValue;
+        public Action<SizeChangedEventArgs> SizeChangedAction { get; set; }
 
         public Action BackButtonAction { get; set; }
         public bool IsBackButtonEnabled { get; set; } = true;
@@ -59,6 +61,9 @@ namespace XamarinReactorUI
             NativeControl.Title = Title;
             NativeControl.IconImageSource = IconImageSource;
 
+            if (SizeChangedAction != null)
+                NativeControl.SizeChanged += NativeControl_SizeChanged;
+
             NativeControl.SetValue(Shell.BackButtonBehaviorProperty, new BackButtonBehavior()
             { 
                 IsEnabled = IsBackButtonEnabled,
@@ -67,10 +72,38 @@ namespace XamarinReactorUI
 
             base.OnUpdate();
         }
+
+        private void NativeControl_SizeChanged(object sender, EventArgs e)
+        {
+            var page = (T)sender;
+            SizeChangedAction?.Invoke(new SizeChangedEventArgs(new Size(page.Width, page.Height)));
+        }
+
+        protected override void OnUnmount()
+        {
+            if (NativeControl != null)
+                NativeControl.SizeChanged -= NativeControl_SizeChanged;
+
+            base.OnUnmount();
+        }
+
+        protected override void OnMigrated(VisualNode newNode)
+        {
+            if (NativeControl != null)
+                NativeControl.SizeChanged -= NativeControl_SizeChanged;
+            
+            base.OnMigrated(newNode);
+        }
     }
 
     public static class RxPageExtensions
     {
+        public static T OnSizeChanged<T>(this T page, Action<SizeChangedEventArgs> action) where T : IRxPage
+        {
+            page.SizeChangedAction = action;
+            return page;
+        }
+
         public static T OnBackButtonClicked<T>(this T page, Action action) where T : IRxPage
         {
             page.BackButtonAction = action;

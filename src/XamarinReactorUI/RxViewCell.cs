@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public interface IRxViewCell
+    public interface IRxViewCell : IRxCell
     {
     }
 

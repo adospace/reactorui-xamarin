@@ -3,7 +3,7 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public interface IRxAbsoluteLayout
+    public interface IRxAbsoluteLayout : IRxLayout
     {
     }
 

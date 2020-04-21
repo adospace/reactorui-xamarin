@@ -6,7 +6,7 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public interface IRxVisualElement
+    public interface IRxVisualElement : IRxElement
     {
         //Style Style { get; set; }
         bool InputTransparent { get; set; }

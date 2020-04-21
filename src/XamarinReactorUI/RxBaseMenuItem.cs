@@ -4,7 +4,7 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public interface IRxBaseMenuItem
+    public interface IRxBaseMenuItem : IRxElement
     {
     }
 

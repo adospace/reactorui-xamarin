@@ -4,7 +4,7 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public interface IRxTimePicker
+    public interface IRxTimePicker : IRxView
     {
         string Format { get; set; }
         Color TextColor { get; set; }

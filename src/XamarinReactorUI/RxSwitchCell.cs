@@ -3,7 +3,7 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public interface IRxSwitchCell
+    public interface IRxSwitchCell : IRxCell
     {
         bool On { get; set; }
         string Text { get; set; }

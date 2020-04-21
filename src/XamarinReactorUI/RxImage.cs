@@ -6,7 +6,7 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public interface IRxImage
+    public interface IRxImage : IRxView
     {
         ImageSource Source { get; set; }
         Aspect Aspect { get; set; }

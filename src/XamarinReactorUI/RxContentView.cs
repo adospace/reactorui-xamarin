@@ -5,7 +5,12 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public abstract class RxContentView<T> : RxLayout<T> where T : ContentView, new()
+    public interface IRxContentView : IRxLayout
+    { 
+    
+    }
+
+    public abstract class RxContentView<T> : RxLayout<T>, IRxContentView where T : ContentView, new()
     {
         public RxContentView()
         { }

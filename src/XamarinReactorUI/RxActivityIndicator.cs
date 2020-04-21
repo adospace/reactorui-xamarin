@@ -4,7 +4,7 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public interface IRxActivityIndicator
+    public interface IRxActivityIndicator : IRxView
     {
         bool IsRunning { get; set; }
         Color Color { get; set; }

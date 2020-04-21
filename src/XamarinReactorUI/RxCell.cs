@@ -4,7 +4,7 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public interface IRxCell
+    public interface IRxCell : IRxElement
     {
         Action TappedAction { get; set; }
         bool IsEnabled { get; set; }

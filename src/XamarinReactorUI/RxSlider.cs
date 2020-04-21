@@ -6,7 +6,7 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public interface IRxSlider
+    public interface IRxSlider : IRxView
     {
         double Minimum { get; set; }
         double Maximum { get; set; }

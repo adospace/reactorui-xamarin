@@ -4,7 +4,7 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public interface IRxSwitch
+    public interface IRxSwitch : IRxView
     {
         bool IsToggled { get; set; }
         Color OnColor { get; set; }

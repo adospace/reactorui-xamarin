@@ -7,7 +7,7 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public interface IRxShell
+    public interface IRxShell : IRxPage
     {
         FlyoutBehavior FlyoutBehavior { get; set; }
 

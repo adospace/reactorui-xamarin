@@ -8,7 +8,7 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public interface IRxBaseShellItem
+    public interface IRxBaseShellItem : IRxNavigableElement
     {
         ImageSource FlyoutIcon { get; set; }
         ImageSource Icon { get; set; }

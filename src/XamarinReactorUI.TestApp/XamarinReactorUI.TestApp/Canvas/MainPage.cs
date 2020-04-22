@@ -26,10 +26,10 @@ namespace XamarinReactorUI.TestApp.Canvas
                         .Minimum(0)
                         .Maximum(360.0)
                         .Value(State.RotationAngle)
-                        .OnValueChanged(v => SetState(s => 
+                        .OnValueChanged(v => SetState(s =>
                         {
                             s.RotationAngle = v.NewValue;
-                            _canvasView?.InvalidateSurface();
+                            _canvasView.InvalidateSurface();
                         }))
                         .HFill()
                         .VStart(),

@@ -35,7 +35,10 @@ namespace XamarinReactorUI
             NativeControl.EnableTouchEvents = EnableTouchEvents;
 
             if (PaintSurfaceAction != null)
+            {
                 NativeControl.PaintSurface += NativeControl_PaintSurface;
+                NativeControl.InvalidateSurface();
+            }
             if (TouchAction != null)
                 NativeControl.Touch += NativeControl_Touch;
 

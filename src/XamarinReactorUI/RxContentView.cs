@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
     public interface IRxContentView : IRxLayout
-    { 
-    
+    {
     }
 
     public abstract class RxContentView<T> : RxLayout<T>, IRxContentView where T : ContentView, new()
@@ -18,7 +15,6 @@ namespace XamarinReactorUI
         protected RxContentView(Action<T> componentRefAction)
             : base(componentRefAction)
         {
-
         }
 
         protected override void OnAddChild(VisualNode widget, Element childControl)
@@ -44,6 +40,16 @@ namespace XamarinReactorUI
 
             base.OnRemoveChild(widget, childControl);
         }
+    }
 
+    public class RxContentView : RxContentView<ContentView>
+    {
+        public RxContentView()
+        { }
+
+        protected RxContentView(Action<ContentView> componentRefAction)
+            : base(componentRefAction)
+        {
+        }
     }
 }

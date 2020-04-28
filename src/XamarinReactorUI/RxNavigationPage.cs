@@ -15,15 +15,13 @@ namespace XamarinReactorUI
     {
         private VisualNode _rootPage = null;
 
-        public RxNavigationPage(VisualNode rootPage = null)
+        public RxNavigationPage()
         {
-            _rootPage = rootPage;
         }
 
-        public RxNavigationPage(Action<T> componentRefAction, VisualNode rootPage = null)
+        public RxNavigationPage(Action<T> componentRefAction)
             : base(componentRefAction)
-        {
-            _rootPage = rootPage;
+        { 
         }
 
         protected override void OnAddChild(VisualNode widget, Element childNativeControl)
@@ -60,9 +58,6 @@ namespace XamarinReactorUI
 
         protected override void OnUpdate()
         {
-            if (NativeControl == null)
-                return;
-
             NativeControl.BarBackgroundColor = BarBackgroundColor;
             NativeControl.BarTextColor = BarTextColor;
 
@@ -82,13 +77,12 @@ namespace XamarinReactorUI
 
     public class RxNavigationPage : RxNavigationPage<NavigationPage>
     {
-        public RxNavigationPage(VisualNode rootPage = null)
-            : base(rootPage)
+        public RxNavigationPage()
         {
         }
 
-        public RxNavigationPage(Action<NavigationPage> componentRefAction, VisualNode rootPage = null)
-            : base(componentRefAction, rootPage)
+        public RxNavigationPage(Action<NavigationPage> componentRefAction)
+            : base(componentRefAction)
         {
         }
     }

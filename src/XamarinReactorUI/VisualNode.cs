@@ -107,16 +107,8 @@ namespace XamarinReactorUI
         protected bool _isMounted = false;
         protected bool _stateChanged = true;
 
-        private bool _styled = false;
-
         internal virtual void Layout(RxTheme theme = null)
         {
-            if (!_styled)
-            {
-                theme?.Style(this);
-                _styled = true;
-            }
-
             if (!IsLayoutCycleRequired)
                 return;
 

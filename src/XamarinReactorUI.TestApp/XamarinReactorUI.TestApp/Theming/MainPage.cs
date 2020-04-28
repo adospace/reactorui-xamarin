@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Xamarin.Forms;
 
 namespace XamarinReactorUI.TestApp.Theming
 {
@@ -23,9 +24,9 @@ namespace XamarinReactorUI.TestApp.Theming
             return new RxNavigationPage()
             {
                 new RxContentPage()
-                { 
+                {
                     new RxStackLayout()
-                    { 
+                    {
                         new RxLabel("Label"),
                         new RxEntry(),
                         new RxButton("Toggle Theme")

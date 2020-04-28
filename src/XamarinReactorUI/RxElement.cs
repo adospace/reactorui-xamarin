@@ -13,16 +13,58 @@ namespace XamarinReactorUI
         Action<object, PropertyChangedEventArgs> PropertyChangedAction { get; set; }
     }
 
-    public abstract class RxElement<T> : VisualNode, IRxElement where T : Element, new()
+    public abstract class RxElement : VisualNode
     {
         protected Element _nativeControl;
 
+        protected RxElement()
+        { }
+
+        private bool _styled = false;
+        private RxTheme _theme = null;
+
+        internal override void Layout(RxTheme theme = null)
+        {
+            _theme = theme;
+            base.Layout(theme);
+        }
+
+        protected override void OnMount()
+        {
+            if (!_styled)
+            {
+                var styleForMe = _theme?.GetStyleFor(this);
+                if (styleForMe != null)
+                {
+                    var themedNode = (RxElement)Activator.CreateInstance(GetType());
+                    styleForMe(themedNode);
+                    themedNode._nativeControl = _nativeControl;
+                    themedNode.OnUpdate();
+                    themedNode.OnMigrated(this);
+                }
+
+                _styled = true;
+            }
+
+
+            base.OnMount();
+        }
+
+        protected virtual void OnMigrated(VisualNode newNode)
+        {
+        }
+    }
+
+    public abstract class RxElement<T> : RxElement, IRxElement where T : Element, new()
+    {
+
         protected T NativeControl { get => (T)_nativeControl; }
 
-        public Action<object, System.ComponentModel.PropertyChangingEventArgs> PropertyChangingAction { get; set; }
-        public Action<object, PropertyChangedEventArgs> PropertyChangedAction { get; set; }
 
         private readonly Action<T> _componentRefAction;
+        private readonly Dictionary<BindableProperty, object> _attachedProperties = new Dictionary<BindableProperty, object>();
+        public Action<object, System.ComponentModel.PropertyChangingEventArgs> PropertyChangingAction { get; set; }
+        public Action<object, PropertyChangedEventArgs> PropertyChangedAction { get; set; }
 
         protected RxElement()
         { }
@@ -50,7 +92,7 @@ namespace XamarinReactorUI
             }
         }
 
-        protected virtual void OnMigrated(VisualNode newNode)
+        protected override void OnMigrated(VisualNode newNode)
         {
             if (NativeControl != null)
             {
@@ -64,6 +106,8 @@ namespace XamarinReactorUI
             }
 
             _attachedProperties.Clear();
+
+            base.OnMigrated(newNode);
         }
 
         protected override void OnMount()
@@ -118,8 +162,6 @@ namespace XamarinReactorUI
         {
             PropertyChangingAction?.Invoke(sender, new System.ComponentModel.PropertyChangingEventArgs(e.PropertyName));
         }
-
-        private readonly Dictionary<BindableProperty, object> _attachedProperties = new Dictionary<BindableProperty, object>();
 
         public void SetAttachedProperty(BindableProperty property, object value)
             => _attachedProperties[property] = value;

@@ -93,7 +93,8 @@ namespace XamarinReactorUI
 
         protected override void OnUnmount()
         {
-            NativeControl.Clicked -= NativeControl_Clicked;
+            if (NativeControl != null)
+                NativeControl.Clicked -= NativeControl_Clicked;
             base.OnUnmount();
         }
 

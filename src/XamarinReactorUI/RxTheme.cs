@@ -9,27 +9,28 @@ namespace XamarinReactorUI
 {
     public interface IRxTheme
     {
-        RxTheme StyleFor<TS>(Action<TS> action) where TS : VisualNode;
+        RxTheme StyleFor<TS>(Action<TS> action) where TS : RxElement;
     }
 
     public class RxTheme : VisualNode, IEnumerable<VisualNode>, IRxTheme
     {
         private readonly List<VisualNode> _internalChildren = new List<VisualNode>();
 
-        private readonly Dictionary<Type, Action<VisualNode>> _styles = new Dictionary<Type, Action<VisualNode>>();
+        private readonly Dictionary<Type, Action<RxElement>> _styles = new Dictionary<Type, Action<RxElement>>();
 
         internal sealed override void Layout(RxTheme theme)
         {
             base.Layout(this);
         }
 
-        internal void Style(VisualNode node)
+        internal Action<RxElement> GetStyleFor(RxElement node)
         {
-            if (node is RxTheme)
-                return;
-
             if (_styles.TryGetValue(node.GetType(), out var styleAction))
-                styleAction(node);
+            {
+                return styleAction;
+            }
+
+            return null;
         }
 
         protected override IEnumerable<VisualNode> RenderChildren()
@@ -68,7 +69,7 @@ namespace XamarinReactorUI
             Parent.RemoveChild(this, nativeControl);
         }
 
-        public RxTheme StyleFor<TS>(Action<TS> action) where TS : VisualNode
+        public RxTheme StyleFor<TS>(Action<TS> action) where TS : RxElement
         {
             _styles[typeof(TS)] = node => action((TS)node);
             return this;
@@ -77,19 +78,19 @@ namespace XamarinReactorUI
 
     public static class RxThemeExtensions
     {
-        public static T StyleFor<T, TS>(this T theme, Action<TS> action) where T : IRxTheme where TS : VisualNode
+        public static T StyleFor<T, TS>(this T theme, Action<TS> action) where T : IRxTheme where TS : RxElement
         {
             theme.StyleFor<TS>(action);
             return theme;
         }
 
-        public static RxTheme UseTheme<T>(this T node, RxTheme theme) where T : VisualNode
+        public static RxTheme UseTheme<T>(this T node, RxTheme theme) where T : RxElement
         {
             theme.Add(node);
             return theme;
         }
 
-        public static RxTheme UseTheme<T>(this IEnumerable<T> node, RxTheme theme) where T : VisualNode
+        public static RxTheme UseTheme<T>(this IEnumerable<T> node, RxTheme theme) where T : RxElement
         {
             theme.Add(node.ToArray());
             return theme;

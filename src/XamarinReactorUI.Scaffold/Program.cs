@@ -9,7 +9,7 @@ namespace XamarinReactorUI.Scaffold
     {
         public static void Main()
         {
-            var typeToScaffold = typeof(SkiaSharp.Views.Forms.SKGLView);
+            var typeToScaffold = typeof(Xamarin.Forms.CarouselView);
 
             var outputPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "gen");
             Directory.CreateDirectory(outputPath);

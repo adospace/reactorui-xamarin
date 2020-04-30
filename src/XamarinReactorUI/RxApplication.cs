@@ -32,7 +32,7 @@ namespace XamarinReactorUI
             System.Diagnostics.Debug.WriteLine(ex);
         }
 
-        public abstract void Run();
+        public abstract IRxHostElement Run();
 
         public abstract void Stop();
 
@@ -62,7 +62,8 @@ namespace XamarinReactorUI
     public class RxApplication<T> : RxApplication where T : RxComponent, new()
     {
         private RxComponent _rootComponent;
-        private bool _sleeping;
+        private bool _sleeping = true;
+
 
         internal RxApplication(Application application)
             :base(application)
@@ -85,13 +86,18 @@ namespace XamarinReactorUI
             //_application.MainPage = null;
         }
 
-        public override void Run()
+        public override IRxHostElement Run()
         {
-            _rootComponent = _rootComponent ?? ComponentLoader.LoadComponent<T>();
-            ComponentLoader.ComponentAssemblyChanged += OnComponentAssemblyChanged;
-            _sleeping = false;
-            OnLayoutCycleRequested();
-            ComponentLoader.Run();
+            if (_sleeping)
+            {
+                _rootComponent = _rootComponent ?? ComponentLoader.LoadComponent<T>();
+                ComponentLoader.ComponentAssemblyChanged += OnComponentAssemblyChanged;
+                _sleeping = false;
+                OnLayout();
+                ComponentLoader.Run();
+            }
+
+            return this;
         }
 
         private void OnComponentAssemblyChanged(object sender, EventArgs e)
@@ -117,9 +123,12 @@ namespace XamarinReactorUI
 
         public override void Stop()
         {
-            ComponentLoader.ComponentAssemblyChanged -= OnComponentAssemblyChanged;
-            _sleeping = true;
-            ComponentLoader.Stop();
+            if (!_sleeping)
+            {
+                ComponentLoader.ComponentAssemblyChanged -= OnComponentAssemblyChanged;
+                _sleeping = true;
+                ComponentLoader.Stop();
+            }
         }
 
         protected internal override void OnLayoutCycleRequested()

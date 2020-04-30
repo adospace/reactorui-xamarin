@@ -5,7 +5,7 @@ namespace XamarinReactorUI
 {
     public interface IRxHostElement
     {
-        void Run();
+        IRxHostElement Run();
 
         void Stop();
 

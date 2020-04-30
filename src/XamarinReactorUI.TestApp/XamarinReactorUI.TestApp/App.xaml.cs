@@ -64,8 +64,10 @@ namespace XamarinReactorUI.TestApp
             //_rxApp = RxApplication.Create<CarouselView.TestCarouselViewComponent>(this).WithHotReload();
 
             //TEST 16
-            _rxApp = RxApplication.Create<TableView.MainPage>(this).WithHotReload();
+            _rxApp = RxApplication.Create<TableView.MainPage>(this)
+                .WithHotReload();
 
+            _rxApp.Run();
         }
 
         protected override void OnStart()

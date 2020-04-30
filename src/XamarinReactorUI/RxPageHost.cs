@@ -63,7 +63,7 @@ namespace XamarinReactorUI
             return component;
         }
 
-        public void Run()
+        public IRxHostElement Run()
         {
             _component = _component ?? InitializeComponent(RxApplication.Instance.ComponentLoader.LoadComponent<T>());
 
@@ -75,6 +75,8 @@ namespace XamarinReactorUI
             {
                 throw new InvalidOperationException($"Component {_component.GetType()} doesn't render a page as root");
             }
+
+            return this;
         }
 
         private void OnComponentAssemblyChanged(object sender, EventArgs e)

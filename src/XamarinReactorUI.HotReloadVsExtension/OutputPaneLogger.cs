@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.Shell.Interop;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace XamarinReactorUI.HotReloadVsExtension
 {
@@ -60,11 +61,13 @@ namespace XamarinReactorUI.HotReloadVsExtension
 
         private void EventSource_ErrorRaised(object sender, BuildErrorEventArgs e)
         {
-            outputPane.OutputStringThreadSafe($"{e.Message}{Environment.NewLine}");
+            var fileName = Path.Combine(Path.GetDirectoryName(e.ProjectFile), e.File);
+            outputPane.OutputStringThreadSafe($"{fileName}({e.LineNumber},{e.ColumnNumber},{e.EndLineNumber},{e.EndColumnNumber}): error {e.Code}: {e.Message}{Environment.NewLine}");
         }
 
         private void EventSource_AnyEventRaised(object sender, BuildEventArgs e)
         {
+            //1>D:\Source\Projects\reactorui-xamarin\src\XamarinReactorUI.HotReloadVsExtension\OutputPaneLogger.cs(71,9,71,15): error CS0106: The modifier 'public' is not valid for this item
             outputPane.OutputStringThreadSafe($"{e.Message}{Environment.NewLine}");
         }
 

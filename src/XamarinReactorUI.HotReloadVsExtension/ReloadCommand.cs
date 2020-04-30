@@ -254,6 +254,8 @@ TargetFramework=131072
             if (Path.GetExtension(outputFilePath) != ".dll")
                 return;
 
+            var now = DateTime.Now;
+
             generalPane.Activate(); // Brings this pane into view
             generalPane.OutputString($"Building {outputFilePath}...{Environment.NewLine}");
             generalPane.Activate(); // Brings this pane into view
@@ -261,18 +263,36 @@ TargetFramework=131072
             //_dte.Solution.SolutionBuild.BuildProject(selectedProject.ConfigurationManager.ActiveConfiguration.ConfigurationName, selectedProject.UniqueName, true);
 
             _dte.Documents.SaveAll();
-
             
             if (!RunMsBuild(selectedProject, generalPane))
             {
+                // Show a message box to inform user that build was completed with errors
+                VsShellUtilities.ShowMessageBox(
+                    this.package,
+                    "Build FAILED with errors: please review them in the output window and try again",
+                    "ReactorUI Hot Reload",
+                    OLEMSGICON.OLEMSGICON_WARNING,
+                    OLEMSGBUTTON.OLEMSGBUTTON_OK,
+                    OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+
                 generalPane.OutputString($"Unable to build Xamarin Forms project, it may contains errors{Environment.NewLine}");
                 generalPane.Activate(); // Brings this pane into view
                 return;
             }
 
-            ExecutePortForwardCommmand(generalPane);
+            if (!ExecutePortForwardCommmand(generalPane))
+            {
+                generalPane.OutputString($"Unable to setup connection with the device or emulator using adb: plese ensure it's correctly installed (please note that only Android platform is supported so for under Windows){Environment.NewLine}");
+                generalPane.Activate(); // Brings this pane into view
+                return;
+            }
 
-            await SendAssemblyToEmulatorAsync(outputFilePath, generalPane, _dte.Debugger.CurrentMode != dbgDebugMode.dbgDesignMode);
+            if (await SendAssemblyToEmulatorAsync(outputFilePath, generalPane, _dte.Debugger.CurrentMode != dbgDebugMode.dbgDesignMode))
+            {
+                generalPane.OutputString($"Hot reload completed in {(DateTime.Now - now).TotalMilliseconds}ms{Environment.NewLine}");
+                generalPane.Activate(); // Brings this pane into view
+            }
+
 
             // Show a message box to prove we were here
             //VsShellUtilities.ShowMessageBox(
@@ -381,13 +401,13 @@ TargetFramework=131072
             return true;
         }
 
-        private static async Task SendAssemblyToEmulatorAsync(string assemblyPath, IVsOutputWindowPane outputPane, bool debugging)
+        private static async Task<bool> SendAssemblyToEmulatorAsync(string assemblyPath, IVsOutputWindowPane outputPane, bool debugging)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
             //ThreadHelper.ThrowIfNotOnUIThread();
 
-            outputPane.OutputString($"Sending to emulator new assembly (debugging={debugging})...");
-            outputPane.Activate(); // Brings this pane into view
+            //outputPane.OutputString($"Sending to emulator new assembly (debugging={debugging})...");
+            //outputPane.Activate(); // Brings this pane into view
 
             var client = new TcpClient
             {
@@ -437,7 +457,7 @@ TargetFramework=131072
                 if (await networkStream.ReadAsync(booleanBuffer, 0, 1) == 0)
                     throw new SocketException();
 
-                outputPane.OutputStringThreadSafe($"sent ({assemblyRaw.Length} bytes){Environment.NewLine}");
+                outputPane.OutputStringThreadSafe($"Sent new assembly ({assemblyRaw.Length} bytes) to emulator{Environment.NewLine}");
             }
             catch (Exception ex)
             {
@@ -449,13 +469,14 @@ Please ensure that:
 3) RxApplication call WithHotReload()
 Socket exception: {ex.Message}
 ");
+                return false;
             }
             finally
             {
                 client.Close();
             }
 
-            outputPane.Activate();
+            return true;
         }
     }
 }

@@ -59,12 +59,12 @@ namespace XamarinReactorUI
             }
         }
 
-        protected sealed override void OnAddChild(VisualNode widget, Element nativeControl)
+        protected sealed override void OnAddChild(VisualNode widget, BindableObject nativeControl)
         {
             Parent.AddChild(this, nativeControl);
         }
 
-        protected sealed override void OnRemoveChild(VisualNode widget, Element nativeControl)
+        protected sealed override void OnRemoveChild(VisualNode widget, BindableObject nativeControl)
         {
             Parent.RemoveChild(this, nativeControl);
         }

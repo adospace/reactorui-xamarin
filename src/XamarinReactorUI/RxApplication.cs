@@ -69,7 +69,7 @@ namespace XamarinReactorUI
         {
         }
 
-        protected sealed override void OnAddChild(VisualNode widget, Element nativeControl)
+        protected sealed override void OnAddChild(VisualNode widget, BindableObject nativeControl)
         {
             if (nativeControl is Page page)
                 _application.MainPage = page;
@@ -79,7 +79,7 @@ namespace XamarinReactorUI
             }
         }
 
-        protected sealed override void OnRemoveChild(VisualNode widget, Element nativeControl)
+        protected sealed override void OnRemoveChild(VisualNode widget, BindableObject nativeControl)
         {
             //MainPage can't be set to null!
             //_application.MainPage = null;

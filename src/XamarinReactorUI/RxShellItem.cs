@@ -15,7 +15,7 @@ namespace XamarinReactorUI
     public abstract class RxShellItem<T> : RxShellGroupItem<T>, IRxShellItem, IEnumerable<IRxShellSection> where T : Xamarin.Forms.ShellItem, new()
     {
         private readonly List<IRxShellSection> _items = new List<IRxShellSection>();
-        private readonly Dictionary<Element, ShellSection> _elementItemMap = new Dictionary<Element, ShellSection>();
+        private readonly Dictionary<BindableObject, ShellSection> _elementItemMap = new Dictionary<BindableObject, ShellSection>();
 
         public RxShellItem()
         {
@@ -33,7 +33,7 @@ namespace XamarinReactorUI
             _items.Add(section);
         }
 
-        protected override void OnAddChild(VisualNode widget, Element childControl)
+        protected override void OnAddChild(VisualNode widget, BindableObject childControl)
         {
             if (childControl is ShellSection item)
                 NativeControl.Items.Insert(widget.ChildIndex, item);
@@ -49,7 +49,7 @@ namespace XamarinReactorUI
             base.OnAddChild(widget, childControl);
         }
 
-        protected override void OnRemoveChild(VisualNode widget, Element childControl)
+        protected override void OnRemoveChild(VisualNode widget, BindableObject childControl)
         {
             NativeControl.Items.Remove(_elementItemMap[childControl]);
 

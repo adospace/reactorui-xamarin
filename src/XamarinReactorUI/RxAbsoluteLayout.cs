@@ -18,7 +18,7 @@ namespace XamarinReactorUI
         {
         }
 
-        protected override void OnAddChild(VisualNode widget, Xamarin.Forms.Element childControl)
+        protected override void OnAddChild(VisualNode widget, BindableObject childControl)
         {
             if (childControl is View view)
             {
@@ -33,7 +33,7 @@ namespace XamarinReactorUI
             base.OnAddChild(widget, childControl);
         }
 
-        protected override void OnRemoveChild(VisualNode widget, Xamarin.Forms.Element childControl)
+        protected override void OnRemoveChild(VisualNode widget, BindableObject childControl)
         {
             NativeControl.Children.Remove((View)childControl);
 

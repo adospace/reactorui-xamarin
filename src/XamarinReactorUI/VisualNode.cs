@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using Xamarin.Forms;
 
@@ -153,7 +154,11 @@ namespace XamarinReactorUI
             _stateChanged = false;
         }
 
-        internal void AddChild(VisualNode widget, Element childNativeControl)
+        protected virtual void OnMigrated(VisualNode newNode)
+        {
+        }
+
+        internal void AddChild(VisualNode widget, BindableObject childNativeControl)
         {
             if (widget is null)
             {
@@ -168,11 +173,11 @@ namespace XamarinReactorUI
             OnAddChild(widget, childNativeControl);
         }
 
-        protected virtual void OnAddChild(VisualNode widget, Element childNativeControl)
+        protected virtual void OnAddChild(VisualNode widget, BindableObject childNativeControl)
         {
         }
 
-        internal void RemoveChild(VisualNode widget, Element childNativeControl)
+        internal void RemoveChild(VisualNode widget, BindableObject childNativeControl)
         {
             if (widget is null)
             {
@@ -187,7 +192,7 @@ namespace XamarinReactorUI
             OnRemoveChild(widget, childNativeControl);
         }
 
-        protected virtual void OnRemoveChild(VisualNode widget, Element childNativeControl)
+        protected virtual void OnRemoveChild(VisualNode widget, BindableObject childNativeControl)
         {
         }
 
@@ -223,6 +228,120 @@ namespace XamarinReactorUI
 
         public T GetMetadata<T>(T defaultValue = default)
             => GetMetadata(typeof(T).FullName, defaultValue);
+    }
+
+    public abstract class VisualNode<T> : VisualNode where T : BindableObject, new()
+    {
+        protected BindableObject _nativeControl;
+
+        protected T NativeControl { get => (T)_nativeControl; }
+
+
+        private readonly Action<T> _componentRefAction;
+        private readonly Dictionary<BindableProperty, object> _attachedProperties = new Dictionary<BindableProperty, object>();
+        public Action<object, System.ComponentModel.PropertyChangingEventArgs> PropertyChangingAction { get; set; }
+        public Action<object, PropertyChangedEventArgs> PropertyChangedAction { get; set; }
+
+        protected VisualNode()
+        { }
+
+        protected VisualNode(Action<T> componentRefAction)
+        {
+            _componentRefAction = componentRefAction;
+        }
+
+        internal override void MergeWith(VisualNode newNode)
+        {
+            if (newNode.GetType() == GetType())
+            {
+                ((VisualNode<T>)newNode)._nativeControl = this._nativeControl;
+                ((VisualNode<T>)newNode)._isMounted = this._nativeControl != null;
+                ((VisualNode<T>)newNode)._componentRefAction?.Invoke(NativeControl);
+                OnMigrated(newNode);
+
+
+                base.MergeWith(newNode);
+            }
+            else
+            {
+                this.Unmount();
+            }
+        }
+
+        protected override void OnMigrated(VisualNode newNode)
+        {
+            if (NativeControl != null)
+            {
+                NativeControl.PropertyChanged -= NativeControl_PropertyChanged;
+                NativeControl.PropertyChanging -= NativeControl_PropertyChanging;
+
+                foreach (var attachedProperty in _attachedProperties)
+                {
+                    NativeControl.SetValue(attachedProperty.Key, attachedProperty.Key.DefaultValue);
+                }
+            }
+
+            _attachedProperties.Clear();
+
+            base.OnMigrated(newNode);
+        }
+
+        protected override void OnMount()
+        {
+            _nativeControl = _nativeControl ?? new T();
+            //System.Diagnostics.Debug.WriteLine($"Mounting {Key ?? GetType()} under {Parent.Key ?? Parent.GetType()} at index {ChildIndex}");
+            Parent.AddChild(this, _nativeControl);
+            _componentRefAction?.Invoke(NativeControl);
+
+            base.OnMount();
+        }
+
+        protected override void OnUnmount()
+        {
+            if (NativeControl != null)
+            {
+                NativeControl.PropertyChanged -= NativeControl_PropertyChanged;
+                NativeControl.PropertyChanging -= NativeControl_PropertyChanging;
+            }
+
+            if (_nativeControl != null)
+            {
+                Parent.RemoveChild(this, _nativeControl);
+                _nativeControl = null;
+                _componentRefAction?.Invoke(null);
+            }
+
+            base.OnUnmount();
+        }
+
+        protected override void OnUpdate()
+        {
+            foreach (var attachedProperty in _attachedProperties)
+            {
+                NativeControl.SetValue(attachedProperty.Key, attachedProperty.Value);
+            }
+
+            if (PropertyChangedAction != null)
+                NativeControl.PropertyChanged += NativeControl_PropertyChanged;
+            if (PropertyChangingAction != null)
+                NativeControl.PropertyChanging += NativeControl_PropertyChanging;
+
+            base.OnUpdate();
+        }
+
+        private void NativeControl_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            PropertyChangedAction?.Invoke(sender, e);
+        }
+
+        private void NativeControl_PropertyChanging(object sender, Xamarin.Forms.PropertyChangingEventArgs e)
+        {
+            PropertyChangingAction?.Invoke(sender, new System.ComponentModel.PropertyChangingEventArgs(e.PropertyName));
+        }
+
+        public void SetAttachedProperty(BindableProperty property, object value)
+            => _attachedProperties[property] = value;
+
     }
 
     public static class VisualNodeExtensions

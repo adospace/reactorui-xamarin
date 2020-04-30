@@ -35,7 +35,7 @@ namespace XamarinReactorUI
             base.OnUpdate();
         }
 
-        protected override void OnAddChild(VisualNode widget, Xamarin.Forms.Element childControl)
+        protected override void OnAddChild(VisualNode widget, BindableObject childControl)
         {
             if (childControl is View view)
                 NativeControl.Content = view;
@@ -47,7 +47,7 @@ namespace XamarinReactorUI
             base.OnAddChild(widget, childControl);
         }
 
-        protected override void OnRemoveChild(VisualNode widget, Xamarin.Forms.Element childControl)
+        protected override void OnRemoveChild(VisualNode widget, BindableObject childControl)
         {
             NativeControl.Content = null;
 

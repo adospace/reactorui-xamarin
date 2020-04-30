@@ -60,7 +60,7 @@ namespace XamarinReactorUI.Maps
             return _internalChildren;
         }
 
-        protected override void OnAddChild(VisualNode widget, Element childNativeControl)
+        protected override void OnAddChild(VisualNode widget, BindableObject childNativeControl)
         {
             if (childNativeControl is Pin pin)
             {
@@ -74,7 +74,7 @@ namespace XamarinReactorUI.Maps
             base.OnAddChild(widget, childNativeControl);
         }
 
-        protected override void OnRemoveChild(VisualNode widget, Element childNativeControl)
+        protected override void OnRemoveChild(VisualNode widget, BindableObject childNativeControl)
         {
             if (childNativeControl is Pin pin)
             {

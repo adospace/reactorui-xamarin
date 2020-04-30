@@ -24,7 +24,7 @@ namespace XamarinReactorUI
         { 
         }
 
-        protected override void OnAddChild(VisualNode widget, Element childNativeControl)
+        protected override void OnAddChild(VisualNode widget, BindableObject childNativeControl)
         {
             if (childNativeControl is Page page)
             {

@@ -56,7 +56,7 @@ namespace XamarinReactorUI
                 ColumnDefinitions.Add(column);
         }
 
-        protected override void OnAddChild(VisualNode widget, Element childControl)
+        protected override void OnAddChild(VisualNode widget, BindableObject childControl)
         {
             if (childControl is View view)
             {
@@ -70,7 +70,7 @@ namespace XamarinReactorUI
             base.OnAddChild(widget, childControl);
         }
 
-        protected override void OnRemoveChild(VisualNode widget, Element childControl)
+        protected override void OnRemoveChild(VisualNode widget, BindableObject childControl)
         {
             NativeControl.Children.Remove((View)childControl);
 

@@ -171,7 +171,7 @@ namespace XamarinReactorUI
                 }
             }
 
-            protected sealed override void OnAddChild(VisualNode widget, Element nativeControl)
+            protected sealed override void OnAddChild(VisualNode widget, BindableObject nativeControl)
             {
                 if (nativeControl is View view)
                     _presenter.View = view;
@@ -181,7 +181,7 @@ namespace XamarinReactorUI
                 }
             }
 
-            protected sealed override void OnRemoveChild(VisualNode widget, Element nativeControl)
+            protected sealed override void OnRemoveChild(VisualNode widget, BindableObject nativeControl)
             {
                 _presenter.View = null;
             }

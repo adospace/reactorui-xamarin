@@ -9,21 +9,21 @@ namespace XamarinReactorUI
 {
     public interface IRxTheme
     {
-        RxTheme StyleFor<TS>(Action<TS> action) where TS : RxElement;
+        RxTheme StyleFor<TS>(Action<TS> action) where TS : IRxElement;
     }
 
     public class RxTheme : VisualNode, IEnumerable<VisualNode>, IRxTheme
     {
         private readonly List<VisualNode> _internalChildren = new List<VisualNode>();
 
-        private readonly Dictionary<Type, Action<RxElement>> _styles = new Dictionary<Type, Action<RxElement>>();
+        private readonly Dictionary<Type, Action<IRxElement>> _styles = new Dictionary<Type, Action<IRxElement>>();
 
         internal sealed override void Layout(RxTheme theme)
         {
             base.Layout(this);
         }
 
-        internal Action<RxElement> GetStyleFor(RxElement node)
+        internal Action<IRxElement> GetStyleFor(IRxElement node)
         {
             if (_styles.TryGetValue(node.GetType(), out var styleAction))
             {
@@ -59,17 +59,17 @@ namespace XamarinReactorUI
                 _internalChildren.Add(node);
         }
 
-        protected sealed override void OnAddChild(VisualNode widget, Element nativeControl)
+        protected sealed override void OnAddChild(VisualNode widget, BindableObject nativeControl)
         {
             Parent.AddChild(this, nativeControl);
         }
 
-        protected sealed override void OnRemoveChild(VisualNode widget, Element nativeControl)
+        protected sealed override void OnRemoveChild(VisualNode widget, BindableObject nativeControl)
         {
             Parent.RemoveChild(this, nativeControl);
         }
 
-        public RxTheme StyleFor<TS>(Action<TS> action) where TS : RxElement
+        public RxTheme StyleFor<TS>(Action<TS> action) where TS : IRxElement
         {
             _styles[typeof(TS)] = node => action((TS)node);
             return this;
@@ -78,19 +78,19 @@ namespace XamarinReactorUI
 
     public static class RxThemeExtensions
     {
-        public static T StyleFor<T, TS>(this T theme, Action<TS> action) where T : IRxTheme where TS : RxElement
+        public static T StyleFor<T, TS>(this T theme, Action<TS> action) where T : IRxTheme where TS : IRxElement
         {
             theme.StyleFor<TS>(action);
             return theme;
         }
 
-        public static RxTheme UseTheme<T>(this T node, RxTheme theme) where T : RxElement
+        public static RxTheme UseTheme<T>(this T node, RxTheme theme) where T : VisualNode
         {
             theme.Add(node);
             return theme;
         }
 
-        public static RxTheme UseTheme<T>(this IEnumerable<T> node, RxTheme theme) where T : RxElement
+        public static RxTheme UseTheme<T>(this IEnumerable<T> node, RxTheme theme) where T : VisualNode
         {
             theme.Add(node.ToArray());
             return theme;

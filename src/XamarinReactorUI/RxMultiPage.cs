@@ -25,7 +25,7 @@ namespace XamarinReactorUI
 
         }
 
-        protected override void OnAddChild(VisualNode widget, Element childControl)
+        protected override void OnAddChild(VisualNode widget, BindableObject childControl)
         {
             if (childControl is TPAGE page)
                 NativeControl.Children.Insert(widget.ChildIndex, page);
@@ -39,7 +39,7 @@ namespace XamarinReactorUI
             base.OnAddChild(widget, childControl);
         }
 
-        protected override void OnRemoveChild(VisualNode widget, Element childControl)
+        protected override void OnRemoveChild(VisualNode widget, BindableObject childControl)
         {
             if (childControl is TPAGE page)
                 NativeControl.Children.Remove(page);

@@ -22,7 +22,7 @@ namespace XamarinReactorUI
             return host.ContainerPage;
         }
 
-        protected sealed override void OnAddChild(VisualNode widget, Element nativeControl)
+        protected sealed override void OnAddChild(VisualNode widget, BindableObject nativeControl)
         {
             if (nativeControl is Page page)
             {
@@ -47,7 +47,7 @@ namespace XamarinReactorUI
             _sleeping = true;
         }
 
-        protected sealed override void OnRemoveChild(VisualNode widget, Element nativeControl)
+        protected sealed override void OnRemoveChild(VisualNode widget, BindableObject nativeControl)
         {
             if (ContainerPage != null)
             {

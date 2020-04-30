@@ -10,7 +10,7 @@ namespace XamarinReactorUI
     public interface IRxMultiPage : IRxPage
     { }
 
-    public abstract class RxMultiPage<T, TPAGE> : RxPage<T>, IRxMultiPage, IEnumerable<IRxPage> where T : Xamarin.Forms.MultiPage<TPAGE>, new() where TPAGE : Xamarin.Forms.Page
+    public abstract class RxMultiPage<T, TPAGE> : RxPage<T>, IRxMultiPage, IEnumerable<VisualNode> where T : Xamarin.Forms.MultiPage<TPAGE>, new() where TPAGE : Xamarin.Forms.Page
     {
         private readonly List<VisualNode> _internalChildren = new List<VisualNode>();
 
@@ -49,14 +49,14 @@ namespace XamarinReactorUI
             base.OnRemoveChild(widget, childControl);
         }
 
-        public void Add(IRxPage page)
+        public void Add(VisualNode page)
         {
-            _internalChildren.Add((VisualNode)page);
+            _internalChildren.Add(page);
         }
 
-        public IEnumerator<IRxPage> GetEnumerator()
+        public IEnumerator<VisualNode> GetEnumerator()
         {
-            return _internalChildren.Cast<IRxPage>().GetEnumerator();
+            return _internalChildren.GetEnumerator();
         }
 
         protected override void OnUpdate()

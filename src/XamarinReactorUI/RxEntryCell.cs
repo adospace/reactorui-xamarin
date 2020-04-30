@@ -80,6 +80,15 @@ namespace XamarinReactorUI
             _nativeControl = entry;
         }
 
+        public RxEntryCell()
+        {
+        }
+
+        public RxEntryCell(Action<EntryCell> componentRefAction)
+            : base(componentRefAction)
+        {
+        }
+
         protected internal override void OnLayoutCycleRequested()
         {
             Layout();

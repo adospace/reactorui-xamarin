@@ -1,49 +1,57 @@
-//using System;
-//using System.Collections.Generic;
-//using Xamarin.Forms;
+using System;
+using System.Collections.Generic;
+using Xamarin.Forms;
 
-//namespace XamarinReactorUI
-//{
-//    public interface IRxTableRoot
-//    {
-//    }
+namespace XamarinReactorUI
+{
+    public interface IRxTableRoot
+    {
+    }
 
-//    public class RxTableRoot<T> : RxView<T>, IRxTableRoot where T : TableRoot, new()
-//    {
-//        public RxTableRoot()
-//        {
-//        }
+    public class RxTableRoot : RxTableSectionBase<TableRoot>, IRxTableRoot
+    {
+        public RxTableRoot()
+        {
+        }
 
-//        public RxTableRoot(Action<T> componentRefAction)
-//            : base(componentRefAction)
-//        {
-//        }
+        public RxTableRoot(Action<TableRoot> componentRefAction)
+            : base(componentRefAction)
+        {
+        }
 
-//        protected override void OnUpdate()
-//        {
-            
-//            base.OnUpdate();
-//        }
+        protected override void OnAddChild(VisualNode widget, BindableObject nativeControl)
+        {
+            if (nativeControl is TableSection section)
+                NativeControl.Add(section);
+            else
+            {
+                throw new InvalidOperationException($"Type '{nativeControl.GetType()}' not supported under '{GetType()}'");
+            }
 
-//        protected override IEnumerable<VisualNode> RenderChildren()
-//        {
-//            yield break;
-//        }
-//    }
+            base.OnAddChild(widget, nativeControl);
+        }
 
-//    public class RxTableRoot : RxTableRoot<Xamarin.Forms.TableRoot>
-//    {
-//        public RxTableRoot()
-//        {
-//        }
+        protected override void OnRemoveChild(VisualNode widget, BindableObject nativeControl)
+        {
+            if (nativeControl is TableSection section)
+                NativeControl.Remove(section);
+            else
+            {
+                throw new InvalidOperationException($"Type '{nativeControl.GetType()}' not supported under '{GetType()}'");
+            }
 
-//        public RxTableRoot(Action<TableRoot> componentRefAction)
-//            : base(componentRefAction)
-//        {
-//        }
-//    }
+            base.OnRemoveChild(widget, nativeControl);
+        }
 
-//    public static class RxTableRootExtensions
-//    {
-//    }
-//}
+        protected override void OnUpdate()
+        {
+
+            base.OnUpdate();
+        }
+
+    }
+
+    public static class RxTableRootExtensions
+    {
+    }
+}

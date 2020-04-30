@@ -6,48 +6,46 @@ namespace XamarinReactorUI
 {
     public interface IRxTableSection
     {
-        string Title { get; set; }
     }
 
-    public class RxTableSection : RxTableSectionBase<TableSection, Cell>, IRxTableSection
+    public class RxTableSection : RxTableSectionBase<TableSection>, IRxTableSection
     {
-        private TableSection _nativeControl;
-        private readonly Action<TableSection> _componentRefAction;
-
         public RxTableSection()
         {
         }
 
         public RxTableSection(Action<TableSection> componentRefAction)
+            :base(componentRefAction)
         {
-            _componentRefAction = componentRefAction;
         }
 
-        protected override void OnMount()
+        protected override void OnAddChild(VisualNode widget, BindableObject nativeControl)
         {
-            _nativeControl = _nativeControl ?? new TableSection();
-            //Parent.AddChild(this, _nativeControl);
-            _componentRefAction?.Invoke(_nativeControl);
+            if (nativeControl is Cell cell)
+                NativeControl.Add(cell);
+            else
+            {
+                throw new InvalidOperationException($"Type '{nativeControl.GetType()}' not supported under '{GetType()}'");
+            }
 
-            base.OnMount();
+            base.OnAddChild(widget, nativeControl);
         }
 
-        protected override void OnUnmount()
+        protected override void OnRemoveChild(VisualNode widget, BindableObject nativeControl)
         {
-            base.OnUnmount();
+            if (nativeControl is Cell cell)
+                NativeControl.Remove(cell);
+            else
+            {
+                throw new InvalidOperationException($"Type '{nativeControl.GetType()}' not supported under '{GetType()}'");
+            }
+
+            base.OnRemoveChild(widget, nativeControl);
         }
 
         protected override void OnUpdate()
         {
-            _nativeControl.Title = Title;
-            _nativeControl.TextColor = TextColor;
-
             base.OnUpdate();
-        }
-
-        protected override IEnumerable<VisualNode> RenderChildren()
-        {
-            yield break;
         }
     }
 

@@ -66,6 +66,15 @@ namespace XamarinReactorUI
             _nativeControl = switchCell;
         }
 
+        public RxSwitchCell()
+        {
+        }
+
+        public RxSwitchCell(Action<SwitchCell> componentRefAction)
+            : base(componentRefAction)
+        {
+        }
+
         protected internal override void OnLayoutCycleRequested()
         {
             Layout();

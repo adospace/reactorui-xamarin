@@ -61,7 +61,10 @@ namespace XamarinReactorUI.TestApp
             //_rxApp = RxApplication.Create<Canvas.MainPage>(this).WithHotReload();
 
             //TEST 16
-            _rxApp = RxApplication.Create<CarouselView.TestCarouselViewComponent>(this).WithHotReload();
+            //_rxApp = RxApplication.Create<CarouselView.TestCarouselViewComponent>(this).WithHotReload();
+
+            //TEST 16
+            _rxApp = RxApplication.Create<TableView.MainPage>(this).WithHotReload();
 
         }
 

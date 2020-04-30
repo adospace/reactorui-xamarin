@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Xamarin.Forms;
 
@@ -10,19 +11,49 @@ namespace XamarinReactorUI
         Color TextColor { get; set; }
     }
 
-    public abstract class RxTableSectionBase<T, C> : VisualNode, IRxTableSectionBase where T : TableSectionBase<C>, new() where C : BindableObject
+    public abstract class RxTableSectionBase<T> : VisualNode<T>, IRxTableSectionBase, IEnumerable<VisualNode> where T : TableSectionBase, new()
     {
+        private List<VisualNode> _children = new List<VisualNode>();
+
         public RxTableSectionBase()
         {
+        }
+
+        public RxTableSectionBase(Action<T> componentRefAction)
+            : base(componentRefAction)
+        {
+
         }
 
         public string Title { get; set; } = (string)TableSectionBase.TitleProperty.DefaultValue;
         public Color TextColor { get; set; } = (Color)TableSectionBase.TextColorProperty.DefaultValue;
 
+        protected override void OnUpdate()
+        {
+            NativeControl.Title = Title;
+            NativeControl.TextColor = TextColor;
+
+            base.OnUpdate();
+        }
+
+        public IEnumerator<VisualNode> GetEnumerator()
+        {
+            return _children.GetEnumerator();
+        }
 
         protected override IEnumerable<VisualNode> RenderChildren()
         {
-            yield break;
+            return _children;
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+        
+        public void Add(VisualNode child)
+        {
+            _children.Add(child);
         }
     }
 

@@ -1,12 +1,14 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ExtensionModel>
-    <Extension path = "/MonoDevelop/Ide/Commands/Edit">
+    <Extension path = "/MonoDevelop/Ide/Commands/Debug">
         <Command id = "XamarinReactorUI.HotReloadVsMacExtension.Commands.HotReload"
                  _label = "Hot Reload App"
                  _description = "Hot Reload ReactorUI for XamarinForms app"
+                 shortcut = "Control|F7"
+                 macShortcut = "Meta|F7"
                  defaultHandler="XamarinReactorUI.HotReloadVsMacExtension.HotReloadCommandHandler"/>
     </Extension>
-    <Extension path = "/MonoDevelop/Ide/MainMenu/Edit">
+    <Extension path = "/MonoDevelop/Ide/MainMenu/Build">
         <CommandItem id="XamarinReactorUI.HotReloadVsMacExtension.Commands.HotReload" />
     </Extension>
 </ExtensionModel>

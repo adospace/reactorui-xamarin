@@ -28,14 +28,17 @@ using Mono.Addins;
 using Mono.Addins.Description;
 
 [assembly: Addin(
-    "XamarinReactorUI.HotReloadVsMacExtension",
-    Namespace = "XamarinReactorUI.HotReloadVsMacExtension",
-    Version = "1.0"
+    "HotReloadExtension",
+    Namespace = "XamarinReactorUI",
+    Version = "1.0"    
 )]
 
-[assembly: AddinName("XamarinReactorUI.HotReloadVsMacExtension")]
+[assembly: AddinName("ReactorUI for Xamarin Forms Hot Reload")]
 [assembly: AddinCategory("IDE extensions")]
-[assembly: AddinDescription("ReactorUI for XamarinForms Hot Reload Addin")]
+[assembly: AddinDescription("ReactorUI for XamarinForms Hot Reload Addin for Visual Studio for Mac")]
 [assembly: AddinAuthor("adospace")]
+
+// to create a package (.mpack), under XamarinReactorUI.HotReloadVsMacExtension directory, run :
+// /Applications/Visual\ Studio.app/Contents/MacOS/vstool setup pack ./bin/Release/net471/XamarinReactorUI.HotReloadVsMacExtension.dll -d:./Versions
 
 

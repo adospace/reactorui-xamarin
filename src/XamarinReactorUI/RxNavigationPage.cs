@@ -28,7 +28,7 @@ namespace XamarinReactorUI
         {
             if (childNativeControl is Page page)
             {
-                _nativeControl = new NavigationPage(page);
+                _nativeControl = (T)Activator.CreateInstance(typeof(T), page);
                 base.OnMount();
                 OnUpdate();
             }

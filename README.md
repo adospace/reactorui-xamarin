@@ -2,7 +2,7 @@
 
 ReactorUI is an alternative UI framework written on top of Xamarin Forms highly inspired to React.js and Flutter
 
-:star: **THANK YOU FOR YOUR STAR** :star:
+:tada: **NOW WITH VISUAL STUDIO FOR MAC SUPPORT** :tada:
 
 [ReactorUI for Xamarin Documentation](https://adospace.gitbook.io/reactorui/)
 
@@ -11,9 +11,17 @@ ReactorUI is an alternative UI framework written on top of Xamarin Forms highly 
 ## Main Features
 * Component based UI with state management (similar to React.js or Flutter)
 * Very fast hot reload even when debugging
-* Completely integrated with Visual Studio 2019 (no need to install or lunch external servers) ([download the VS extension](https://marketplace.visualstudio.com/items?itemName=adospace.ReactorUI-Xamarin))
+* Completely integrated with Visual Studio 2019 and Visual Studio for Mac 2019 (no need to install or lunch external servers) ([Install the Extension](https://adospace.gitbook.io/reactorui/guide/setting-up))
 
+### Visual Studio 2019 (Android)
 ![ReactorUI Hot Reload in action](images/ReactorUI_HotReloadDebugDemo.gif)
+
+### Visual Studio for Mac 2019 (iOS)
+![ReactorUI Hot Reload in action](images/ReactorUI_MacIOS.gif)
+
+### Visual Studio for Mac 2019 (Android)
+![ReactorUI Hot Reload in action](images/ReactorUI_MacAndroid.gif)
+
 
 ## Samples
 This repository contains many samples of ReactorUI components: I'm heavily working on them adding new ones every week.

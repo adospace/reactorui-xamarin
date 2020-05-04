@@ -30,12 +30,15 @@ namespace XamarinReactorUI
         ScrollBarVisibility HorizontalScrollBarVisibility { get; set; }
         ScrollBarVisibility VerticalScrollBarVisibility { get; set; }
         Action RefreshingAction { get; set; }
+
     }
 
     public interface IRxListView<I> : IRxListView
     {
         IEnumerable<I> Collection { get; set; }
         Func<I, VisualNode> Template { get; set; }
+
+        Action<I, int> ItemSelectedAction { get; set; }
     }
 
     public abstract class RxListViewBase<T, I> : RxView<T> where T : ListView, new()
@@ -83,6 +86,8 @@ namespace XamarinReactorUI
 
         public IEnumerable<I> Collection { get; set; }
 
+        public Action<I, int> ItemSelectedAction { get; set; }
+
         protected override void OnUpdate()
         {
             NativeControl.IsPullToRefreshEnabled = IsPullToRefreshEnabled;
@@ -101,7 +106,15 @@ namespace XamarinReactorUI
             if (RefreshingAction != null)
                 NativeControl.Refreshing += NativeControl_Refreshing;
 
+            if (ItemSelectedAction != null)
+                NativeControl.ItemSelected += NativeControl_ItemSelected;
+            
             base.OnUpdate();
+        }
+
+        private void NativeControl_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            ItemSelectedAction?.Invoke((I)e.SelectedItem, e.SelectedItemIndex);
         }
 
         private void NativeControl_Refreshing(object sender, EventArgs e)
@@ -112,7 +125,10 @@ namespace XamarinReactorUI
         protected override void OnMigrated(VisualNode newNode)
         {
             if (NativeControl != null)
+            {
                 NativeControl.Refreshing -= NativeControl_Refreshing;
+                NativeControl.ItemSelected -= NativeControl_ItemSelected;
+            }
 
             base.OnMigrated(newNode);
         }
@@ -120,7 +136,10 @@ namespace XamarinReactorUI
         protected override void OnUnmount()
         {
             if (NativeControl != null)
+            {
                 NativeControl.Refreshing -= NativeControl_Refreshing;
+                NativeControl.ItemSelected -= NativeControl_ItemSelected;
+            }
 
             base.OnUnmount();
         }

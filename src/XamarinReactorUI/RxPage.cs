@@ -53,6 +53,26 @@ namespace XamarinReactorUI
             }
         }
 
+        protected override void OnAddChild(VisualNode widget, BindableObject childNativeControl)
+        {
+            if (childNativeControl is SearchHandler handler)
+            {
+                Shell.SetSearchHandler(NativeControl, handler);
+            }
+
+            base.OnAddChild(widget, childNativeControl);
+        }
+
+        protected override void OnRemoveChild(VisualNode widget, BindableObject childNativeControl)
+        {
+            if (childNativeControl is SearchHandler _)
+            {
+                Shell.SetSearchHandler(NativeControl, null);
+            }
+
+            base.OnRemoveChild(widget, childNativeControl);
+        }
+
         protected override void OnUpdate()
         {
             NativeControl.BackgroundImageSource = BackgroundImageSource;

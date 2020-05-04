@@ -32,10 +32,10 @@ namespace XamarinReactorUI
                 base.OnMount();
                 OnUpdate();
             }
-            else
-            {
-                throw new InvalidOperationException($"Root must be a Page: received {childNativeControl.GetType()}");
-            }
+            //else
+            //{
+            //    throw new InvalidOperationException($"Root must be a Page: received {childNativeControl.GetType()}");
+            //}
 
             base.OnAddChild(widget, childNativeControl);
         }

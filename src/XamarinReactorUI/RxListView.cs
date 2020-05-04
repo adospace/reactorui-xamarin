@@ -54,11 +54,6 @@ namespace XamarinReactorUI
         {
         }
 
-        protected override IEnumerable<VisualNode> RenderChildren()
-        {
-            yield break;
-        }
-
         public bool IsPullToRefreshEnabled { get; set; } = (bool)ListView.IsPullToRefreshEnabledProperty.DefaultValue;
         public bool IsRefreshing { get; set; } = (bool)ListView.IsRefreshingProperty.DefaultValue;
 
@@ -82,6 +77,9 @@ namespace XamarinReactorUI
         public ScrollBarVisibility HorizontalScrollBarVisibility { get; set; } = (ScrollBarVisibility)ListView.HorizontalScrollBarVisibilityProperty.DefaultValue;
         public ScrollBarVisibility VerticalScrollBarVisibility { get; set; } = (ScrollBarVisibility)ListView.VerticalScrollBarVisibilityProperty.DefaultValue;
         public Action RefreshingAction { get; set; }
+        
+        public VisualNode Header { get; set; }
+        public VisualNode Footer { get; set; }
 
         public IEnumerable<I> Collection { get; set; }
 
@@ -126,6 +124,33 @@ namespace XamarinReactorUI
 
             base.OnUnmount();
         }
+
+        protected override void OnAddChild(VisualNode widget, BindableObject childNativeControl)
+        {
+            if (widget == Header)
+                NativeControl.Header = childNativeControl;
+            else
+                NativeControl.Footer = childNativeControl;
+
+            base.OnAddChild(widget, childNativeControl);
+        }
+
+        protected override void OnRemoveChild(VisualNode widget, BindableObject childNativeControl)
+        {
+            if (widget == Header)
+                NativeControl.Header = null;
+            else
+                NativeControl.Footer = null;
+
+            base.OnRemoveChild(widget, childNativeControl);
+        }
+
+        protected override IEnumerable<VisualNode> RenderChildren()
+        {
+            yield return Header;
+            yield return Footer;
+        }
+
     }
 
     public class RxListView<T, I> : RxListViewBase<T, I>, IRxListView<I> where T : ListView, new()
@@ -245,12 +270,18 @@ namespace XamarinReactorUI
                 _customDataTemplate.Owner = this;
                 existingCollection.NotifyCollectionChanged();
             }
-            else
+            else if (Collection != null)
             {
                 _customDataTemplate = new CustomDataTemplate(this);
                 NativeControl.ItemsSource = ObservableItemsSource<I>.Create(Collection);
                 NativeControl.ItemTemplate = _customDataTemplate.DataTemplate;
             }
+            else
+            {
+                NativeControl.ItemsSource = null;
+                NativeControl.ItemTemplate = null;            
+            }
+            
 
             base.OnUpdate();
         }

@@ -31,29 +31,16 @@ namespace XamarinReactorUI
 
     public class RxShell<T> : RxPage<T>, IRxShell, IEnumerable<VisualNode> where T : Shell, new()
     {
-        //private readonly Shell _shell;
         private readonly List<VisualNode> _contents = new List<VisualNode>();
         private readonly Dictionary<BindableObject, ShellItem> _elementItemMap = new Dictionary<BindableObject, ShellItem>();
 
         public RxShell()
         {
         }
-
-        //public RxShell(Shell shell)
-        //{
-        //    _shell = shell;
-        //}
-
         public RxShell(Action<T> componentRefAction)
             : base(componentRefAction)
         {
         }
-
-        //protected override void OnMount()
-        //{
-        //    _nativeControl = _shell;
-        //    base.OnMount();
-        //}
 
         public void Add(VisualNode child)
         {
@@ -67,22 +54,26 @@ namespace XamarinReactorUI
 
         protected override void OnAddChild(VisualNode widget, BindableObject childControl)
         {
-            if (childControl is ShellItem item)
+            if (childControl is ShellItem _)
             {
-                NativeControl.Items.Insert(widget.ChildIndex, item);
-                _elementItemMap[childControl] = NativeControl.Items[NativeControl.Items.Count - 1];
+                NativeControl.Items.Insert(widget.ChildIndex, _elementItemMap[childControl] = NativeControl.Items[NativeControl.Items.Count - 1]);
             }
             else if (childControl is Page page)
             {
-                NativeControl.Items.Insert(widget.ChildIndex, new ShellContent() { Content = page });
-                _elementItemMap[childControl] = NativeControl.Items[NativeControl.Items.Count - 1];
+                NativeControl.Items.Insert(widget.ChildIndex, _elementItemMap[childControl] = new ShellContent() { Content = page });
             }
             else if (childControl is ToolbarItem toolbarItem)
-                NativeControl.ToolbarItems.Add(toolbarItem);
-            else
             {
-                throw new InvalidOperationException($"Type '{childControl.GetType()}' not supported under '{GetType()}'");
+                NativeControl.ToolbarItems.Add(toolbarItem);
             }
+            //else if (childControl is SearchHandler handler)
+            //{
+            //    Shell.SetSearchHandler(NativeControl, handler);
+            //}
+            //else
+            //{
+            //    throw new InvalidOperationException($"Type '{childControl.GetType()}' not supported under '{GetType()}'");
+            //}
 
             base.OnAddChild(widget, childControl);
         }
@@ -94,7 +85,13 @@ namespace XamarinReactorUI
                 NativeControl.Items.Remove(_elementItemMap[childControl]);
             }
             else if (childControl is ToolbarItem toolbarItem)
+            {
                 NativeControl.ToolbarItems.Remove(toolbarItem);
+            }
+            //else if (childControl is SearchHandler _)
+            //{
+            //    Shell.SetSearchHandler(NativeControl, null);
+            //}
 
             base.OnRemoveChild(widget, childControl);
         }
@@ -142,7 +139,7 @@ namespace XamarinReactorUI
             NativeControl.FlyoutIsPresented = FlyoutIsPresented;
             NativeControl.FlyoutIcon = FlyoutIcon;
             NativeControl.FlyoutVerticalScrollMode = FlyoutVerticalScrollMode;
-
+            
             base.OnUpdate();
         }
     }
@@ -152,11 +149,6 @@ namespace XamarinReactorUI
         public RxShell()
         {
         }
-
-        //public RxShell(Shell shell)
-        //{
-        //    _shell = shell;
-        //}
 
         public RxShell(Action<Shell> componentRefAction)
             : base(componentRefAction)
@@ -171,30 +163,6 @@ namespace XamarinReactorUI
             shell.FlyoutBehavior = flyoutBehavior;
             return shell;
         }
-
-        //public static T MenuItemTemplate<T>(this T shell, DataTemplate menuItemTemplate) where T : IRxShell
-        //{
-        //    shell.MenuItemTemplate = menuItemTemplate;
-        //    return shell;
-        //}
-
-        //public static T ItemTemplate<T>(this T shell, DataTemplate itemTemplate) where T : IRxShell
-        //{
-        //    shell.ItemTemplate = itemTemplate;
-        //    return shell;
-        //}
-
-        //public static T BackgroundColor<T>(this T shell, Color backgroundColor) where T : IRxShell
-        //{
-        //    shell.BackgroundColor = backgroundColor;
-        //    return shell;
-        //}
-
-        //public static T CurrentItem<T>(this T shell, ShellItem currentItem) where T : IRxShell
-        //{
-        //    shell.CurrentItem = currentItem;
-        //    return shell;
-        //}
 
         public static T FlyoutBackgroundImage<T>(this T shell, ImageSource flyoutBackgroundImage) where T : IRxShell
         {

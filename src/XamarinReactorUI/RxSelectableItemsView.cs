@@ -72,6 +72,16 @@ namespace XamarinReactorUI
             base.OnMigrated(newNode);
         }
 
+        protected override void OnUnmount()
+        {
+            if (NativeControl != null)
+            {
+                NativeControl.SelectionChanged -= NativeControl_SelectionChanged;
+                NativeControl.SelectionChangedCommand = null;
+            }
+
+            base.OnUnmount();
+        }
     }
 
     public static class RxSelectableItemsViewExtensions

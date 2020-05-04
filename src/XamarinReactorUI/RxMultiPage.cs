@@ -31,10 +31,10 @@ namespace XamarinReactorUI
                 NativeControl.Children.Insert(widget.ChildIndex, page);
             else if (childControl is ToolbarItem toolbarItem)
                 NativeControl.ToolbarItems.Add(toolbarItem);
-            else
-            {
-                throw new InvalidOperationException($"Type '{childControl.GetType()}' not supported under '{GetType()}'");
-            }
+            //else
+            //{
+            //    throw new InvalidOperationException($"Type '{childControl.GetType()}' not supported under '{GetType()}'");
+            //}
 
             base.OnAddChild(widget, childControl);
         }

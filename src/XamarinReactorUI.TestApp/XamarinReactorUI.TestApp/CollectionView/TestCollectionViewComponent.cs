@@ -28,14 +28,30 @@ namespace XamarinReactorUI.TestApp.CollectionView
                         .OnClick(this.OnShowHideLargeList),
                         
                         new RxCollectionView<Monkey>()
+                        { 
+                            Header = RenderHeader(),
+                            Footer = RenderFooter()
+                        }
                             .RenderCollection(
                                 _largePersonListVisible ? _allMonkeys : _allMonkeys.Take(4), 
                                 RenderMonkey)
-                        .VFillAndExpand()
+                            .VFillAndExpand()
                 }
                 .HFillAndExpand()
                 .VFillAndExpand()
             };
+        }
+
+        private VisualNode RenderFooter()
+        {
+            return new RxLabel("Footer")
+                .TextColor(Color.Red);
+        }
+
+        private VisualNode RenderHeader()
+        {
+            return new RxLabel("Header")
+                .TextColor(Color.Green);
         }
 
         private VisualNode RenderMonkey(Monkey monkey)

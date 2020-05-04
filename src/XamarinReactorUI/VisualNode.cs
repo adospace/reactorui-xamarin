@@ -17,6 +17,10 @@ namespace XamarinReactorUI
         public int ChildIndex { get; private set; }
         internal VisualNode Parent { get; private set; }
 
+        public Action<object, System.ComponentModel.PropertyChangingEventArgs> PropertyChangingAction { get; set; }
+        public Action<object, PropertyChangedEventArgs> PropertyChangedAction { get; set; }
+
+
         private bool _invalidated = false;
 
         protected void Invalidate()
@@ -239,9 +243,6 @@ namespace XamarinReactorUI
 
         private readonly Action<T> _componentRefAction;
         private readonly Dictionary<BindableProperty, object> _attachedProperties = new Dictionary<BindableProperty, object>();
-        public Action<object, System.ComponentModel.PropertyChangingEventArgs> PropertyChangingAction { get; set; }
-        public Action<object, PropertyChangedEventArgs> PropertyChangedAction { get; set; }
-
         protected VisualNode()
         { }
 
@@ -346,6 +347,18 @@ namespace XamarinReactorUI
 
     public static class VisualNodeExtensions
     {
+        public static T OnPropertyChanged<T>(this T element, Action<object, PropertyChangedEventArgs> action) where T : VisualNode
+        {
+            element.PropertyChangedAction = action;
+            return element;
+        }
+
+        public static T OnPropertyChanging<T>(this T element, Action<object, System.ComponentModel.PropertyChangingEventArgs> action) where T : VisualNode
+        {
+            element.PropertyChangingAction = action;
+            return element;
+        }
+
         public static T WithMetadata<T>(this T node, string key, object value) where T : VisualNode
         {
             node.SetMetadata(key, value);

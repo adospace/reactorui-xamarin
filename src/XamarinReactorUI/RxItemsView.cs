@@ -50,6 +50,9 @@ namespace XamarinReactorUI
         public VisualStateGroupList ItemVisualStateGroups { get; set; } = new VisualStateGroupList();
         public Action RemainingItemsThresholdReachedAction { get; set; }
 
+        public IEnumerable<I> Collection { get; set; }
+        public Func<I, VisualNode> Template { get; set; }
+
         private class ItemTemplateNode : VisualNode
         {
             private readonly ItemTemplatePresenter _presenter = null;
@@ -87,7 +90,6 @@ namespace XamarinReactorUI
 
             protected sealed override void OnRemoveChild(VisualNode widget, BindableObject nativeControl)
             {
-                //_presenter.Content = null;
             }
 
             protected override IEnumerable<VisualNode> RenderChildren()
@@ -101,9 +103,6 @@ namespace XamarinReactorUI
                 base.OnLayoutCycleRequested();
             }
         }
-
-        public IEnumerable<I> Collection { get; set; }
-        public Func<I, VisualNode> Template { get; set; }
 
         private class ItemTemplatePresenter : ContentView
         {
@@ -153,12 +152,18 @@ namespace XamarinReactorUI
                 _customDataTemplate.Owner = this;
                 existingCollection.NotifyCollectionChanged();
             }
-            else
+            else if (Collection != null)
             {
                 _customDataTemplate = new CustomDataTemplate(this);
                 NativeControl.ItemsSource = ObservableItemsSource<I>.Create(Collection);
                 NativeControl.ItemTemplate = _customDataTemplate.DataTemplate;
             }
+            else
+            {
+                NativeControl.ItemsSource = null;
+                NativeControl.ItemTemplate = null;
+            }
+
 
             NativeControl.HorizontalScrollBarVisibility = HorizontalScrollBarVisibility;
             NativeControl.VerticalScrollBarVisibility = VerticalScrollBarVisibility;

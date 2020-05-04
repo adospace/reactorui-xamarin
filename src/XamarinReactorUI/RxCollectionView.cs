@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Xamarin.Forms;
 
 namespace XamarinReactorUI
@@ -20,7 +19,6 @@ namespace XamarinReactorUI
 
         protected override void OnUpdate()
         {
-
             base.OnUpdate();
         }
     }

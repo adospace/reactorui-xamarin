@@ -189,16 +189,6 @@ namespace XamarinReactorUI
 
     public static class RxElementExtensions
     {
-        public static T OnPropertyChanged<T>(this T element, Action<object, PropertyChangedEventArgs> action) where T : IRxElement
-        {
-            element.PropertyChangedAction = action;
-            return element;
-        }
 
-        public static T OnPropertyChanging<T>(this T element, Action<object, System.ComponentModel.PropertyChangingEventArgs> action) where T : IRxElement
-        {
-            element.PropertyChangingAction = action;
-            return element;
-        }
     }
 }

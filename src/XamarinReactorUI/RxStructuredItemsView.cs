@@ -26,29 +26,45 @@ namespace XamarinReactorUI
         {
         }
 
-        //public Object Header { get; set; } = (Object)StructuredItemsView.HeaderProperty.DefaultValue;
-        //public DataTemplate HeaderTemplate { get; set; } = (DataTemplate)StructuredItemsView.HeaderTemplateProperty.DefaultValue;
-        //public Object Footer { get; set; } = (Object)StructuredItemsView.FooterProperty.DefaultValue;
-        //public DataTemplate FooterTemplate { get; set; } = (DataTemplate)StructuredItemsView.FooterTemplateProperty.DefaultValue;
         public IItemsLayout ItemsLayout { get; set; } = (IItemsLayout)StructuredItemsView.ItemsLayoutProperty.DefaultValue;
+
+        public VisualNode Header { get; set; }
+        public VisualNode Footer { get; set; }
 
         public ItemSizingStrategy ItemSizingStrategy { get; set; } = (ItemSizingStrategy)StructuredItemsView.ItemSizingStrategyProperty.DefaultValue;
 
         protected override void OnUpdate()
         {
-            //NativeControl.Header = Header;
-            //NativeControl.HeaderTemplate = HeaderTemplate;
-            //NativeControl.Footer = Footer;
-            //NativeControl.FooterTemplate = FooterTemplate;
             NativeControl.ItemsLayout = ItemsLayout;
             NativeControl.ItemSizingStrategy = ItemSizingStrategy;
 
             base.OnUpdate();
         }
 
+        protected override void OnAddChild(VisualNode widget, BindableObject childNativeControl)
+        {
+            if (widget == Header)
+                NativeControl.Header = childNativeControl;
+            else
+                NativeControl.Footer = childNativeControl;
+
+            base.OnAddChild(widget, childNativeControl);
+        }
+
+        protected override void OnRemoveChild(VisualNode widget, BindableObject childNativeControl)
+        {
+            if (widget == Header)
+                NativeControl.Header = null;
+            else
+                NativeControl.Footer = null;
+
+            base.OnRemoveChild(widget, childNativeControl);
+        }
+
         protected override IEnumerable<VisualNode> RenderChildren()
         {
-            yield break;
+            yield return Header;
+            yield return Footer;
         }
     }
 

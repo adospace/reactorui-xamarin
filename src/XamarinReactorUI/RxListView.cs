@@ -29,8 +29,20 @@ namespace XamarinReactorUI
         Color RefreshControlColor { get; set; }
         ScrollBarVisibility HorizontalScrollBarVisibility { get; set; }
         ScrollBarVisibility VerticalScrollBarVisibility { get; set; }
-        Action RefreshingAction { get; set; }
+        Action RefreshAction { get; set; }
+        Action<ScrolledEventArgs> ScrolledAction { get; set; }
+    }
 
+    public class ListViewItemEventArgs<I> : EventArgs
+    {
+        public ListViewItemEventArgs(I item, int index)
+        {
+            Item = item;
+            Index = index;
+        }
+
+        public I Item { get; }
+        public int Index { get; }
     }
 
     public interface IRxListView<I> : IRxListView
@@ -38,7 +50,10 @@ namespace XamarinReactorUI
         IEnumerable<I> Collection { get; set; }
         Func<I, VisualNode> Template { get; set; }
 
-        Action<I, int> ItemSelectedAction { get; set; }
+        Action<ListViewItemEventArgs<I>> ItemSelectedAction { get; set; }
+        Action<ListViewItemEventArgs<I>> ItemDisappearingAction { get; set; }
+        Action<ListViewItemEventArgs<I>> ItemTappedAction { get; set; }
+        Action<ListViewItemEventArgs<I>> ItemAppearingAction { get; set; }
     }
 
     public abstract class RxListViewBase<T, I> : RxView<T> where T : ListView, new()
@@ -79,14 +94,18 @@ namespace XamarinReactorUI
         public Color RefreshControlColor { get; set; } = (Color)ListView.RefreshControlColorProperty.DefaultValue;
         public ScrollBarVisibility HorizontalScrollBarVisibility { get; set; } = (ScrollBarVisibility)ListView.HorizontalScrollBarVisibilityProperty.DefaultValue;
         public ScrollBarVisibility VerticalScrollBarVisibility { get; set; } = (ScrollBarVisibility)ListView.VerticalScrollBarVisibilityProperty.DefaultValue;
-        public Action RefreshingAction { get; set; }
-        
+        public Action RefreshAction { get; set; }
+
         public VisualNode Header { get; set; }
         public VisualNode Footer { get; set; }
 
         public IEnumerable<I> Collection { get; set; }
 
-        public Action<I, int> ItemSelectedAction { get; set; }
+        public Action<ListViewItemEventArgs<I>> ItemSelectedAction { get; set; }
+        public Action<ListViewItemEventArgs<I>> ItemDisappearingAction { get; set; }
+        public Action<ListViewItemEventArgs<I>> ItemTappedAction { get; set; }
+        public Action<ScrolledEventArgs> ScrolledAction { get; set; }
+        public Action<ListViewItemEventArgs<I>> ItemAppearingAction { get; set; }
 
         protected override void OnUpdate()
         {
@@ -103,44 +122,84 @@ namespace XamarinReactorUI
             NativeControl.HorizontalScrollBarVisibility = HorizontalScrollBarVisibility;
             NativeControl.VerticalScrollBarVisibility = VerticalScrollBarVisibility;
 
-            if (RefreshingAction != null)
+            AttachEvents();
+
+            base.OnUpdate();
+        }
+
+        private void AttachEvents()
+        {
+            if (RefreshAction != null)
                 NativeControl.Refreshing += NativeControl_Refreshing;
 
             if (ItemSelectedAction != null)
                 NativeControl.ItemSelected += NativeControl_ItemSelected;
-            
-            base.OnUpdate();
+
+            if (ItemDisappearingAction != null)
+                NativeControl.ItemDisappearing += NativeControl_ItemDisappearing;
+
+            if (ItemTappedAction != null)
+                NativeControl.ItemTapped += NativeControl_ItemTapped;
+
+            if (ScrolledAction != null)
+                NativeControl.Scrolled += NativeControl_Scrolled;
+
+            if (ItemAppearingAction != null)
+                NativeControl.ItemAppearing += NativeControl_ItemAppearing;
+        }
+
+        private void NativeControl_ItemAppearing(object sender, ItemVisibilityEventArgs e)
+        {
+            ItemAppearingAction?.Invoke(new ListViewItemEventArgs<I>((I)e.Item, e.ItemIndex));
+        }
+
+        private void NativeControl_Scrolled(object sender, ScrolledEventArgs e)
+        {
+            ScrolledAction?.Invoke(e);
+        }
+
+        private void NativeControl_ItemTapped(object sender, ItemTappedEventArgs e)
+        {
+            ItemTappedAction?.Invoke(new ListViewItemEventArgs<I>((I)e.Item, e.ItemIndex));
+        }
+
+        private void NativeControl_ItemDisappearing(object sender, ItemVisibilityEventArgs e)
+        {
+            ItemDisappearingAction?.Invoke(new ListViewItemEventArgs<I>((I)e.Item, e.ItemIndex));
         }
 
         private void NativeControl_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            ItemSelectedAction?.Invoke((I)e.SelectedItem, e.SelectedItemIndex);
+            ItemSelectedAction?.Invoke(new ListViewItemEventArgs<I>((I)e.SelectedItem, e.SelectedItemIndex));
         }
 
         private void NativeControl_Refreshing(object sender, EventArgs e)
         {
-            RefreshingAction?.Invoke();
+            RefreshAction?.Invoke();
         }
 
-        protected override void OnMigrated(VisualNode newNode)
+        private void DetachEvents()
         {
             if (NativeControl != null)
             {
                 NativeControl.Refreshing -= NativeControl_Refreshing;
                 NativeControl.ItemSelected -= NativeControl_ItemSelected;
+                NativeControl.ItemDisappearing -= NativeControl_ItemDisappearing;
+                NativeControl.ItemTapped -= NativeControl_ItemTapped;
+                NativeControl.Scrolled -= NativeControl_Scrolled;
+                NativeControl.ItemAppearing -= NativeControl_ItemAppearing;
             }
+        }
 
+        protected override void OnMigrated(VisualNode newNode)
+        {
+            DetachEvents();
             base.OnMigrated(newNode);
         }
 
         protected override void OnUnmount()
         {
-            if (NativeControl != null)
-            {
-                NativeControl.Refreshing -= NativeControl_Refreshing;
-                NativeControl.ItemSelected -= NativeControl_ItemSelected;
-            }
-
+            DetachEvents();
             base.OnUnmount();
         }
 
@@ -169,7 +228,6 @@ namespace XamarinReactorUI
             yield return Header;
             yield return Footer;
         }
-
     }
 
     public class RxListView<T, I> : RxListViewBase<T, I>, IRxListView<I> where T : ListView, new()
@@ -298,9 +356,8 @@ namespace XamarinReactorUI
             else
             {
                 NativeControl.ItemsSource = null;
-                NativeControl.ItemTemplate = null;            
+                NativeControl.ItemTemplate = null;
             }
-            
 
             base.OnUpdate();
         }
@@ -661,7 +718,6 @@ namespace XamarinReactorUI
         }
     }
 
-
     public class RxListView<I> : RxListView<ListView, I>
     {
         public RxListView()
@@ -749,6 +805,18 @@ namespace XamarinReactorUI
 
     public static class RxListViewBaseExtensions
     {
+        public static T OnRefresh<T>(this T listview, Action action) where T : IRxListView
+        {
+            listview.RefreshAction = action;
+            return listview;
+        }
+
+        public static T OnScroll<T>(this T listview, Action<ScrolledEventArgs> action) where T : IRxListView
+        {
+            listview.ScrolledAction = action;
+            return listview;
+        }
+
         public static T IsPullToRefreshEnabled<T>(this T listview, bool isPullToRefreshEnabled) where T : IRxListView
         {
             listview.IsPullToRefreshEnabled = isPullToRefreshEnabled;
@@ -842,6 +910,31 @@ namespace XamarinReactorUI
             itemsview.Template = template;
             return itemsview;
         }
+
+        public static T OnItemSelected<T, I>(this T listview, Action<ListViewItemEventArgs<I>> action) where T : IRxListView<I>
+        {
+            listview.ItemSelectedAction = action;
+            return listview;
+        }
+
+        public static T OnItemAppearing<T, I>(this T listview, Action<ListViewItemEventArgs<I>> action) where T : IRxListView<I>
+        {
+            listview.ItemAppearingAction = action;
+            return listview;
+        }
+
+        public static T OnItemDisappearing<T, I>(this T listview, Action<ListViewItemEventArgs<I>> action) where T : IRxListView<I>
+        {
+            listview.ItemDisappearingAction = action;
+            return listview;
+        }
+
+        public static T OnItemTapped<T, I>(this T listview, Action<ListViewItemEventArgs<I>> action) where T : IRxListView<I>
+        {
+            listview.ItemTappedAction = action;
+            return listview;
+        }
+
     }
 
     public static class RxTextListViewExtensions

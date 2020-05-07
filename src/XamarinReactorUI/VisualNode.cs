@@ -164,35 +164,16 @@ namespace XamarinReactorUI
 
         internal void AddChild(VisualNode widget, BindableObject childNativeControl)
         {
-            if (widget is null)
-            {
-                throw new ArgumentNullException(nameof(widget));
-            }
-
-            if (childNativeControl is null)
-            {
-                throw new ArgumentNullException(nameof(childNativeControl));
-            }
-
             OnAddChild(widget, childNativeControl);
         }
 
         protected virtual void OnAddChild(VisualNode widget, BindableObject childNativeControl)
         {
+
         }
 
         internal void RemoveChild(VisualNode widget, BindableObject childNativeControl)
         {
-            if (widget is null)
-            {
-                throw new ArgumentNullException(nameof(widget));
-            }
-
-            if (childNativeControl is null)
-            {
-                throw new ArgumentNullException(nameof(childNativeControl));
-            }
-
             OnRemoveChild(widget, childNativeControl);
         }
 
@@ -234,12 +215,50 @@ namespace XamarinReactorUI
             => GetMetadata(typeof(T).FullName, defaultValue);
     }
 
-    public abstract class VisualNode<T> : VisualNode where T : BindableObject, new()
+    internal class NativeControlCache
+    {
+        private readonly Dictionary<Type, List<BindableObject>> _nativeControlsMap = new Dictionary<Type, List<BindableObject>>();
+
+        public NativeControlCache()
+        { }
+
+        public void Set<T>(BindableObject nativeControl) where T : BindableObject
+        {
+            if (!_nativeControlsMap.TryGetValue(typeof(T), out var listOfT))
+                _nativeControlsMap[typeof(T)] = listOfT = new List<BindableObject>();
+
+            listOfT.Add(nativeControl);
+        }
+
+        public bool TryGet<T>(out BindableObject nativeControl) where T : BindableObject
+        {
+            nativeControl = null;
+
+            if (_nativeControlsMap.TryGetValue(typeof(T), out var listOfT))
+            {
+                nativeControl = (T)listOfT[0];
+                listOfT.RemoveAt(0);
+                if (listOfT.Count == 0)
+                    _nativeControlsMap.Remove(typeof(T));                    
+            }
+
+            return nativeControl != null;
+        }
+    }
+
+    internal interface IVisualNodeWithNativeControlCache
+    {
+        NativeControlCache NativeControlCache { get; }
+    }
+
+    public abstract class VisualNode<T> : VisualNode, IVisualNodeWithNativeControlCache where T : BindableObject, new()
     {
         protected BindableObject _nativeControl;
 
         protected T NativeControl { get => (T)_nativeControl; }
 
+        private NativeControlCache _nativeControlCache;
+        NativeControlCache IVisualNodeWithNativeControlCache.NativeControlCache { get => _nativeControlCache; }
 
         private readonly Action<T> _componentRefAction;
         private readonly Dictionary<BindableProperty, object> _attachedProperties = new Dictionary<BindableProperty, object>();
@@ -256,6 +275,7 @@ namespace XamarinReactorUI
             if (newNode.GetType() == GetType())
             {
                 ((VisualNode<T>)newNode)._nativeControl = this._nativeControl;
+                ((VisualNode<T>)newNode)._nativeControlCache = this._nativeControlCache;
                 ((VisualNode<T>)newNode)._isMounted = this._nativeControl != null;
                 ((VisualNode<T>)newNode)._componentRefAction?.Invoke(NativeControl);
                 OnMigrated(newNode);
@@ -289,8 +309,16 @@ namespace XamarinReactorUI
 
         protected override void OnMount()
         {
+            if (_nativeControl == null)
+            {
+                if (Parent is IVisualNodeWithNativeControlCache visualNodeWithNativeControlCache)
+                {
+                    visualNodeWithNativeControlCache.NativeControlCache.TryGet<T>(out _nativeControl);
+                }
+            }
+
             _nativeControl = _nativeControl ?? new T();
-            //System.Diagnostics.Debug.WriteLine($"Mounting {Key ?? GetType()} under {Parent.Key ?? Parent.GetType()} at index {ChildIndex}");
+            _nativeControlCache = new NativeControlCache();
             Parent.AddChild(this, _nativeControl);
             _componentRefAction?.Invoke(NativeControl);
 
@@ -299,15 +327,18 @@ namespace XamarinReactorUI
 
         protected override void OnUnmount()
         {
-            if (NativeControl != null)
-            {
-                NativeControl.PropertyChanged -= NativeControl_PropertyChanged;
-                NativeControl.PropertyChanging -= NativeControl_PropertyChanging;
-            }
-
             if (_nativeControl != null)
             {
+                _nativeControl.PropertyChanged -= NativeControl_PropertyChanged;
+                _nativeControl.PropertyChanging -= NativeControl_PropertyChanging;
                 Parent.RemoveChild(this, _nativeControl);
+
+                if (Parent is IVisualNodeWithNativeControlCache visualNodeWithNativeControlCache)
+                {
+                    visualNodeWithNativeControlCache.NativeControlCache.Set<T>(_nativeControl);
+                }
+
+                _nativeControlCache = null;
                 _nativeControl = null;
                 _componentRefAction?.Invoke(null);
             }

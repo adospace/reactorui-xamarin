@@ -117,8 +117,6 @@ namespace XamarinReactorUI
             base.OnLayoutCycleRequested();
         }
 
-        //public event EventHandler<UnhandledExceptionEventArgs> UnhandledException;
-
         private void OnLayout()
         {
             try
@@ -128,7 +126,6 @@ namespace XamarinReactorUI
             catch (Exception ex)
             {
                 RxApplication.Instance?.FireUnhandledExpectionEvent(ex);
-                //UnhandledException?.Invoke(this, new UnhandledExceptionEventArgs(ex, false));
                 System.Diagnostics.Debug.WriteLine(ex);
             }
         }

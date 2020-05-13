@@ -54,23 +54,23 @@ namespace XamarinReactorUI.HotReloadVsExtension
 
             var menuCommandID = new CommandID(CommandSet, CommandId);
             var menuItem = new OleMenuCommand(this.Execute, menuCommandID);
-            menuItem.BeforeQueryStatus += MenuItem_BeforeQueryStatus;
+            //menuItem.BeforeQueryStatus += MenuItem_BeforeQueryStatus;
             commandService.AddCommand(menuItem);
         }
 
-        private void MenuItem_BeforeQueryStatus(object sender, EventArgs e)
-        {
-            ThreadHelper.ThrowIfNotOnUIThread();
+        //private void MenuItem_BeforeQueryStatus(object sender, EventArgs e)
+        //{
+        //    ThreadHelper.ThrowIfNotOnUIThread();
 
-            var menuCommand = sender as Microsoft.VisualStudio.Shell.OleMenuCommand;
+        //    var menuCommand = sender as Microsoft.VisualStudio.Shell.OleMenuCommand;
 
-            menuCommand.Visible = _dte.Solution.IsOpen;
+        //    menuCommand.Visible = _dte.Solution.IsOpen;
 
-            menuCommand.Enabled =
-                _dte.Solution.IsOpen &&
-                _dte.Solution.SolutionBuild.BuildState != vsBuildState.vsBuildStateInProgress &&
-                GetFormsProjects().Count >= 1;
-        }
+        //    menuCommand.Enabled =
+        //        _dte.Solution.IsOpen &&
+        //        _dte.Solution.SolutionBuild.BuildState != vsBuildState.vsBuildStateInProgress &&
+        //        GetFormsProjects().Count >= 1;
+        //}
 
         /// <summary>
         /// Gets the instance of the command.

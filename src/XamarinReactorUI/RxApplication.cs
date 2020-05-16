@@ -145,6 +145,7 @@ namespace XamarinReactorUI
             try
             {
                 Layout();
+                SetupAnimationTimer();
             }
             catch (Exception ex)
             {
@@ -155,6 +156,18 @@ namespace XamarinReactorUI
         protected override IEnumerable<VisualNode> RenderChildren()
         {
             yield return _rootComponent;
+        }
+
+        private void SetupAnimationTimer()
+        {
+            if (IsAnimationFrameRequested)
+            {
+                Device.StartTimer(TimeSpan.FromMilliseconds(16), () =>
+                {
+                    Animate();
+                    return IsAnimationFrameRequested;
+                });
+            }
         }
 
     }

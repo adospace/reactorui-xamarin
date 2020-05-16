@@ -21,6 +21,12 @@ namespace XamarinReactorUI
 
         }
 
+        public RxContentPage(string title)
+            :base(title)
+        {
+
+        }
+
         public RxContentPage(VisualNode content)
         {
             _contents.Add(content);
@@ -82,6 +88,12 @@ namespace XamarinReactorUI
     public class RxContentPage : RxContentPage<ContentPage>
     {
         public RxContentPage()
+        {
+
+        }
+
+        public RxContentPage(string title)
+            :base(title)
         {
 
         }

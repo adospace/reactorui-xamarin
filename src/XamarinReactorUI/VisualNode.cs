@@ -1,12 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using Xamarin.Forms;
+using Xamarin.Forms.Internals;
 
 namespace XamarinReactorUI
 {
-    public abstract class VisualNode
+    public interface IVisualNode
+    {
+        void AppendAnimatableProperty(object key, Action<IVisualNode> action);
+
+        void ClearAnimatableProperties();
+    }
+
+    public abstract class VisualNode : IVisualNode
     {
         protected VisualNode()
         {
@@ -136,6 +145,8 @@ namespace XamarinReactorUI
 
             foreach (var child in Children)
                 child.Layout(theme);
+
+            CommitAnimations();
         }
 
         protected virtual void OnMount()
@@ -213,6 +224,75 @@ namespace XamarinReactorUI
 
         public T GetMetadata<T>(T defaultValue = default)
             => GetMetadata(typeof(T).FullName, defaultValue);
+
+        private readonly Dictionary<object, AnimatableProperty> _animatableProperties = new Dictionary<object, AnimatableProperty>();
+
+        public void AppendAnimatableProperty(object key, AnimatableProperty animatableProperty)
+        {
+            animatableProperty.AttachNode(this);
+
+            if (_animatableProperties.TryGetValue(key, out var existingAnimtableProperty))
+            { 
+                if (existingAnimtableProperty.GetType() == animatableProperty.GetType())
+                {
+                    animatableProperty.Migrate(existingAnimtableProperty);
+                    return;
+                }
+
+                existingAnimtableProperty.IsEnabled = false;
+            }
+
+            _animatableProperties[key] = animatableProperty;
+        }
+
+        public void ClearAnimatableProperties()
+        {
+            _animatableProperties.Clear();
+        }
+
+        internal void EnableAnimatableProperties()
+            => _animatableProperties.ForEach(_ => _.Value.IsEnabled = true);
+
+        internal void RemoveDisabledAnimatableProperties()
+            => _animatableProperties.ToList().ForEach(_ =>
+            {
+                if (!_.Value.IsEnabled)
+                    _animatableProperties.Remove(_.Key);
+            });
+
+        protected virtual void CommitAnimations()
+        {
+            RemoveDisabledAnimatableProperties();
+
+            if (_animatableProperties.Any())
+            {
+                RequestAnimationFrame();
+            }
+        }
+
+        private void RequestAnimationFrame()
+        {
+            IsAnimationFrameRequested = true;
+            Parent?.RequestAnimationFrame();
+        }
+
+        internal bool IsAnimationFrameRequested { get; private set; } = false;
+
+        public void Animate()
+        {
+            if (!IsAnimationFrameRequested)
+                return;
+
+            _animatableProperties.ForEach(_ => 
+            {
+                _.Value.Animate();
+            });
+
+            foreach (var child in Children)
+            {
+                child.Animate();
+            }
+        }
     }
 
     public abstract class VisualNode<T> : VisualNode where T : BindableObject, new()
@@ -326,7 +406,78 @@ namespace XamarinReactorUI
 
         public void SetAttachedProperty(BindableProperty property, object value)
             => _attachedProperties[property] = value;
+    }
 
+    public abstract class AnimatableProperty
+    {
+        public object Key { get; }
+        public Easing Easing { get; }
+        public double Duration { get; }
+
+        public AnimatableProperty(object key, Easing easing = null, TimeSpan? duration = null)
+        {
+            Key = key ?? throw new ArgumentNullException(nameof(key));
+            Easing = easing ?? Easing.Linear;
+            Duration = duration == null ? 600.0 : duration.Value.TotalMilliseconds;
+        }
+
+        public bool IsEnabled { get; internal set; }
+
+        protected int CurrentEasingTime { get; set; }
+
+        protected IVisualNode AttachedNode { get; private set; }
+
+        internal void AttachNode(IVisualNode node)
+            => AttachedNode = node;
+
+        internal void Animate()
+        {
+            OnAnimate();
+        }
+
+        protected abstract void OnAnimate();
+
+        internal void Migrate(AnimatableProperty animatableProperty)
+        {
+            OnMigrate(animatableProperty);
+        }
+
+        protected virtual void OnMigrate(AnimatableProperty animatableProperty)
+        {
+            CurrentEasingTime = animatableProperty.CurrentEasingTime;
+        }
+    }
+
+    public class AnimatableDoubleProperty : AnimatableProperty
+    {
+        public AnimatableDoubleProperty(object key, double value, Action<IVisualNode, double> action, Easing easing = null, TimeSpan? duration = null) : base(key, easing, duration)
+        {
+            Value = value;
+            Action = action ?? throw new ArgumentNullException(nameof(action));
+        }
+
+        public double Value { get; }
+        public double? StartValue { get; private set; }
+        public Action<IVisualNode, double> Action { get; }
+
+        protected override void OnAnimate()
+        {
+            if (!IsEnabled)
+                return;
+
+            if (StartValue == null)
+                return;
+
+            if (CurrentEasingTime >= Duration)
+                return;
+
+            Action(AttachedNode, StartValue.Value + (Value - StartValue.Value) * Easing.Ease(CurrentEasingTime / Duration));
+        }
+
+        protected override void OnMigrate(AnimatableProperty animatableProperty)
+        {
+            StartValue = ((AnimatableDoubleProperty)animatableProperty).Value;
+        }
     }
 
     public static class VisualNodeExtensions
@@ -363,6 +514,18 @@ namespace XamarinReactorUI
         public static T WithKey<T>(this T node, object key) where T : VisualNode
         {
             node.Key = key;
+            return node;
+        }
+
+        public static T WithAnimation<T>(this T node) where T : VisualNode
+        {
+            node.EnableAnimatableProperties();
+            return node;
+        }
+
+        public static T WithOutAnimation<T>(this T node) where T : VisualNode
+        {
+            node.RemoveDisabledAnimatableProperties();
             return node;
         }
     }

@@ -24,6 +24,11 @@ namespace XamarinReactorUI
         {
         }
 
+        public RxPage(string title)
+        {
+            Title = title;
+        }
+
         public RxPage(Action<T> componentRefAction)
             : base(componentRefAction)
         {

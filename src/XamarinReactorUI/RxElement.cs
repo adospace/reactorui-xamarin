@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
-    public interface IRxElement
+    public interface IRxElement : IVisualNode
     {
         void SetAttachedProperty(BindableProperty property, object value);
 

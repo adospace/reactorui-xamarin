@@ -10,7 +10,7 @@ namespace XamarinReactorUI
 {
     public interface IVisualNode
     {
-        void AppendAnimatableProperty(object key, Action<IVisualNode> action);
+        void AppendAnimatableProperty(object key, AnimatableProperty action);
 
         void ClearAnimatableProperties();
     }
@@ -26,6 +26,15 @@ namespace XamarinReactorUI
         public int ChildIndex { get; private set; }
         internal VisualNode Parent { get; private set; }
 
+        protected T GetParent<T>() where T : VisualNode
+        {
+            var parent = Parent;
+            while (parent != null && !(parent is T))
+                parent = parent.Parent;
+
+            return (T)parent;
+        }
+
         public Action<object, System.ComponentModel.PropertyChangingEventArgs> PropertyChangingAction { get; set; }
         public Action<object, PropertyChangedEventArgs> PropertyChangedAction { get; set; }
 
@@ -37,8 +46,12 @@ namespace XamarinReactorUI
             _invalidated = true;
 
             RequireLayoutCycle();
+
+            OnInvalidated();
             //System.Diagnostics.Debug.WriteLine($"{this}->Invalidated()");
         }
+
+        protected virtual void OnInvalidated() { }
 
         internal bool IsLayoutCycleRequired { get; set; } = true;
 

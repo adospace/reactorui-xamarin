@@ -192,7 +192,7 @@ namespace XamarinReactorUI
         public static T Scale<T>(this T visualelement, double scale) where T : IRxVisualElement
         {
             visualelement.Scale = scale;
-            visualelement.AppendAnimatableProperty(VisualElement.ScaleProperty, v => ((IRxVisualElement)v).Scale = scale);
+            //visualelement.AppendAnimatableProperty(VisualElement.ScaleProperty, v => ((IRxVisualElement)v).Scale = scale);
             return visualelement;
         }
         public static T ScaleX<T>(this T visualelement, double scaleX) where T : IRxVisualElement

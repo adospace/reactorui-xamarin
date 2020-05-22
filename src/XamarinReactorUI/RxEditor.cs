@@ -6,14 +6,14 @@ namespace XamarinReactorUI
 {
     public interface IRxEditor : IRxInputView
     {
-        string Text { get; set; }
+        //string Text { get; set; }
         string FontFamily { get; set; }
         double FontSize { get; set; }
         FontAttributes FontAttributes { get; set; }
-        Color TextColor { get; set; }
-        double CharacterSpacing { get; set; }
-        string Placeholder { get; set; }
-        Color PlaceholderColor { get; set; }
+        //Color TextColor { get; set; }
+        //double CharacterSpacing { get; set; }
+        //string Placeholder { get; set; }
+        //Color PlaceholderColor { get; set; }
         bool IsTextPredictionEnabled { get; set; }
         EditorAutoSizeOption AutoSize { get; set; }
     }

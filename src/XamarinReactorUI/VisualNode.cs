@@ -1,78 +1,100 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
+using XamarinReactorUI.Animations;
 
 namespace XamarinReactorUI
 {
     public interface IVisualNode
     {
-        void AppendAnimatableProperty(object key, AnimatableProperty action);
+        void AppendAnimatable<T>(object key, T animation, Action<T> action) where T : RxAnimation;
+    }
 
-        void ClearAnimatableProperties();
+    public static class VisualNodeExtensions
+    {
+        public static T OnPropertyChanged<T>(this T element, Action<object, PropertyChangedEventArgs> action) where T : VisualNode
+        {
+            element.PropertyChangedAction = action;
+            return element;
+        }
+
+        public static T OnPropertyChanging<T>(this T element, Action<object, System.ComponentModel.PropertyChangingEventArgs> action) where T : VisualNode
+        {
+            element.PropertyChangingAction = action;
+            return element;
+        }
+
+        public static T When<T>(this T node, bool flag, Action<T> actionToApplyWhenFlagIsTrue) where T : VisualNode
+        {
+            if (flag)
+            {
+                actionToApplyWhenFlagIsTrue(node);
+            }
+            return node;
+        }
+
+        public static T WithAnimation<T>(this T node, Easing easing = null, double duration = 600) where T : VisualNode
+        {
+            node.EnableCurrentAnimatableProperties(easing, duration);
+            return node;
+        }
+
+        public static T WithKey<T>(this T node, object key) where T : VisualNode
+        {
+            node.Key = key;
+            return node;
+        }
+
+        public static T WithMetadata<T>(this T node, string key, object value) where T : VisualNode
+        {
+            node.SetMetadata(key, value);
+            return node;
+        }
+
+        public static T WithMetadata<T>(this T node, object value) where T : VisualNode
+        {
+            if (value is null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
+            node.SetMetadata(value.GetType().FullName, value);
+            return node;
+        }
+        public static T WithOutAnimation<T>(this T node) where T : VisualNode
+        {
+            node.DisableCurrentAnimatableProperties();
+            return node;
+        }
     }
 
     public abstract class VisualNode : IVisualNode
     {
+        protected bool _isMounted = false;
+
+        protected bool _stateChanged = true;
+
+        private readonly Dictionary<object, Animatable> _animatables = new Dictionary<object, Animatable>();
+
+        private readonly Dictionary<string, object> _metadata = new Dictionary<string, object>();
+
+        private IReadOnlyList<VisualNode> _children = null;
+
+        private bool _invalidated = false;
+
         protected VisualNode()
         {
             //System.Diagnostics.Debug.WriteLine($"{this}->Created()");
         }
 
-        public object Key { get; set; }
         public int ChildIndex { get; private set; }
-        internal VisualNode Parent { get; private set; }
-
-        protected T GetParent<T>() where T : VisualNode
-        {
-            var parent = Parent;
-            while (parent != null && !(parent is T))
-                parent = parent.Parent;
-
-            return (T)parent;
-        }
-
-        public Action<object, System.ComponentModel.PropertyChangingEventArgs> PropertyChangingAction { get; set; }
+        public object Key { get; set; }
         public Action<object, PropertyChangedEventArgs> PropertyChangedAction { get; set; }
-
-
-        private bool _invalidated = false;
-
-        protected void Invalidate()
-        {
-            _invalidated = true;
-
-            RequireLayoutCycle();
-
-            OnInvalidated();
-            //System.Diagnostics.Debug.WriteLine($"{this}->Invalidated()");
-        }
-
-        protected virtual void OnInvalidated() { }
-
-        internal bool IsLayoutCycleRequired { get; set; } = true;
-
-        private void RequireLayoutCycle()
-        {
-            if (IsLayoutCycleRequired)
-                return;
-
-            IsLayoutCycleRequired = true;
-            Parent?.RequireLayoutCycle();
-            OnLayoutCycleRequested();
-        }
-
-        protected internal virtual void OnLayoutCycleRequested()
-        {
-        }
-
+        public Action<object, System.ComponentModel.PropertyChangingEventArgs> PropertyChangingAction { get; set; }
         //internal event EventHandler LayoutCycleRequest;
-
-        private IReadOnlyList<VisualNode> _children = null;
-
         internal IReadOnlyList<VisualNode> Children
         {
             get
@@ -87,6 +109,159 @@ namespace XamarinReactorUI
                     }
                 }
                 return _children;
+            }
+        }
+
+        internal bool IsAnimationFrameRequested { get; private set; } = false;
+        internal bool IsLayoutCycleRequired { get; set; } = true;
+        internal VisualNode Parent { get; private set; }
+
+        public void AppendAnimatable<T>(object key, T animation, Action<T> action) where T : RxAnimation
+        {
+            if (key is null)
+            {
+                throw new ArgumentNullException(nameof(key));
+            }
+
+            if (animation is null)
+            {
+                throw new ArgumentNullException(nameof(animation));
+            }
+
+            if (action is null)
+            {
+                throw new ArgumentNullException(nameof(action));
+            }
+
+            var newAnimatableProperty = new Animatable(key, animation, new Action<RxAnimation>(target => action((T)target)));
+
+            _animatables[key] = newAnimatableProperty;
+        }
+
+        public T GetMetadata<T>(string key, T defaultValue = default)
+        {
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                throw new ArgumentException("can'be null or empty", nameof(key));
+            }
+
+            if (_metadata.TryGetValue(key, out var value))
+                return (T)value;
+
+            return defaultValue;
+        }
+
+        public T GetMetadata<T>(T defaultValue = default)
+            => GetMetadata(typeof(T).FullName, defaultValue);
+
+        public void SetMetadata<T>(string key, T value)
+        {
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                throw new ArgumentException("can'be null or empty", nameof(key));
+            }
+
+            _metadata[key] = value;
+        }
+
+        public void SetMetadata<T>(T value)
+        {
+            _metadata[typeof(T).FullName] = value;
+        }
+
+        internal void AddChild(VisualNode widget, BindableObject childNativeControl)
+        {
+            OnAddChild(widget, childNativeControl);
+        }
+
+        internal bool Animate()
+        {
+            if (!IsAnimationFrameRequested)
+                return false;
+
+            var animated = AnimateThis();
+
+            OnAnimate();
+
+            foreach (var child in Children)
+            {
+                if (child.Animate())
+                    animated = true;
+            }
+
+            if (!animated)
+            {
+                IsAnimationFrameRequested = false;
+            }
+
+            return animated;
+        }
+
+        internal void DisableCurrentAnimatableProperties()
+        {
+            _animatables.Where(_ => _.Value.IsEnabled == null).ForEach(_ =>
+              {
+                  _.Value.IsEnabled = false;
+              });
+        }
+
+        internal void EnableCurrentAnimatableProperties(Easing easing = null, double duration = 600)
+        {
+            _animatables.Where(_ => _.Value.IsEnabled == null).Select(_ => _.Value).ForEach(_ =>
+              {
+                  if (_.Animation is RxTweenAnimation tweenAnimation)
+                  {
+                      tweenAnimation.Easing = tweenAnimation.Easing ?? easing;
+                      tweenAnimation.Duration = tweenAnimation.Duration ?? duration;
+                      _.IsEnabled = true;
+                  }
+              });
+        }
+
+        internal virtual void Layout(RxTheme theme = null)
+        {
+            if (!IsLayoutCycleRequired)
+                return;
+
+            IsLayoutCycleRequired = false;
+
+            if (_invalidated)
+            {
+                //System.Diagnostics.Debug.WriteLine($"{this}->Layout(Invalidated)");
+                var oldChildren = Children;
+                _children = null;
+                MergeChildrenFrom(oldChildren);
+                _invalidated = false;
+            }
+
+            if (!_isMounted && Parent != null)
+                OnMount();
+
+            CommitAnimations();
+
+            AnimateThis();
+
+            if (_stateChanged)
+                OnUpdate();
+
+            foreach (var child in Children)
+                child.Layout(theme);
+        }
+
+        internal virtual void MergeChildrenFrom(IReadOnlyList<VisualNode> oldChildren)
+        {
+            for (int i = 0; i < Children.Count; i++)
+            {
+                if (oldChildren.Count > i)
+                {
+                    oldChildren[i].MergeWith(Children[i]);
+                }
+            }
+
+            for (int i = Children.Count; i < oldChildren.Count; i++)
+            {
+                oldChildren[i].Unmount();
+                oldChildren[i].Parent = null;
             }
         }
 
@@ -112,54 +287,71 @@ namespace XamarinReactorUI
             Parent = null;
         }
 
-        internal virtual void MergeChildrenFrom(IReadOnlyList<VisualNode> oldChildren)
+        internal void RemoveChild(VisualNode widget, BindableObject childNativeControl)
         {
-            for (int i = 0; i < Children.Count; i++)
-            {
-                if (oldChildren.Count > i)
-                {
-                    oldChildren[i].MergeWith(Children[i]);
-                }
-            }
+            OnRemoveChild(widget, childNativeControl);
+        }
 
-            for (int i = Children.Count; i < oldChildren.Count; i++)
+        internal void Unmount()
+        {
+            OnUnmount();
+        }
+
+        protected internal virtual void OnLayoutCycleRequested()
+        {
+        }
+
+        protected virtual void CommitAnimations()
+        {
+            if (_animatables.Any(_ => _.Value.IsEnabled.GetValueOrDefault() && !_.Value.Animation.IsCompleted()))
             {
-                oldChildren[i].Unmount();
-                oldChildren[i].Parent = null;
+                RequestAnimationFrame();
             }
         }
 
-        protected abstract IEnumerable<VisualNode> RenderChildren();
-
-        protected bool _isMounted = false;
-        protected bool _stateChanged = true;
-
-        internal virtual void Layout(RxTheme theme = null)
+        protected T GetParent<T>() where T : VisualNode
         {
-            if (!IsLayoutCycleRequired)
-                return;
+            var parent = Parent;
+            while (parent != null && !(parent is T))
+                parent = parent.Parent;
 
-            IsLayoutCycleRequired = false;
+            return (T)parent;
+        }
+        protected void Invalidate()
+        {
+            _invalidated = true;
 
-            if (_invalidated)
+            RequireLayoutCycle();
+
+            OnInvalidated();
+            //System.Diagnostics.Debug.WriteLine($"{this}->Invalidated()");
+        }
+
+        protected virtual void OnAddChild(VisualNode widget, BindableObject childNativeControl)
+        {
+        }
+
+        protected virtual void OnAnimate()
+        {
+        }
+
+        protected virtual void OnInvalidated()
+        {
+        }
+        protected virtual void OnMigrated(VisualNode newNode)
+        {
+            foreach (var newAnimatableProperty in newNode._animatables)
             {
-                //System.Diagnostics.Debug.WriteLine($"{this}->Layout(Invalidated)");
-                var oldChildren = Children;
-                _children = null;
-                MergeChildrenFrom(oldChildren);
-                _invalidated = false;
+                if (_animatables.TryGetValue(newAnimatableProperty.Key, out var oldAnimatableProperty))
+                {
+                    if (oldAnimatableProperty.Animation.GetType() == newAnimatableProperty.Value.Animation.GetType())
+                    {
+                        newAnimatableProperty.Value.Animation.MigrateFrom(oldAnimatableProperty.Animation);
+                    }
+                }
             }
 
-            if (!_isMounted && Parent != null)
-                OnMount();
-
-            if (_stateChanged)
-                OnUpdate();
-
-            foreach (var child in Children)
-                child.Layout(theme);
-
-            CommitAnimations();
+            _animatables.Clear();
         }
 
         protected virtual void OnMount()
@@ -167,9 +359,8 @@ namespace XamarinReactorUI
             _isMounted = true;
         }
 
-        internal void Unmount()
+        protected virtual void OnRemoveChild(VisualNode widget, BindableObject childNativeControl)
         {
-            OnUnmount();
         }
 
         protected virtual void OnUnmount()
@@ -182,105 +373,18 @@ namespace XamarinReactorUI
             _stateChanged = false;
         }
 
-        protected virtual void OnMigrated(VisualNode newNode)
+        protected abstract IEnumerable<VisualNode> RenderChildren();
+
+        private bool AnimateThis()
         {
-        }
+            bool animated = false;
+            _animatables.Where(_ => _.Value.IsEnabled.GetValueOrDefault() && !_.Value.Animation.IsCompleted()).ForEach(_ =>
+              {
+                  _.Value.Animate();
+                  animated = true;
+              });
 
-        internal void AddChild(VisualNode widget, BindableObject childNativeControl)
-        {
-            OnAddChild(widget, childNativeControl);
-        }
-
-        protected virtual void OnAddChild(VisualNode widget, BindableObject childNativeControl)
-        {
-
-        }
-
-        internal void RemoveChild(VisualNode widget, BindableObject childNativeControl)
-        {
-            OnRemoveChild(widget, childNativeControl);
-        }
-
-        protected virtual void OnRemoveChild(VisualNode widget, BindableObject childNativeControl)
-        {
-        }
-
-        private readonly Dictionary<string, object> _metadata = new Dictionary<string, object>();
-
-        public void SetMetadata<T>(string key, T value)
-        {
-            if (string.IsNullOrWhiteSpace(key))
-            {
-                throw new ArgumentException("can'be null or empty", nameof(key));
-            }
-
-            _metadata[key] = value;
-        }
-
-        public void SetMetadata<T>(T value)
-        {
-            _metadata[typeof(T).FullName] = value;
-        }
-
-        public T GetMetadata<T>(string key, T defaultValue = default)
-        {
-            if (string.IsNullOrWhiteSpace(key))
-            {
-                throw new ArgumentException("can'be null or empty", nameof(key));
-            }
-
-            if (_metadata.TryGetValue(key, out var value))
-                return (T)value;
-
-            return defaultValue;
-        }
-
-        public T GetMetadata<T>(T defaultValue = default)
-            => GetMetadata(typeof(T).FullName, defaultValue);
-
-        private readonly Dictionary<object, AnimatableProperty> _animatableProperties = new Dictionary<object, AnimatableProperty>();
-
-        public void AppendAnimatableProperty(object key, AnimatableProperty animatableProperty)
-        {
-            animatableProperty.AttachNode(this);
-
-            if (_animatableProperties.TryGetValue(key, out var existingAnimtableProperty))
-            { 
-                if (existingAnimtableProperty.GetType() == animatableProperty.GetType())
-                {
-                    animatableProperty.Migrate(existingAnimtableProperty);
-                    return;
-                }
-
-                existingAnimtableProperty.IsEnabled = false;
-            }
-
-            _animatableProperties[key] = animatableProperty;
-        }
-
-        public void ClearAnimatableProperties()
-        {
-            _animatableProperties.Clear();
-        }
-
-        internal void EnableAnimatableProperties()
-            => _animatableProperties.ForEach(_ => _.Value.IsEnabled = true);
-
-        internal void RemoveDisabledAnimatableProperties()
-            => _animatableProperties.ToList().ForEach(_ =>
-            {
-                if (!_.Value.IsEnabled)
-                    _animatableProperties.Remove(_.Key);
-            });
-
-        protected virtual void CommitAnimations()
-        {
-            RemoveDisabledAnimatableProperties();
-
-            if (_animatableProperties.Any())
-            {
-                RequestAnimationFrame();
-            }
+            return animated;
         }
 
         private void RequestAnimationFrame()
@@ -289,22 +393,14 @@ namespace XamarinReactorUI
             Parent?.RequestAnimationFrame();
         }
 
-        internal bool IsAnimationFrameRequested { get; private set; } = false;
-
-        public void Animate()
+        private void RequireLayoutCycle()
         {
-            if (!IsAnimationFrameRequested)
+            if (IsLayoutCycleRequired)
                 return;
 
-            _animatableProperties.ForEach(_ => 
-            {
-                _.Value.Animate();
-            });
-
-            foreach (var child in Children)
-            {
-                child.Animate();
-            }
+            IsLayoutCycleRequired = true;
+            Parent?.RequireLayoutCycle();
+            OnLayoutCycleRequested();
         }
     }
 
@@ -312,10 +408,8 @@ namespace XamarinReactorUI
     {
         protected BindableObject _nativeControl;
 
-        protected T NativeControl { get => (T)_nativeControl; }
-
-        private readonly Action<T> _componentRefAction;
         private readonly Dictionary<BindableProperty, object> _attachedProperties = new Dictionary<BindableProperty, object>();
+        private readonly Action<T> _componentRefAction;
         protected VisualNode()
         { }
 
@@ -323,6 +417,10 @@ namespace XamarinReactorUI
         {
             _componentRefAction = componentRefAction;
         }
+
+        protected T NativeControl { get => (T)_nativeControl; }
+        public void SetAttachedProperty(BindableProperty property, object value)
+            => _attachedProperties[property] = value;
 
         internal override void MergeWith(VisualNode newNode)
         {
@@ -332,7 +430,6 @@ namespace XamarinReactorUI
                 ((VisualNode<T>)newNode)._isMounted = this._nativeControl != null;
                 ((VisualNode<T>)newNode)._componentRefAction?.Invoke(NativeControl);
                 OnMigrated(newNode);
-
 
                 base.MergeWith(newNode);
             }
@@ -415,131 +512,6 @@ namespace XamarinReactorUI
         private void NativeControl_PropertyChanging(object sender, Xamarin.Forms.PropertyChangingEventArgs e)
         {
             PropertyChangingAction?.Invoke(sender, new System.ComponentModel.PropertyChangingEventArgs(e.PropertyName));
-        }
-
-        public void SetAttachedProperty(BindableProperty property, object value)
-            => _attachedProperties[property] = value;
-    }
-
-    public abstract class AnimatableProperty
-    {
-        public object Key { get; }
-        public Easing Easing { get; }
-        public double Duration { get; }
-
-        public AnimatableProperty(object key, Easing easing = null, TimeSpan? duration = null)
-        {
-            Key = key ?? throw new ArgumentNullException(nameof(key));
-            Easing = easing ?? Easing.Linear;
-            Duration = duration == null ? 600.0 : duration.Value.TotalMilliseconds;
-        }
-
-        public bool IsEnabled { get; internal set; }
-
-        protected int CurrentEasingTime { get; set; }
-
-        protected IVisualNode AttachedNode { get; private set; }
-
-        internal void AttachNode(IVisualNode node)
-            => AttachedNode = node;
-
-        internal void Animate()
-        {
-            OnAnimate();
-        }
-
-        protected abstract void OnAnimate();
-
-        internal void Migrate(AnimatableProperty animatableProperty)
-        {
-            OnMigrate(animatableProperty);
-        }
-
-        protected virtual void OnMigrate(AnimatableProperty animatableProperty)
-        {
-            CurrentEasingTime = animatableProperty.CurrentEasingTime;
-        }
-    }
-
-    public class AnimatableDoubleProperty : AnimatableProperty
-    {
-        public AnimatableDoubleProperty(object key, double value, Action<IVisualNode, double> action, Easing easing = null, TimeSpan? duration = null) : base(key, easing, duration)
-        {
-            Value = value;
-            Action = action ?? throw new ArgumentNullException(nameof(action));
-        }
-
-        public double Value { get; }
-        public double? StartValue { get; private set; }
-        public Action<IVisualNode, double> Action { get; }
-
-        protected override void OnAnimate()
-        {
-            if (!IsEnabled)
-                return;
-
-            if (StartValue == null)
-                return;
-
-            if (CurrentEasingTime >= Duration)
-                return;
-
-            Action(AttachedNode, StartValue.Value + (Value - StartValue.Value) * Easing.Ease(CurrentEasingTime / Duration));
-        }
-
-        protected override void OnMigrate(AnimatableProperty animatableProperty)
-        {
-            StartValue = ((AnimatableDoubleProperty)animatableProperty).Value;
-        }
-    }
-
-    public static class VisualNodeExtensions
-    {
-        public static T OnPropertyChanged<T>(this T element, Action<object, PropertyChangedEventArgs> action) where T : VisualNode
-        {
-            element.PropertyChangedAction = action;
-            return element;
-        }
-
-        public static T OnPropertyChanging<T>(this T element, Action<object, System.ComponentModel.PropertyChangingEventArgs> action) where T : VisualNode
-        {
-            element.PropertyChangingAction = action;
-            return element;
-        }
-
-        public static T WithMetadata<T>(this T node, string key, object value) where T : VisualNode
-        {
-            node.SetMetadata(key, value);
-            return node;
-        }
-
-        public static T WithMetadata<T>(this T node, object value) where T : VisualNode
-        {
-            if (value is null)
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
-
-            node.SetMetadata(value.GetType().FullName, value);
-            return node;
-        }
-
-        public static T WithKey<T>(this T node, object key) where T : VisualNode
-        {
-            node.Key = key;
-            return node;
-        }
-
-        public static T WithAnimation<T>(this T node) where T : VisualNode
-        {
-            node.EnableAnimatableProperties();
-            return node;
-        }
-
-        public static T WithOutAnimation<T>(this T node) where T : VisualNode
-        {
-            node.RemoveDisabledAnimatableProperties();
-            return node;
         }
     }
 }

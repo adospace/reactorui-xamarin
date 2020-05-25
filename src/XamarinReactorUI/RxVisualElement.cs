@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Xamarin.Forms;
+using XamarinReactorUI.Animations;
 
 namespace XamarinReactorUI
 {
@@ -107,6 +108,28 @@ namespace XamarinReactorUI
             base.OnUpdate();
         }
 
+        protected override void OnAnimate()
+        {
+            NativeControl.AnchorX = AnchorX;
+            NativeControl.AnchorY = AnchorY;
+            NativeControl.TranslationX = TranslationX;
+            NativeControl.TranslationY = TranslationY;
+            NativeControl.Rotation = Rotation;
+            NativeControl.RotationX = RotationX;
+            NativeControl.RotationY = RotationY;
+            NativeControl.Scale = Scale;
+            NativeControl.ScaleX = ScaleX;
+            NativeControl.ScaleY = ScaleY;
+            NativeControl.Opacity = Opacity;
+            NativeControl.BackgroundColor = BackgroundColor;
+            NativeControl.WidthRequest = WidthRequest;
+            NativeControl.HeightRequest = HeightRequest;
+            NativeControl.MinimumWidthRequest = MinimumWidthRequest;
+            NativeControl.MinimumHeightRequest = MinimumHeightRequest;
+
+            base.OnAnimate();
+        }
+
     }
 
     public class VisualStateNamedGroup
@@ -139,11 +162,6 @@ namespace XamarinReactorUI
             return visualElement;
         }
 
-        //public static T Style<T>(this T visualelement, Style style) where T : IRxVisualElement
-        //{
-        //    visualelement.Style = style;
-        //    return visualelement;
-        //}
         public static T InputTransparent<T>(this T visualelement, bool inputTransparent) where T : IRxVisualElement
         {
             visualelement.InputTransparent = inputTransparent;
@@ -154,57 +172,69 @@ namespace XamarinReactorUI
             visualelement.IsEnabled = isEnabled;
             return visualelement;
         }
-        public static T AnchorX<T>(this T visualelement, double anchorX) where T : IRxVisualElement
+        public static T AnchorX<T>(this T visualelement, double anchorX, RxDoubleAnimation customAnimation = null) where T : IRxVisualElement
         {
             visualelement.AnchorX = anchorX;
+            visualelement.AppendAnimatable(VisualElement.AnchorXProperty, customAnimation ?? new RxDoubleAnimation(anchorX), v => visualelement.AnchorX = v.CurrentValue());
             return visualelement;
         }
-        public static T AnchorY<T>(this T visualelement, double anchorY) where T : IRxVisualElement
+        public static T AnchorY<T>(this T visualelement, double anchorY, RxDoubleAnimation customAnimation = null) where T : IRxVisualElement
         {
             visualelement.AnchorY = anchorY;
+            visualelement.AppendAnimatable(VisualElement.AnchorYProperty, customAnimation ?? new RxDoubleAnimation(anchorY), v => visualelement.AnchorY = v.CurrentValue());
             return visualelement;
         }
-        public static T TranslationX<T>(this T visualelement, double translationX) where T : IRxVisualElement
+        public static T TranslationX<T>(this T visualelement, double translationX, RxDoubleAnimation customAnimation = null) where T : IRxVisualElement
         {
             visualelement.TranslationX = translationX;
+            visualelement.AppendAnimatable(VisualElement.TranslationXProperty, customAnimation ?? new RxDoubleAnimation(translationX), v => visualelement.TranslationX = v.CurrentValue());
             return visualelement;
         }
-        public static T TranslationY<T>(this T visualelement, double translationY) where T : IRxVisualElement
+        public static T TranslationY<T>(this T visualelement, double translationY, RxDoubleAnimation customAnimation = null) where T : IRxVisualElement
         {
             visualelement.TranslationY = translationY;
+            visualelement.AppendAnimatable(VisualElement.TranslationXProperty, customAnimation ?? new RxDoubleAnimation(translationY), v => visualelement.TranslationY = v.CurrentValue());
             return visualelement;
         }
-        public static T Rotation<T>(this T visualelement, double rotation) where T : IRxVisualElement
+        public static T Rotation<T>(this T visualelement, double rotation, RxDoubleAnimation customAnimation = null) where T : IRxVisualElement
         {
             visualelement.Rotation = rotation;
+            visualelement.AppendAnimatable(VisualElement.RotationProperty, customAnimation ?? new RxDoubleAnimation(rotation), v => visualelement.Rotation = v.CurrentValue());
             return visualelement;
         }
-        public static T RotationX<T>(this T visualelement, double rotationX) where T : IRxVisualElement
+        public static T RotationX<T>(this T visualelement, double rotationX, RxDoubleAnimation customAnimation = null) where T : IRxVisualElement
         {
             visualelement.RotationX = rotationX;
+            visualelement.AppendAnimatable(VisualElement.RotationXProperty, customAnimation ?? new RxDoubleAnimation(rotationX), v => visualelement.RotationX = v.CurrentValue());
             return visualelement;
         }
-        public static T RotationY<T>(this T visualelement, double rotationY) where T : IRxVisualElement
+        public static T RotationY<T>(this T visualelement, double rotationY, RxDoubleAnimation customAnimation = null) where T : IRxVisualElement
         {
             visualelement.RotationY = rotationY;
+            visualelement.AppendAnimatable(VisualElement.RotationYProperty, customAnimation ?? new RxDoubleAnimation(rotationY), v => visualelement.RotationY = v.CurrentValue());
             return visualelement;
         }
-        public static T Scale<T>(this T visualelement, double scale) where T : IRxVisualElement
+        public static T Scale<T>(this T visualelement, double scale, RxDoubleAnimation customAnimation = null) where T : IRxVisualElement
         {
             visualelement.Scale = scale;
-            //visualelement.AppendAnimatableProperty(VisualElement.ScaleProperty, v => ((IRxVisualElement)v).Scale = scale);
+            visualelement.AppendAnimatable(VisualElement.ScaleProperty, customAnimation ?? new RxDoubleAnimation(scale), v => visualelement.Scale = v.CurrentValue());
             return visualelement;
         }
-        public static T ScaleX<T>(this T visualelement, double scaleX) where T : IRxVisualElement
+
+        public static T ScaleX<T>(this T visualelement, double scaleX, RxDoubleAnimation customAnimation = null) where T : IRxVisualElement
         {
             visualelement.ScaleX = scaleX;
+            visualelement.AppendAnimatable(VisualElement.ScaleXProperty, customAnimation ?? new RxDoubleAnimation(scaleX), v => visualelement.ScaleX = v.CurrentValue());
             return visualelement;
         }
-        public static T ScaleY<T>(this T visualelement, double scaleY) where T : IRxVisualElement
+
+        public static T ScaleY<T>(this T visualelement, double scaleY, RxDoubleAnimation customAnimation = null) where T : IRxVisualElement
         {
             visualelement.ScaleY = scaleY;
+            visualelement.AppendAnimatable(VisualElement.ScaleYProperty, customAnimation ?? new RxDoubleAnimation(scaleY), v => visualelement.ScaleY = v.CurrentValue());
             return visualelement;
         }
+
         public static T Visual<T>(this T visualelement, IVisual visual) where T : IRxVisualElement
         {
             visualelement.Visual = visual;
@@ -213,36 +243,43 @@ namespace XamarinReactorUI
         public static T IsVisible<T>(this T visualelement, bool isVisible) where T : IRxVisualElement
         {
             visualelement.IsVisible = isVisible;
+            visualelement.AppendAnimatable(VisualElement.IsVisibleProperty, new RxDoubleAnimation(isVisible ? 1.0 : 0.0), v => visualelement.Opacity = v.CurrentValue());
             return visualelement;
         }
-        public static T Opacity<T>(this T visualelement, double opacity) where T : IRxVisualElement
+        public static T Opacity<T>(this T visualelement, double opacity, RxDoubleAnimation customAnimation = null) where T : IRxVisualElement
         {
             visualelement.Opacity = opacity;
+            visualelement.AppendAnimatable(VisualElement.OpacityProperty, customAnimation ?? new RxDoubleAnimation(opacity), v => visualelement.Opacity = v.CurrentValue());
             return visualelement;
         }
-        public static T BackgroundColor<T>(this T visualelement, Color backgroundColor) where T : IRxVisualElement
+        public static T BackgroundColor<T>(this T visualelement, Color backgroundColor, RxColorAnimation customAnimation = null) where T : IRxVisualElement
         {
             visualelement.BackgroundColor = backgroundColor;
+            visualelement.AppendAnimatable(VisualElement.WidthRequestProperty, customAnimation ?? new RxSimpleColorAnimation(backgroundColor), v => visualelement.BackgroundColor = v.CurrentValue());
             return visualelement;
         }
-        public static T WidthRequest<T>(this T visualelement, double widthRequest) where T : IRxVisualElement
+        public static T WidthRequest<T>(this T visualelement, double widthRequest, RxDoubleAnimation customAnimation = null) where T : IRxVisualElement
         {
             visualelement.WidthRequest = widthRequest;
+            visualelement.AppendAnimatable(VisualElement.WidthRequestProperty, customAnimation ?? new RxDoubleAnimation(widthRequest), v => visualelement.WidthRequest = v.CurrentValue());
             return visualelement;
         }
-        public static T HeightRequest<T>(this T visualelement, double heightRequest) where T : IRxVisualElement
+        public static T HeightRequest<T>(this T visualelement, double heightRequest, RxDoubleAnimation customAnimation = null) where T : IRxVisualElement
         {
             visualelement.HeightRequest = heightRequest;
+            visualelement.AppendAnimatable(VisualElement.HeightRequestProperty, customAnimation ?? new RxDoubleAnimation(heightRequest), v => visualelement.HeightRequest = v.CurrentValue());
             return visualelement;
         }
-        public static T MinimumWidthRequest<T>(this T visualelement, double minimumWidthRequest) where T : IRxVisualElement
+        public static T MinimumWidthRequest<T>(this T visualelement, double minimumWidthRequest, RxDoubleAnimation customAnimation = null) where T : IRxVisualElement
         {
             visualelement.MinimumWidthRequest = minimumWidthRequest;
+            visualelement.AppendAnimatable(VisualElement.MinimumWidthRequestProperty, customAnimation ?? new RxDoubleAnimation(minimumWidthRequest), v => visualelement.MinimumWidthRequest = v.CurrentValue());
             return visualelement;
         }
-        public static T MinimumHeightRequest<T>(this T visualelement, double minimumHeightRequest) where T : IRxVisualElement
+        public static T MinimumHeightRequest<T>(this T visualelement, double minimumHeightRequest, RxDoubleAnimation customAnimation = null) where T : IRxVisualElement
         {
             visualelement.MinimumHeightRequest = minimumHeightRequest;
+            visualelement.AppendAnimatable(VisualElement.MinimumHeightRequestProperty, customAnimation ?? new RxDoubleAnimation(minimumHeightRequest), v => visualelement.MinimumHeightRequest = v.CurrentValue());
             return visualelement;
         }
         public static T FlowDirection<T>(this T visualelement, FlowDirection flowDirection) where T : IRxVisualElement

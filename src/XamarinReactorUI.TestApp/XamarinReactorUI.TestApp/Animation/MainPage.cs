@@ -22,9 +22,11 @@ namespace XamarinReactorUI.TestApp.Animation
                         .Source("city.jpg")
                 }
                 .OnTap(()=>SetState(s => s.Toggle = !s.Toggle))
+                .HasShadow(true)
                 .Scale(State.Toggle ? 1.0 : 0.5)
-                .Opacity(State.Toggle ? 1.0 : 0.2)
-                .WithAnimation(duration: 1000)
+                .Opacity(State.Toggle ? 1.0 : 0.0)
+                .WithAnimation()
+                .Margin(10)
             };
         }
     }

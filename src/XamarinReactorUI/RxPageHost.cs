@@ -51,8 +51,8 @@ namespace XamarinReactorUI
         {
             if (ContainerPage != null)
             {
-                ContainerPage.Appearing += OnComponentPage_Appearing;
-                ContainerPage.Disappearing += OnComponentPage_Disappearing;
+                ContainerPage.Appearing -= OnComponentPage_Appearing;
+                ContainerPage.Disappearing -= OnComponentPage_Disappearing;
             }
 
             ContainerPage = null;

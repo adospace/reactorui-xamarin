@@ -12,21 +12,23 @@ namespace XamarinReactorUI.TestApp.Animation
     {
         public override VisualNode Render()
         {
-            return new RxContentPage()
+            return new RxNavigationPage()
             {
-                new RxFrame()
-                { 
+                new RxContentPage("Animation Demo")
+                {
                     new RxImage()
                         .HCenter()
                         .VCenter()
                         .Source("city.jpg")
+                        .OnTap(()=>SetState(s => s.Toggle = !s.Toggle))
+                        .Opacity(State.Toggle ? 1.0 : 0.0)
+                        .WithOutAnimation()
+                        .Rotation(State.Toggle ? 0.0 : 180.0)
+                        .Scale(State.Toggle ? 1.0 : 0.5)
+                        .WithAnimation()
+                        .Margin(10)
+                        
                 }
-                .OnTap(()=>SetState(s => s.Toggle = !s.Toggle))
-                .HasShadow(true)
-                .Scale(State.Toggle ? 1.0 : 0.5)
-                .Opacity(State.Toggle ? 1.0 : 0.0)
-                .WithAnimation()
-                .Margin(10)
             };
         }
     }

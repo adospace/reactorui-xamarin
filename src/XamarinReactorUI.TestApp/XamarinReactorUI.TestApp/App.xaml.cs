@@ -72,7 +72,11 @@ namespace XamarinReactorUI.TestApp
             //    .WithHotReload();
 
             //TEST 18
-            _rxApp = RxApplication.Create<Animation.MainPage>(this)
+            //_rxApp = RxApplication.Create<Animation.MainPage>(this)
+            //    .WithHotReload();
+
+            //TEST 19
+            _rxApp = RxApplication.Create<WebView.MainPage>(this)
                 .WithHotReload();
 
             _rxApp.Run();

@@ -478,7 +478,9 @@ namespace XamarinReactorUI
                 {
                     if (element.Parent != null)
                     {
-                        throw new InvalidOperationException();
+#if DEBUG
+                        //throw new InvalidOperationException();
+#endif
                     }
                 }
 

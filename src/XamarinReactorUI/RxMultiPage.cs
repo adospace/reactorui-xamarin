@@ -8,7 +8,9 @@ using Xamarin.Forms;
 namespace XamarinReactorUI
 {
     public interface IRxMultiPage : IRxPage
-    { }
+    {
+        Action CurrentPageChangedAction { get; set; }
+    }
 
     public abstract class RxMultiPage<T, TPAGE> : RxPage<T>, IRxMultiPage, IEnumerable<VisualNode> where T : Xamarin.Forms.MultiPage<TPAGE>, new() where TPAGE : Xamarin.Forms.Page
     {
@@ -24,6 +26,8 @@ namespace XamarinReactorUI
         {
 
         }
+
+        public Action CurrentPageChangedAction { get; set; }
 
         protected override void OnAddChild(VisualNode widget, BindableObject childControl)
         {
@@ -61,8 +65,16 @@ namespace XamarinReactorUI
 
         protected override void OnUpdate()
         {
+            if (CurrentPageChangedAction != null)
+                NativeControl.CurrentPageChanged += NativeControl_CurrentPageChanged;
+
 
             base.OnUpdate();
+        }
+
+        private void NativeControl_CurrentPageChanged(object sender, EventArgs e)
+        {
+            CurrentPageChangedAction?.Invoke();
         }
 
         protected override IEnumerable<VisualNode> RenderChildren()
@@ -75,5 +87,29 @@ namespace XamarinReactorUI
             return GetEnumerator();
         }
 
+        protected override void OnUnmount()
+        {
+            if (NativeControl != null)
+                NativeControl.CurrentPageChanged += NativeControl_CurrentPageChanged;
+            base.OnUnmount();
+        }
+
+        protected override void OnMigrated(VisualNode newNode)
+        {
+            if (NativeControl != null)
+                NativeControl.CurrentPageChanged += NativeControl_CurrentPageChanged;
+
+            base.OnMigrated(newNode);
+        }
+
     }
-}
+
+    public static class RxMultiPageExtensions
+    {
+        public static T OnCurrentPageChanged<T>(this T page, Action action) where T : IRxMultiPage
+        {
+            page.CurrentPageChangedAction = action;
+            return page;
+        }
+    }
+    }

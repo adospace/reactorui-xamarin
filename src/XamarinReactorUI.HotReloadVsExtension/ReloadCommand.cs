@@ -354,14 +354,17 @@ TargetFramework=131072
             return generalPane;
         }
 
-        private static bool IsWindows => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
-
         private static bool ExecutePortForwardCommmand(IVsOutputWindowPane outputPane)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
-            
-            var adbCommandLine = "\"" + Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Android", "sdk", "platform-tools", "adb" + (IsWindows ? ".exe" : "")) + "\" "
-                + "forward tcp:45820 tcp:45820";
+            //C:\Program Files (x86)\Android\android-sdk\platform-tools\adb.exe
+            var adbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Android", "android-sdk", "platform-tools", "adb.exe");
+
+            if (!File.Exists(adbPath))
+            {
+                outputPane.OutputString($"Unable to find adb tool: file '{adbPath}' not found{Environment.NewLine}");
+                return false;
+            }
 
             var process = new System.Diagnostics.Process();
 
@@ -370,16 +373,8 @@ TargetFramework=131072
             process.StartInfo.RedirectStandardInput = true;
             process.StartInfo.RedirectStandardError = true;
             process.StartInfo.UseShellExecute = false;
-            if (IsWindows)
-            {
-                process.StartInfo.Arguments = adbCommandLine;
-                process.StartInfo.FileName = "powershell";
-            }
-            else
-            {
-                process.StartInfo.Arguments = string.Format("-c \"{0}\"", adbCommandLine);
-                process.StartInfo.FileName = "/bin/sh";
-            }
+            process.StartInfo.Arguments = "forward tcp:45820 tcp:45820";
+            process.StartInfo.FileName = adbPath;
 
             try
             {
@@ -387,8 +382,8 @@ TargetFramework=131072
 
                 var adb_output = process.StandardOutput.ReadToEnd();
 
-                if (adb_output.Length > 0 && adb_output != "45820" + Environment.NewLine)
-                    throw new InvalidOperationException($"Unable to forward tcp port from emulator, is emulator running? (adb tool returned '{adb_output}')");
+                if (adb_output != "45820" + Environment.NewLine)
+                    throw new InvalidOperationException($"Unable to forward tcp port from emulator (executing '{adbPath} forward tcp: 45820 tcp: 45820' adb tool returned '{adb_output}')");
             }
             catch (Exception ex)
             {

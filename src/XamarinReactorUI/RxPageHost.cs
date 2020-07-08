@@ -167,7 +167,9 @@ namespace XamarinReactorUI
 
         protected override RxComponent InitializeComponent(RxComponent component)
         {
-            var componentWithProps = (RxComponentWithProps<P>)component;
+            if (!(component is RxComponentWithProps<P> componentWithProps))
+                throw new InvalidOperationException($"Component type ({component.GetType()}) should derive from RxComponentWithProps<{typeof(P)}>");
+
             _propsInitializer?.Invoke(componentWithProps.Props);
             return component;
         }

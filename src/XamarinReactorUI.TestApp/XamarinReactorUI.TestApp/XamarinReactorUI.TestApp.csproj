@@ -20,6 +20,7 @@
     <ProjectReference Include="..\..\XamarinReactorUI.HotReload\XamarinReactorUI.HotReload.csproj" />
     <ProjectReference Include="..\..\XamarinReactorUI.Maps\XamarinReactorUI.Maps.csproj" />
     <ProjectReference Include="..\..\XamarinReactorUI.PancakeView\XamarinReactorUI.PancakeView.csproj" />
+    <ProjectReference Include="..\..\XamarinReactorUI.SharedTransitions\XamarinReactorUI.SharedTransitions.csproj" />
     <ProjectReference Include="..\..\XamarinReactorUI.Skia\XamarinReactorUI.Skia.csproj" />
     <ProjectReference Include="..\..\XamarinReactorUI\XamarinReactorUI.csproj" />
   </ItemGroup>

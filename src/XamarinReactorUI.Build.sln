@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XamarinReactorUI.Skia", "Xa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XamarinReactorUI.PancakeView", "XamarinReactorUI.PancakeView\XamarinReactorUI.PancakeView.csproj", "{84931C46-4607-4E07-82DD-96C49C2811AB}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XamarinReactorUI.SharedTransitions", "XamarinReactorUI.SharedTransitions\XamarinReactorUI.SharedTransitions.csproj", "{5A193221-5186-413F-A204-7C8DE779ED69}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{84931C46-4607-4E07-82DD-96C49C2811AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84931C46-4607-4E07-82DD-96C49C2811AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84931C46-4607-4E07-82DD-96C49C2811AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A193221-5186-413F-A204-7C8DE779ED69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A193221-5186-413F-A204-7C8DE779ED69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A193221-5186-413F-A204-7C8DE779ED69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A193221-5186-413F-A204-7C8DE779ED69}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

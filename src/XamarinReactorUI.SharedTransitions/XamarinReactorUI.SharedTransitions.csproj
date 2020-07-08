@@ -1,11 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <Version Condition=" '$(APPVEYOR_BUILD_VERSION)' == '' ">0.0.1-local</Version>
     <Version Condition=" '$(APPVEYOR_BUILD_VERSION)' != '' ">$(APPVEYOR_BUILD_VERSION)-beta</Version>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>adospace</Authors>
-    <Description>XamarinReactorUI is an UI framework that let you build Xamarin Forms pages using a React/Flutter inspired model. This is the package required to integrate PancakeView (https://github.com/sthewissen/Xamarin.Forms.PancakeView)</Description>
+    <Description>XamarinReactorUI is an UI framework that let you build Xamarin Forms pages using a React/Flutter inspired model. This is the package required to integrate Xamarin.Plugin.SharedTransitions (https://github.com/GiampaoloGabba/Xamarin.Plugin.SharedTransitions)</Description>
     <Copyright>Adolfo Marinucci</Copyright>
     <PackageProjectUrl>https://github.com/adospace/reactorui-xamarin</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -16,11 +16,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms.PancakeView" Version="1.4.2" />
+    <PackageReference Include="Xamarin.Plugin.SharedTransitions" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\XamarinReactorUI\XamarinReactorUI.csproj" />
   </ItemGroup>
-  
+
 </Project>

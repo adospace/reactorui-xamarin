@@ -282,7 +282,7 @@ TargetFramework=131072
 
             if (!ExecutePortForwardCommmand(generalPane))
             {
-                generalPane.OutputString($"Unable to setup connection with the device or emulator using adb: plese ensure it's correctly installed (please note that only Android platform is supported so for under Windows){Environment.NewLine}");
+                generalPane.OutputString($"Unable to setup connection with the device or emulator using adb: plese ensure it's correctly installed (please note that only Android platform is supported so far under Windows){Environment.NewLine}");
                 generalPane.Activate(); // Brings this pane into view
                 return;
             }
@@ -382,8 +382,8 @@ TargetFramework=131072
 
                 var adb_output = process.StandardOutput.ReadToEnd();
 
-                if (adb_output != "45820" + Environment.NewLine)
-                    throw new InvalidOperationException($"Unable to forward tcp port from emulator (executing '{adbPath} forward tcp: 45820 tcp: 45820' adb tool returned '{adb_output}')");
+                if (adb_output.Length > 0 && adb_output != "45820" + Environment.NewLine)
+                    throw new InvalidOperationException($"Unable to forward tcp port from emulator (executing '{adbPath} forward tcp:45820 tcp:45820' adb tool returned '{adb_output}')");
             }
             catch (Exception ex)
             {

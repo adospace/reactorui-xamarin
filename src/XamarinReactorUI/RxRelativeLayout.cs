@@ -58,6 +58,9 @@ namespace XamarinReactorUI
     {
         public static T XConstraint<T>(this T element, Constraint constraint) where T : IRxElement
         {
+            if (element == null)
+                return element;
+
             element.SetAttachedProperty(RelativeLayout.XConstraintProperty, constraint);
 
             return element;
@@ -65,6 +68,9 @@ namespace XamarinReactorUI
 
         public static T YConstraint<T>(this T element, Constraint constraint) where T : IRxElement
         {
+            if (element == null)
+                return element;
+
             element.SetAttachedProperty(RelativeLayout.YConstraintProperty, constraint);
 
             return element;
@@ -72,6 +78,9 @@ namespace XamarinReactorUI
 
         public static T WidthConstraint<T>(this T element, Constraint constraint) where T : IRxElement
         {
+            if (element == null)
+                return element;
+
             element.SetAttachedProperty(RelativeLayout.WidthConstraintProperty, constraint);
 
             return element;
@@ -79,6 +88,9 @@ namespace XamarinReactorUI
 
         public static T HeightConstraint<T>(this T element, Constraint constraint) where T : IRxElement
         {
+            if (element == null)
+                return element;
+
             element.SetAttachedProperty(RelativeLayout.HeightConstraintProperty, constraint);
 
             return element;
@@ -86,6 +98,9 @@ namespace XamarinReactorUI
 
         public static T BoundsConstraint<T>(this T element, Constraint constraint) where T : IRxElement
         {
+            if (element == null)
+                return element;
+
             element.SetAttachedProperty(RelativeLayout.BoundsConstraintProperty, constraint);
 
             return element;

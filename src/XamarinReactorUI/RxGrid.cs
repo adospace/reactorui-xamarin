@@ -197,6 +197,9 @@ namespace XamarinReactorUI
 
         public static T GridRow<T>(this T view, int rowIndex) where T : VisualNode
         {
+            if (view == null)
+                return null;
+
             if (view is IRxElement element)
                 element.SetAttachedProperty(Grid.RowProperty, rowIndex);
             else
@@ -209,6 +212,9 @@ namespace XamarinReactorUI
 
         public static T GridRowSpan<T>(this T view, int rowSpan) where T : VisualNode
         {
+            if (view == null)
+                return null;
+
             if (view is IRxElement element)
                 element.SetAttachedProperty(Grid.RowSpanProperty, rowSpan);
             else
@@ -220,6 +226,9 @@ namespace XamarinReactorUI
 
         public static T GridColumn<T>(this T view, int columnIndex) where T : VisualNode
         {
+            if (view == null)
+                return null;
+
             if (view is IRxElement element)
                 element.SetAttachedProperty(Grid.ColumnProperty, columnIndex);
             else
@@ -231,6 +240,9 @@ namespace XamarinReactorUI
 
         public static T GridColumnSpan<T>(this T view, int columnSpan) where T : VisualNode
         {
+            if (view == null)
+                return null;
+
             if (view is IRxElement element)
                 element.SetAttachedProperty(Grid.ColumnSpanProperty, columnSpan);
             else

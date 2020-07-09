@@ -57,6 +57,9 @@ namespace XamarinReactorUI
     {
         public static T LayoutBounds<T>(this T element, Rectangle bounds) where T : IRxElement
         {
+            if (element == null)
+                return element;
+
             element.SetAttachedProperty(AbsoluteLayout.LayoutBoundsProperty, bounds);
 
             return element;
@@ -64,6 +67,9 @@ namespace XamarinReactorUI
 
         public static T LayoutBounds<T>(this T element, Point loc, Size size) where T : IRxElement
         {
+            if (element == null)
+                return element;
+
             element.SetAttachedProperty(AbsoluteLayout.LayoutBoundsProperty, new Rectangle(loc, size));
 
             return element;
@@ -71,6 +77,9 @@ namespace XamarinReactorUI
 
         public static T LayoutBounds<T>(this T element, double x, double y, double width, double height) where T : IRxElement
         {
+            if (element == null)
+                return element;
+
             element.SetAttachedProperty(AbsoluteLayout.LayoutBoundsProperty, new Rectangle(x, y, width, height));
 
             return element;
@@ -78,6 +87,9 @@ namespace XamarinReactorUI
 
         public static T LayoutFlags<T>(this T element, AbsoluteLayoutFlags flags) where T : IRxElement
         {
+            if (element == null)
+                return element;
+
             element.SetAttachedProperty(AbsoluteLayout.LayoutFlagsProperty, flags);
 
             return element;

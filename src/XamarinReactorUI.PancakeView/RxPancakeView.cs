@@ -13,7 +13,7 @@ namespace XamarinReactorUI
         DashPattern BorderDashPattern { get; set; }
         Color BorderColor { get; set; }
         BorderDrawingStyle BorderDrawingStyle { get; set; }
-        int BackgroundGradientAngle { get; set; }
+        //int BackgroundGradientAngle { get; set; }
         GradientStopCollection BackgroundGradientStops { get; set; }
         int BorderGradientAngle { get; set; }
         GradientStopCollection BorderGradientStops { get; set; }
@@ -38,7 +38,7 @@ namespace XamarinReactorUI
         public DashPattern BorderDashPattern { get; set; } = (DashPattern)PancakeView.BorderDashPatternProperty.DefaultValue;
         public Color BorderColor { get; set; } = (Color)PancakeView.BorderColorProperty.DefaultValue;
         public BorderDrawingStyle BorderDrawingStyle { get; set; } = (BorderDrawingStyle)PancakeView.BorderDrawingStyleProperty.DefaultValue;
-        public int BackgroundGradientAngle { get; set; } = (int)PancakeView.BackgroundGradientAngleProperty.DefaultValue;
+        //public int BackgroundGradientAngle { get; set; } = (int)PancakeView.BackgroundGradientAngleProperty.DefaultValue;
         public GradientStopCollection BackgroundGradientStops { get; set; } = (GradientStopCollection)PancakeView.BackgroundGradientStopsProperty.DefaultValue;
         public int BorderGradientAngle { get; set; } = (int)PancakeView.BorderGradientAngleProperty.DefaultValue;
         public GradientStopCollection BorderGradientStops { get; set; } = (GradientStopCollection)PancakeView.BorderGradientStopsProperty.DefaultValue;
@@ -53,7 +53,7 @@ namespace XamarinReactorUI
             NativeControl.BorderDashPattern = BorderDashPattern;
             NativeControl.BorderColor = BorderColor;
             NativeControl.BorderDrawingStyle = BorderDrawingStyle;
-            NativeControl.BackgroundGradientAngle = BackgroundGradientAngle;
+            //NativeControl.BackgroundGradientAngle = BackgroundGradientAngle;
             NativeControl.BackgroundGradientStops = BackgroundGradientStops;
             NativeControl.BorderGradientAngle = BorderGradientAngle;
             NativeControl.BorderGradientStops = BorderGradientStops;
@@ -126,11 +126,11 @@ namespace XamarinReactorUI
             return pancakeview;
         }
 
-        public static T BackgroundGradientAngle<T>(this T pancakeview, int backgroundGradientAngle) where T : IRxPancakeView
-        {
-            pancakeview.BackgroundGradientAngle = backgroundGradientAngle;
-            return pancakeview;
-        }
+        //public static T BackgroundGradientAngle<T>(this T pancakeview, int backgroundGradientAngle) where T : IRxPancakeView
+        //{
+        //    pancakeview.BackgroundGradientAngle = backgroundGradientAngle;
+        //    return pancakeview;
+        //}
 
         public static T BackgroundGradientStops<T>(this T pancakeview, GradientStopCollection gradientStops) where T : IRxPancakeView
         {

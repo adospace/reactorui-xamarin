@@ -22,6 +22,7 @@ namespace XamarinReactorUI
         double Scale { get; set; }
         double ScaleX { get; set; }
         double ScaleY { get; set; }
+        //Geometry Clip { get; set; }
         IVisual Visual { get; set; }
         bool IsVisible { get; set; }
         double Opacity { get; set; }

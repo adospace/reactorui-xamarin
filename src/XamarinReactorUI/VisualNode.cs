@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 using XamarinReactorUI.Animations;
@@ -174,7 +175,7 @@ namespace XamarinReactorUI
             OnAddChild(widget, childNativeControl);
         }
 
-        internal bool Animate()
+        internal virtual bool Animate()
         {
             if (!IsAnimationFrameRequested)
                 return false;
@@ -218,8 +219,11 @@ namespace XamarinReactorUI
               });
         }
 
-        internal virtual void Layout(RxTheme theme = null)
+        internal virtual void Layout(RxTheme theme = null, VisualNode parent = null)
         {
+            if (parent != null)
+                Parent = parent;
+
             if (!IsLayoutCycleRequired)
                 return;
 
@@ -366,6 +370,7 @@ namespace XamarinReactorUI
         protected virtual void OnUnmount()
         {
             _isMounted = false;
+            Parent = null;
         }
 
         protected virtual void OnUpdate()
@@ -378,11 +383,13 @@ namespace XamarinReactorUI
         private bool AnimateThis()
         {
             bool animated = false;
-            _animatables.Where(_ => _.Value.IsEnabled.GetValueOrDefault() && !_.Value.Animation.IsCompleted()).ForEach(_ =>
-              {
-                  _.Value.Animate();
-                  animated = true;
-              });
+            _animatables
+                .Where(_ => _.Value.IsEnabled.GetValueOrDefault() && !_.Value.Animation.IsCompleted())
+                .ForEach(_ =>
+                {
+                    _.Value.Animate();
+                    animated = true;
+                });
 
             return animated;
         }
@@ -402,9 +409,15 @@ namespace XamarinReactorUI
             Parent?.RequireLayoutCycle();
             OnLayoutCycleRequested();
         }
+
     }
 
-    public abstract class VisualNode<T> : VisualNode where T : BindableObject, new()
+    internal interface IVisualNodeWithNativeControl
+    {
+        TResult GetNativeControl<TResult>() where TResult : BindableObject;
+    }
+
+    public abstract class VisualNode<T> : VisualNode, IVisualNodeWithNativeControl where T : BindableObject, new()
     {
         protected BindableObject _nativeControl;
 
@@ -419,6 +432,7 @@ namespace XamarinReactorUI
         }
 
         protected T NativeControl { get => (T)_nativeControl; }
+
         public void SetAttachedProperty(BindableProperty property, object value)
             => _attachedProperties[property] = value;
 
@@ -460,7 +474,7 @@ namespace XamarinReactorUI
         protected override void OnMount()
         {
             _nativeControl = _nativeControl ?? new T();
-            Parent.AddChild(this, _nativeControl);
+            Parent?.AddChild(this, _nativeControl);
             _componentRefAction?.Invoke(NativeControl);
 
             base.OnMount();
@@ -472,7 +486,7 @@ namespace XamarinReactorUI
             {
                 _nativeControl.PropertyChanged -= NativeControl_PropertyChanged;
                 _nativeControl.PropertyChanging -= NativeControl_PropertyChanging;
-                Parent.RemoveChild(this, _nativeControl);
+                Parent?.RemoveChild(this, _nativeControl);
 
                 if (_nativeControl is Element element)
                 {
@@ -514,6 +528,12 @@ namespace XamarinReactorUI
         private void NativeControl_PropertyChanging(object sender, Xamarin.Forms.PropertyChangingEventArgs e)
         {
             PropertyChangingAction?.Invoke(sender, new System.ComponentModel.PropertyChangingEventArgs(e.PropertyName));
+        }
+
+        TResult IVisualNodeWithNativeControl.GetNativeControl<TResult>()
+        {
+            return (_nativeControl as TResult) ?? 
+                throw new InvalidOperationException($"Unable to convert from type {typeof(T)} to type {typeof(TResult)} when getting the native control");
         }
     }
 }

@@ -18,9 +18,9 @@ namespace XamarinReactorUI
 
         private readonly Dictionary<Type, Action<IRxElement>> _styles = new Dictionary<Type, Action<IRxElement>>();
 
-        internal sealed override void Layout(RxTheme theme)
+        internal sealed override void Layout(RxTheme theme, VisualNode parent = null)
         {
-            base.Layout(this);
+            base.Layout(this, parent);
         }
 
         internal Action<IRxElement> GetStyleFor(IRxElement node)

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Xamarin.Forms;
+using Xamarin.Forms.Shapes;
 using XamarinReactorUI.Animations;
+using XamarinReactorUI.Shapes;
 
 namespace XamarinReactorUI
 {
@@ -22,7 +24,7 @@ namespace XamarinReactorUI
         double Scale { get; set; }
         double ScaleX { get; set; }
         double ScaleY { get; set; }
-        //Geometry Clip { get; set; }
+        IRxGeometry Clip { get; set; }
         IVisual Visual { get; set; }
         bool IsVisible { get; set; }
         double Opacity { get; set; }
@@ -73,6 +75,7 @@ namespace XamarinReactorUI
         public FlowDirection FlowDirection { get; set; } = (FlowDirection)VisualElement.FlowDirectionProperty.DefaultValue;
         public int TabIndex { get; set; } = (int)VisualElement.TabIndexProperty.DefaultValue;
         public bool IsTabStop { get; set; } = (bool)VisualElement.IsTabStopProperty.DefaultValue;
+        public IRxGeometry Clip { get; set; }
 
         public VisualStateGroupList VisualStateGroups { get; set; } = new VisualStateGroupList();
 
@@ -103,6 +106,8 @@ namespace XamarinReactorUI
             NativeControl.TabIndex = TabIndex;
             NativeControl.IsTabStop = IsTabStop;
 
+            NativeControl.Clip = (Clip as IVisualNodeWithNativeControl)?.GetNativeControl<Geometry>();
+
             //TODO: Merge instead of clear+add
             VisualStateManager.SetVisualStateGroups(NativeControl, VisualStateGroups);
 
@@ -128,7 +133,49 @@ namespace XamarinReactorUI
             NativeControl.MinimumWidthRequest = MinimumWidthRequest;
             NativeControl.MinimumHeightRequest = MinimumHeightRequest;
 
+            //NativeControl.Clip = (Clip as IVisualNodeWithNativeControl)?.GetNativeControl<Geometry>();
+            //if (NativeControl.Clip != null)
+            //{
+            //    //System.Diagnostics.Debug.WriteLine($"RxEllipseGeometry()=>RadiusX={((EllipseGeometry)NativeControl.Clip).RadiusX} RadiusY={((EllipseGeometry)NativeControl.Clip).RadiusY}");
+            //}
+
             base.OnAnimate();
+        }
+
+        internal override void Layout(RxTheme theme = null, VisualNode parent = null)
+        {
+            (Clip as VisualNode)?.Layout(theme, this);
+
+            base.Layout(theme, parent);
+        }
+
+        internal override bool Animate()
+        {
+            var animate = base.Animate();
+            if (((Clip as VisualNode)?.Animate()).GetValueOrDefault())
+            {
+                var clip = NativeControl.Clip;
+                NativeControl.Clip = null;
+                NativeControl.Clip = clip;
+                //System.Diagnostics.Debug.WriteLine($"RxEllipseGeometry()=>RadiusX={((EllipseGeometry)NativeControl.Clip).RadiusX} RadiusY={((EllipseGeometry)NativeControl.Clip).RadiusY}");
+                //System.Diagnostics.Debug.WriteLine($"RxEllipseGeometry()=>CenterX={((EllipseGeometry)NativeControl.Clip).Center.X} CenterY={((EllipseGeometry)NativeControl.Clip).Center.Y}");
+                animate = true;
+            }
+
+            return animate;
+        }
+
+        protected override void OnMigrated(VisualNode newNode)
+        {
+            var newElement = (IRxVisualElement)newNode;
+            if (Clip != null &&
+                newElement.Clip != null &&
+                Clip.GetType() == newElement.Clip.GetType()) 
+            {
+                (Clip as VisualNode).MergeWith((VisualNode)newElement.Clip);
+            }
+
+            base.OnMigrated(newNode);
         }
 
     }
@@ -296,6 +343,12 @@ namespace XamarinReactorUI
         public static T IsTabStop<T>(this T visualelement, bool isTabStop) where T : IRxVisualElement
         {
             visualelement.IsTabStop = isTabStop;
+            return visualelement;
+        }
+        
+        public static T Clip<T>(this T visualelement, IRxGeometry geometry) where T : IRxVisualElement
+        {
+            visualelement.Clip = geometry;
             return visualelement;
         }
     }

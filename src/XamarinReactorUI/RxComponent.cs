@@ -127,6 +127,7 @@ namespace XamarinReactorUI
 
         public RxContext Context
             => RxApplication.Instance.Context;
+
     }
 
     public static class RxComponentExtensions

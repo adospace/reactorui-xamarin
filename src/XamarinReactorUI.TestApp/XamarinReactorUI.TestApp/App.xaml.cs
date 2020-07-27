@@ -84,7 +84,11 @@ namespace XamarinReactorUI.TestApp
             //    .WithHotReload();
 
             //TEST 21
-            _rxApp = RxApplication.Create<SharedTransitions.MainPage>(this)
+            //_rxApp = RxApplication.Create<SharedTransitions.MainPage>(this)
+            //    .WithHotReload();
+
+            //TEST 21
+            _rxApp = RxApplication.Create<Clip.MainPage>(this)
                 .WithHotReload();
 
             _rxApp.Run();

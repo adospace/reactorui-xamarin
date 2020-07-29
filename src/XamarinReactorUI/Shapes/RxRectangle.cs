@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Xamarin.Forms;
 using XamarinReactorUI.Animations;
 
 namespace XamarinReactorUI
@@ -10,15 +11,17 @@ namespace XamarinReactorUI
         double RadiusY { get; set; }
     }
 
-    public class RxRectangle<T> : RxShape<Xamarin.Forms.Shapes.Rectangle>, IRxRectangle
+    public class RxRectangle : RxShape<Xamarin.Forms.Shapes.Rectangle>, IRxRectangle
     {
         public RxRectangle()
         {
+            Aspect = Stretch.Fill;
         }
 
         public RxRectangle(Action<Xamarin.Forms.Shapes.Rectangle> componentRefAction)
             : base(componentRefAction)
         {
+            Aspect = Stretch.Fill;
         }
 
         public double RadiusX { get; set; } = (double)Xamarin.Forms.Shapes.Rectangle.RadiusXProperty.DefaultValue;

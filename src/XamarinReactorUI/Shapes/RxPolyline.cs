@@ -12,7 +12,7 @@ namespace XamarinReactorUI
         FillRule FillRule { get; set; }
     }
 
-    public class RxPolyline<T> : RxShape<Polyline>, IRxPolyline
+    public class RxPolyline : RxShape<Polyline>, IRxPolyline
     {
         public RxPolyline()
         {

@@ -13,6 +13,8 @@ namespace XamarinReactorUI.TestApp
 
         public App()
         {
+            Device.SetFlags(new[] { "Shapes_Experimental" });
+
             InitializeComponent();
 
             //TEST 1
@@ -91,11 +93,23 @@ namespace XamarinReactorUI.TestApp
             //_rxApp = RxApplication.Create<Clip.MainPage>(this)
             //    .WithHotReload();
 
-            //TEST 22
-            _rxApp = RxApplication.Create<Shell.Test4.Page1>(this)
+            ////TEST 22
+            //_rxApp = RxApplication.Create<Shell.Test4.Page1>(this)
+            //    .WithHotReload();
+
+            //TEST 23
+            _rxApp = RxApplication.Create<Shapes.Test1.MainPage>(this)
                 .WithHotReload();
 
             _rxApp.Run();
+
+            //MainPage = new ContentPage();
+            //var cnt = new Xamarin.Forms.Shapes.Rectangle();
+            //((ContentPage)MainPage).Content = cnt;
+            //cnt.HeightRequest = 100;
+            //cnt.WidthRequest = 50;
+            //cnt.Fill = Color.Red;
+            //cnt.Clip = null;
         }
 
         protected override void OnStart()

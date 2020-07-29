@@ -4,7 +4,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Shapes;
 using XamarinReactorUI.Animations;
 
-namespace XamarinReactorUI
+namespace XamarinReactorUI.Shapes
 {
     public interface IRxLine : IRxShape
     {
@@ -14,7 +14,7 @@ namespace XamarinReactorUI
         double Y2 { get; set; }
     }
 
-    public class RxLine<T> : RxShape<Line>, IRxLine
+    public class RxLine : RxShape<Line>, IRxLine
     {
         public RxLine()
         {

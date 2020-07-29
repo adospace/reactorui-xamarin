@@ -4,7 +4,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Shapes;
 using XamarinReactorUI.Animations;
 
-namespace XamarinReactorUI
+namespace XamarinReactorUI.Shapes
 {
     public interface IRxPath : IRxShape
     {
@@ -12,7 +12,7 @@ namespace XamarinReactorUI
         Transform RenderTransform { get; set; }
     }
 
-    public class RxPath<T> : RxView<T>, IRxPath where T : Path, new()
+    public class RxPath<T> : RxShape<T>, IRxPath where T : Path, new()
     {
         public RxPath()
         {

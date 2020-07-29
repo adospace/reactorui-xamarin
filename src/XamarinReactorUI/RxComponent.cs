@@ -79,6 +79,11 @@ namespace XamarinReactorUI
             base.OnUpdate();
         }
 
+        protected sealed override void OnAnimate()
+        {
+            base.OnAnimate();
+        }
+
         internal override void MergeWith(VisualNode newNode)
         {
             if (newNode.GetType().FullName == GetType().FullName)

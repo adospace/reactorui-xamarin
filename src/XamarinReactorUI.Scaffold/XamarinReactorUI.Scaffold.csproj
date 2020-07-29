@@ -13,8 +13,8 @@
   <ItemGroup>
     <PackageReference Include="SkiaSharp.Views.Forms" Version="2.80.1" />
     <PackageReference Include="System.CodeDom" Version="4.7.0" />
-    <PackageReference Include="Xamarin.Forms" Version="4.7.0.1179" />
-    <PackageReference Include="Xamarin.Forms.Maps" Version="4.7.0.1179" />
+    <PackageReference Include="Xamarin.Forms" Version="4.7.0.1142" />
+    <PackageReference Include="Xamarin.Forms.Maps" Version="4.7.0.1142" />
   </ItemGroup>
 
   <ItemGroup>

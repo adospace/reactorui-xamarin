@@ -22,7 +22,7 @@ namespace XamarinReactorUI.TestApp
             //_rxApp = RxApplication.Create<CollectionView.TestCollectionViewComponent>(this).WithHotReload();
 
             //TEST 3
-            //_rxApp = RxApplication.Create<Shell.Test1.TestShellComponentPage>(this).WithHotReload();
+            _rxApp = RxApplication.Create<Shell.Test1.TestShellComponentPage>(this).WithHotReload();
 
             //TEST 4
             //_rxApp = RxApplication.Create<Shell.Test2.TestShellComponentPage>(this).WithHotReload();
@@ -88,8 +88,8 @@ namespace XamarinReactorUI.TestApp
             //    .WithHotReload();
 
             //TEST 21
-            _rxApp = RxApplication.Create<Clip.MainPage>(this)
-                .WithHotReload();
+            //_rxApp = RxApplication.Create<Clip.MainPage>(this)
+            //    .WithHotReload();
 
             _rxApp.Run();
         }

@@ -32,7 +32,7 @@ namespace XamarinReactorUI
     public class RxShell<T> : RxPage<T>, IRxShell, IEnumerable<VisualNode> where T : Shell, new()
     {
         private readonly List<VisualNode> _contents = new List<VisualNode>();
-        private readonly Dictionary<BindableObject, ShellItem> _elementItemMap = new Dictionary<BindableObject, ShellItem>();
+        private readonly Dictionary<Page, ShellItem> _elementItemMap = new Dictionary<Page, ShellItem>();
 
         public RxShell()
         {
@@ -54,13 +54,13 @@ namespace XamarinReactorUI
 
         protected override void OnAddChild(VisualNode widget, BindableObject childControl)
         {
-            if (childControl is ShellItem _)
+            if (childControl is ShellItem shellItem)
             {
-                NativeControl.Items.Insert(widget.ChildIndex, _elementItemMap[childControl] = NativeControl.Items[NativeControl.Items.Count - 1]);
+                NativeControl.Items.Insert(widget.ChildIndex, shellItem);
             }
             else if (childControl is Page page)
             {
-                NativeControl.Items.Insert(widget.ChildIndex, _elementItemMap[childControl] = new ShellContent() { Content = page });
+                NativeControl.Items.Insert(widget.ChildIndex, _elementItemMap[page] = new ShellContent() { Content = page });
             }
             else if (childControl is ToolbarItem toolbarItem)
             {
@@ -80,9 +80,13 @@ namespace XamarinReactorUI
 
         protected override void OnRemoveChild(VisualNode widget, BindableObject childControl)
         {
-            if (childControl is ShellItem || childControl is Page page)
+            if (childControl is ShellItem shellItem)
             {
-                NativeControl.Items.Remove(_elementItemMap[childControl]);
+                NativeControl.Items.Remove(shellItem);
+            }
+            else if (childControl is Page page)
+            {
+                NativeControl.Items.Remove(_elementItemMap[page]);
             }
             else if (childControl is ToolbarItem toolbarItem)
             {
@@ -107,8 +111,8 @@ namespace XamarinReactorUI
         }
 
         public FlyoutBehavior FlyoutBehavior { get; set; } = (FlyoutBehavior)Shell.FlyoutBehaviorProperty.DefaultValue;
-        public DataTemplate MenuItemTemplate { get; set; } = (DataTemplate)Shell.MenuItemTemplateProperty.DefaultValue;
-        public DataTemplate ItemTemplate { get; set; } = (DataTemplate)Shell.ItemTemplateProperty.DefaultValue;
+        //public DataTemplate MenuItemTemplate { get; set; } = (DataTemplate)Shell.MenuItemTemplateProperty.DefaultValue;
+        //public DataTemplate ItemTemplate { get; set; } = (DataTemplate)Shell.ItemTemplateProperty.DefaultValue;
 
         //public Color BackgroundColor { get; set; } = (Color)Shell.BackgroundColorProperty.DefaultValue;
         //public ShellItem CurrentItem { get; set; } = (ShellItem)Shell.CurrentItemProperty.DefaultValue;
@@ -126,10 +130,8 @@ namespace XamarinReactorUI
         protected override void OnUpdate()
         {
             NativeControl.FlyoutBehavior = FlyoutBehavior;
-            NativeControl.MenuItemTemplate = MenuItemTemplate;
-            NativeControl.ItemTemplate = ItemTemplate;
-            //NativeControl.BackgroundColor = BackgroundColor;
-            //NativeControl.CurrentItem = CurrentItem;
+            //NativeControl.MenuItemTemplate = MenuItemTemplate;
+            //NativeControl.ItemTemplate = ItemTemplate;
             NativeControl.FlyoutBackgroundImage = FlyoutBackgroundImage;
             NativeControl.FlyoutBackgroundImageAspect = FlyoutBackgroundImageAspect;
             NativeControl.FlyoutBackgroundColor = FlyoutBackgroundColor;
@@ -139,7 +141,7 @@ namespace XamarinReactorUI
             NativeControl.FlyoutIsPresented = FlyoutIsPresented;
             NativeControl.FlyoutIcon = FlyoutIcon;
             NativeControl.FlyoutVerticalScrollMode = FlyoutVerticalScrollMode;
-            
+
             base.OnUpdate();
         }
     }

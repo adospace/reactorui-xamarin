@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using Xamarin.Forms;
 
-namespace XamarinReactorUI.TestApp.Animation
+namespace XamarinReactorUI.TestApp.Animation.Test1
 {
     public class MainPageState : IState
     {

@@ -98,18 +98,14 @@ namespace XamarinReactorUI.TestApp
             //    .WithHotReload();
 
             //TEST 23
-            _rxApp = RxApplication.Create<Shapes.Test1.MainPage>(this)
+            //_rxApp = RxApplication.Create<Shapes.Test1.MainPage>(this)
+            //    .WithHotReload();
+
+            //TEST 23
+            _rxApp = RxApplication.Create<Animation.Test2.MainPage>(this)
                 .WithHotReload();
 
             _rxApp.Run();
-
-            //MainPage = new ContentPage();
-            //var cnt = new Xamarin.Forms.Shapes.Rectangle();
-            //((ContentPage)MainPage).Content = cnt;
-            //cnt.HeightRequest = 100;
-            //cnt.WidthRequest = 50;
-            //cnt.Fill = Color.Red;
-            //cnt.Clip = null;
         }
 
         protected override void OnStart()

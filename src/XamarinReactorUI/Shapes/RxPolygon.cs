@@ -4,7 +4,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 using Xamarin.Forms.Shapes;
 
-namespace XamarinReactorUI
+namespace XamarinReactorUI.Shapes
 {
     public interface IRxPolygon : IRxShape
     {

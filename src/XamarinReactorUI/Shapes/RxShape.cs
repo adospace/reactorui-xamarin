@@ -4,7 +4,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Shapes;
 using XamarinReactorUI.Animations;
 
-namespace XamarinReactorUI
+namespace XamarinReactorUI.Shapes
 {
     public interface IRxShape : IVisualNode
     {

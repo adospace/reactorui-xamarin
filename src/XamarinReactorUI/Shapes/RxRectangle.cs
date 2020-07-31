@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Xamarin.Forms;
 using XamarinReactorUI.Animations;
 
-namespace XamarinReactorUI
+namespace XamarinReactorUI.Shapes
 {
     public interface IRxRectangle : IRxShape
     {
@@ -41,6 +41,16 @@ namespace XamarinReactorUI
             NativeControl.RadiusY = RadiusY;
 
             base.OnAnimate();
+        }
+
+        protected override void OnMount()
+        {
+            base.OnMount();
+        }
+
+        protected override void OnUnmount()
+        {
+            base.OnUnmount();
         }
 
         protected override IEnumerable<VisualNode> RenderChildren()

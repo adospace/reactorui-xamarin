@@ -12,7 +12,7 @@ namespace XamarinReactorUI.TestApp.Shapes.Test1
         {
             return new RxNavigationPage
             {
-                new RxContentPage("Reactangle shape")
+                new RxContentPage("Rectangle shape")
                 {
                     new RxRectangle()
                         .HeightRequest(100)

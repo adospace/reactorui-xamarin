@@ -54,18 +54,17 @@ namespace XamarinReactorUI.Shapes
 
         protected override void OnAnimate()
         {
-            //NativeControl.Fill = Fill;
-            //NativeControl.Stroke = Stroke;
-            //NativeControl.StrokeThickness = StrokeThickness;
-            //NativeControl.StrokeDashArray = StrokeDashArray;
-            //NativeControl.StrokeDashOffset = StrokeDashOffset;
-            //NativeControl.StrokeLineCap = StrokeLineCap;
-            //NativeControl.StrokeLineJoin = StrokeLineJoin;
-            //NativeControl.Aspect = Aspect;
+            NativeControl.Fill = Fill;
+            NativeControl.Stroke = Stroke;
+            NativeControl.StrokeThickness = StrokeThickness;
+            NativeControl.StrokeDashArray = StrokeDashArray;
+            NativeControl.StrokeDashOffset = StrokeDashOffset;
+            NativeControl.StrokeLineCap = StrokeLineCap;
+            NativeControl.StrokeLineJoin = StrokeLineJoin;
+            NativeControl.Aspect = Aspect;
 
             base.OnAnimate();
         }
-
         protected override IEnumerable<VisualNode> RenderChildren()
         {
             yield break;

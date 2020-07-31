@@ -10,6 +10,7 @@ namespace XamarinReactorUI.TestApp
     {
         //private readonly IRxHostElement _mainPageHost;
         private readonly RxApplication _rxApp;
+        private Xamarin.Forms.Shapes.Rectangle cnt;
 
         public App()
         {
@@ -106,11 +107,42 @@ namespace XamarinReactorUI.TestApp
                 .WithHotReload();
 
             _rxApp.Run();
+
+            //MainPage = new ContentPage();
+            //var sp = new StackLayout();
+            //cnt = new Xamarin.Forms.Shapes.Rectangle();
+            //sp.Children.Add(cnt);
+            //cnt.HeightRequest = 100;
+            //cnt.WidthRequest = 50;
+            //cnt.VerticalOptions = LayoutOptions.Center;
+            //cnt.HorizontalOptions = LayoutOptions.Center;
+            //cnt.Fill = Color.Red;
+            ////cnt.Clip = null;
+
+            //var btn = new Button() { Text = "click" };
+            //btn.Clicked += Btn_Clicked;
+            //sp.Children.Add(btn);
+
+            //((ContentPage)MainPage).Content = sp;
         }
+
+        //private void Btn_Clicked(object sender, EventArgs e)
+        //{
+        //    ((ContentPage)MainPage).Content = null;
+        //    cnt = new Xamarin.Forms.Shapes.Rectangle();
+        //    ((ContentPage)MainPage).Content = cnt;
+        //    cnt.HeightRequest = 100;
+        //    cnt.WidthRequest = 50;
+        //    cnt.VerticalOptions = LayoutOptions.Center;
+        //    cnt.HorizontalOptions = LayoutOptions.Center;
+        //    cnt.Fill = Color.Red;
+        //    //cnt.Clip = null;
+
+        //}
 
         protected override void OnStart()
         {
-            _rxApp.Run();
+            //_rxApp.Run();
         }
 
         protected override void OnSleep()

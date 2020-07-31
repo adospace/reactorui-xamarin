@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Runtime.InteropServices;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 using XamarinReactorUI.Animations;
@@ -65,6 +64,7 @@ namespace XamarinReactorUI
             node.SetMetadata(value.GetType().FullName, value);
             return node;
         }
+
         public static T WithOutAnimation<T>(this T node) where T : VisualNode
         {
             node.DisableCurrentAnimatableProperties();
@@ -95,6 +95,7 @@ namespace XamarinReactorUI
         public object Key { get; set; }
         public Action<object, PropertyChangedEventArgs> PropertyChangedAction { get; set; }
         public Action<object, System.ComponentModel.PropertyChangingEventArgs> PropertyChangingAction { get; set; }
+
         //internal event EventHandler LayoutCycleRequest;
         internal IReadOnlyList<VisualNode> Children
         {
@@ -201,22 +202,22 @@ namespace XamarinReactorUI
         internal void DisableCurrentAnimatableProperties()
         {
             _animatables.Where(_ => _.Value.IsEnabled == null).ForEach(_ =>
-              {
-                  _.Value.IsEnabled = false;
-              });
+            {
+                _.Value.IsEnabled = false;
+            });
         }
 
         internal void EnableCurrentAnimatableProperties(Easing easing = null, double duration = 600)
         {
             _animatables.Where(_ => _.Value.IsEnabled == null).Select(_ => _.Value).ForEach(_ =>
-              {
-                  if (_.Animation is RxTweenAnimation tweenAnimation)
-                  {
-                      tweenAnimation.Easing = tweenAnimation.Easing ?? easing;
-                      tweenAnimation.Duration = tweenAnimation.Duration ?? duration;
-                      _.IsEnabled = true;
-                  }
-              });
+            {
+                if (_.Animation is RxTweenAnimation tweenAnimation)
+                {
+                    tweenAnimation.Easing = tweenAnimation.Easing ?? easing;
+                    tweenAnimation.Duration = tweenAnimation.Duration ?? duration;
+                    _.IsEnabled = true;
+                }
+            });
         }
 
         internal virtual void Layout(RxTheme theme = null, VisualNode parent = null)
@@ -321,6 +322,7 @@ namespace XamarinReactorUI
 
             return (T)parent;
         }
+
         protected void Invalidate()
         {
             _invalidated = true;
@@ -342,6 +344,7 @@ namespace XamarinReactorUI
         protected virtual void OnInvalidated()
         {
         }
+
         protected virtual void OnMigrated(VisualNode newNode)
         {
             foreach (var newAnimatableProperty in newNode._animatables)
@@ -409,7 +412,6 @@ namespace XamarinReactorUI
             Parent?.RequireLayoutCycle();
             OnLayoutCycleRequested();
         }
-
     }
 
     internal interface IVisualNodeWithNativeControl
@@ -423,6 +425,7 @@ namespace XamarinReactorUI
 
         private readonly Dictionary<BindableProperty, object> _attachedProperties = new Dictionary<BindableProperty, object>();
         private readonly Action<T> _componentRefAction;
+
         protected VisualNode()
         { }
 
@@ -532,7 +535,7 @@ namespace XamarinReactorUI
 
         TResult IVisualNodeWithNativeControl.GetNativeControl<TResult>()
         {
-            return (_nativeControl as TResult) ?? 
+            return (_nativeControl as TResult) ??
                 throw new InvalidOperationException($"Unable to convert from type {typeof(T)} to type {typeof(TResult)} when getting the native control");
         }
     }

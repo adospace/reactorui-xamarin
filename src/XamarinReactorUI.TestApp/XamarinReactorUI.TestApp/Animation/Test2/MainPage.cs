@@ -15,16 +15,19 @@ namespace XamarinReactorUI.TestApp.Animation.Test2
         {
             return new RxNavigationPage()
             {
-                new RxContentPage("Button Animation Demo")
+                new RxContentPage("Button Animation Demo 2")
                 {
-                    new RxRectangle()
-                        .HeightRequest(45)
-                        .WidthRequest(200)
-                        .RadiusX(45)
-                        .RadiusY(45)
-                        .Fill(Color.FromHex("52485C"))
-                        .VCenter()
-                        .HCenter()
+                    new RxStackLayout()
+                    {
+                        new RxRectangle()
+                            .HeightRequest(45)
+                            .WidthRequest(200)
+                            .RadiusX(45)
+                            .RadiusY(45)
+                            .Fill(Color.FromHex("52485C"))
+                            .VCenter()
+                            .HCenter()
+                    }
                 }
                 .BackgroundColor(Color.FromHex("EDEAEE"))
             };

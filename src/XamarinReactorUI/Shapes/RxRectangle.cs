@@ -43,16 +43,6 @@ namespace XamarinReactorUI.Shapes
             base.OnAnimate();
         }
 
-        protected override void OnMount()
-        {
-            base.OnMount();
-        }
-
-        protected override void OnUnmount()
-        {
-            base.OnUnmount();
-        }
-
         protected override IEnumerable<VisualNode> RenderChildren()
         {
             yield break;

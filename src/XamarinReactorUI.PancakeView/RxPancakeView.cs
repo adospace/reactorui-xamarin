@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
 using Xamarin.Forms.PancakeView;
+using GradientStop = Xamarin.Forms.PancakeView.GradientStop;
+using GradientStopCollection = Xamarin.Forms.PancakeView.GradientStopCollection;
 
 namespace XamarinReactorUI
 {

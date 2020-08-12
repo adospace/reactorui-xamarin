@@ -116,7 +116,7 @@ namespace XamarinReactorUI.TestApp
             //cnt.WidthRequest = 50;
             //cnt.VerticalOptions = LayoutOptions.Center;
             //cnt.HorizontalOptions = LayoutOptions.Center;
-            //cnt.Fill = Color.Red;
+            //cnt.Fill = new SolidColorBrush(Color.Red);
             ////cnt.Clip = null;
 
             //var btn = new Button() { Text = "click" };
@@ -128,14 +128,14 @@ namespace XamarinReactorUI.TestApp
 
         //private void Btn_Clicked(object sender, EventArgs e)
         //{
-        //    ((ContentPage)MainPage).Content = null;
+        //    //((ContentPage)MainPage).Content = null;
         //    cnt = new Xamarin.Forms.Shapes.Rectangle();
         //    ((ContentPage)MainPage).Content = cnt;
         //    cnt.HeightRequest = 100;
         //    cnt.WidthRequest = 50;
         //    cnt.VerticalOptions = LayoutOptions.Center;
         //    cnt.HorizontalOptions = LayoutOptions.Center;
-        //    cnt.Fill = Color.Red;
+        //    cnt.Fill = new SolidColorBrush(Color.Red);
         //    //cnt.Clip = null;
 
         //}
@@ -147,12 +147,12 @@ namespace XamarinReactorUI.TestApp
 
         protected override void OnSleep()
         {
-            _rxApp.Stop();
+            //_rxApp.Stop();
         }
 
         protected override void OnResume()
         {
-            _rxApp.Run();
+            //_rxApp.Run();
         }
     }
 }

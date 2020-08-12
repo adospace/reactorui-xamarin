@@ -8,8 +8,8 @@ namespace XamarinReactorUI.Shapes
 {
     public interface IRxShape : IVisualNode
     {
-        Color Fill { get; set; }
-        Color Stroke { get; set; }
+        Brush Fill { get; set; }
+        Brush Stroke { get; set; }
         double StrokeThickness { get; set; }
         DoubleCollection StrokeDashArray { get; set; }
         double StrokeDashOffset { get; set; }
@@ -29,8 +29,8 @@ namespace XamarinReactorUI.Shapes
         {
         }
 
-        public Color Fill { get; set; } = (Color)Shape.FillProperty.DefaultValue;
-        public Color Stroke { get; set; } = (Color)Shape.StrokeProperty.DefaultValue;
+        public Brush Fill { get; set; } = (Brush)Shape.FillProperty.DefaultValue;
+        public Brush Stroke { get; set; } = (Brush)Shape.StrokeProperty.DefaultValue;
         public double StrokeThickness { get; set; } = (double)Shape.StrokeThicknessProperty.DefaultValue;
         public DoubleCollection StrokeDashArray { get; set; } = (DoubleCollection)Shape.StrokeDashArrayProperty.DefaultValue;
         public double StrokeDashOffset { get; set; } = (double)Shape.StrokeDashOffsetProperty.DefaultValue;
@@ -40,31 +40,32 @@ namespace XamarinReactorUI.Shapes
 
         protected override void OnUpdate()
         {
-            NativeControl.Fill = Fill;
-            NativeControl.Stroke = Stroke;
-            NativeControl.StrokeThickness = StrokeThickness;
-            NativeControl.StrokeDashArray = StrokeDashArray ?? new DoubleCollection();
-            NativeControl.StrokeDashOffset = StrokeDashOffset;
-            NativeControl.StrokeLineCap = StrokeLineCap;
-            NativeControl.StrokeLineJoin = StrokeLineJoin;
-            NativeControl.Aspect = Aspect;
+            NativeControl.Fill = new SolidColorBrush(Color.Red);
+            //NativeControl.Fill = Fill;
+            //NativeControl.Stroke = Stroke;
+            //NativeControl.StrokeThickness = StrokeThickness;
+            //NativeControl.StrokeDashArray = StrokeDashArray ?? new DoubleCollection();
+            //NativeControl.StrokeDashOffset = StrokeDashOffset;
+            //NativeControl.StrokeLineCap = StrokeLineCap;
+            //NativeControl.StrokeLineJoin = StrokeLineJoin;
+            //NativeControl.Aspect = Aspect;
 
             base.OnUpdate();
         }
 
-        protected override void OnAnimate()
-        {
-            NativeControl.Fill = Fill;
-            NativeControl.Stroke = Stroke;
-            NativeControl.StrokeThickness = StrokeThickness;
-            NativeControl.StrokeDashArray = StrokeDashArray;
-            NativeControl.StrokeDashOffset = StrokeDashOffset;
-            NativeControl.StrokeLineCap = StrokeLineCap;
-            NativeControl.StrokeLineJoin = StrokeLineJoin;
-            NativeControl.Aspect = Aspect;
+        //protected override void OnAnimate()
+        //{
+        //    NativeControl.Fill = Fill;
+        //    NativeControl.Stroke = Stroke;
+        //    NativeControl.StrokeThickness = StrokeThickness;
+        //    NativeControl.StrokeDashArray = StrokeDashArray;
+        //    NativeControl.StrokeDashOffset = StrokeDashOffset;
+        //    NativeControl.StrokeLineCap = StrokeLineCap;
+        //    NativeControl.StrokeLineJoin = StrokeLineJoin;
+        //    NativeControl.Aspect = Aspect;
 
-            base.OnAnimate();
-        }
+        //    base.OnAnimate();
+        //}
         protected override IEnumerable<VisualNode> RenderChildren()
         {
             yield break;
@@ -75,15 +76,27 @@ namespace XamarinReactorUI.Shapes
     {
         public static T Fill<T>(this T shape, Color fill, RxColorAnimation customAnimation = null) where T : IRxShape
         {
-            shape.Fill = fill;
-            shape.AppendAnimatable(Shape.FillProperty, customAnimation ?? new RxSimpleColorAnimation(fill), v => shape.Fill = v.CurrentValue());
+            shape.Fill = new SolidColorBrush(fill);
+            shape.AppendAnimatable(Shape.FillProperty, customAnimation ?? new RxSimpleColorAnimation(fill), v => shape.Fill = new SolidColorBrush(v.CurrentValue()));
             return shape;
         }
 
         public static T Stroke<T>(this T shape, Color stroke, RxColorAnimation customAnimation = null) where T : IRxShape
         {
+            shape.Stroke = new SolidColorBrush(stroke);
+            shape.AppendAnimatable(Shape.StrokeProperty, customAnimation ?? new RxSimpleColorAnimation(stroke), v => shape.Stroke = new SolidColorBrush(v.CurrentValue()));
+            return shape;
+        }
+
+        public static T Fill<T>(this T shape, Brush fill) where T : IRxShape
+        {
+            shape.Fill = fill;
+            return shape;
+        }
+
+        public static T Stroke<T>(this T shape, Brush stroke) where T : IRxShape
+        {
             shape.Stroke = stroke;
-            shape.AppendAnimatable(Shape.StrokeProperty, customAnimation ?? new RxSimpleColorAnimation(stroke), v => shape.Stroke = v.CurrentValue());
             return shape;
         }
 

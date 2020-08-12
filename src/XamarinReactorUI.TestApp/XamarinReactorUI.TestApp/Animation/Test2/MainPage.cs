@@ -20,14 +20,24 @@ namespace XamarinReactorUI.TestApp.Animation.Test2
                     new RxStackLayout()
                     {
                         new RxRectangle()
-                            .HeightRequest(45)
-                            .WidthRequest(200)
+                            .HeightRequest(65)
+                            .WidthRequest(250)
                             .RadiusX(45)
                             .RadiusY(45)
                             .Fill(Color.FromHex("52485C"))
                             .VCenter()
-                            .HCenter()
+                            .HCenter(),
+                       //new RxRectangle()
+                       //     .HeightRequest(55)
+                       //     .WidthRequest(100)
+                       //     .RadiusX(45)
+                       //     .RadiusY(45)
+                       //     .Fill(Color.FromHex("52485C"))
+                       //     .VCenter()
+                       //     .HCenter()
                     }
+                    .VCenter()
+                    .HCenter()
                 }
                 .BackgroundColor(Color.FromHex("EDEAEE"))
             };

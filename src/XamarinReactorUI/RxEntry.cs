@@ -23,6 +23,8 @@ namespace XamarinReactorUI
         int SelectionLength { get; set; }
         ClearButtonVisibility ClearButtonVisibility { get; set; }
         //Keyboard Keyboard { get; set; }
+        Action<string> CompletedAction { get; set; }
+
     }
 
     public class RxEntry<T> : RxInputView<T>, IRxEntry where T : Entry, new()
@@ -54,6 +56,7 @@ namespace XamarinReactorUI
         public int CursorPosition { get; set; } = (int)Entry.CursorPositionProperty.DefaultValue;
         public int SelectionLength { get; set; } = (int)Entry.SelectionLengthProperty.DefaultValue;
         public ClearButtonVisibility ClearButtonVisibility { get; set; } = (ClearButtonVisibility)Entry.ClearButtonVisibilityProperty.DefaultValue;
+        public Action<string> CompletedAction { get; set; }
 
         protected override void OnUpdate()
         {
@@ -71,11 +74,30 @@ namespace XamarinReactorUI
             NativeControl.SelectionLength = SelectionLength;
             NativeControl.ClearButtonVisibility = ClearButtonVisibility;
 
+            if (CompletedAction != null)
+                NativeControl.Completed += NativeControl_Completed;
+
             base.OnUpdate();
+        }
+
+        private void NativeControl_Completed(object sender, EventArgs e)
+        {
+            CompletedAction?.Invoke(NativeControl.Text);
+        }
+
+        protected override void OnUnmount()
+        {
+            NativeControl.Completed -= NativeControl_Completed;
+            base.OnUnmount();
         }
 
         protected override void OnMigrated(VisualNode newNode)
         {
+            if (NativeControl != null)
+            {
+                NativeControl.Completed -= NativeControl_Completed;
+            }
+
             var newEntry = (RxEntry)newNode;
             if (newEntry != null && NativeControl != null)
             {
@@ -108,6 +130,12 @@ namespace XamarinReactorUI
 
     public static class RxEntryExtensions
     {
+        public static T OnCompleted<T>(this T entry, Action<string> action) where T : IRxEntry
+        {
+            entry.CompletedAction = action;
+            return entry;
+        }
+
         public static T ReturnType<T>(this T entry, ReturnType returnType) where T : IRxEntry
         {
             entry.ReturnType = returnType;

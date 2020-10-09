@@ -89,7 +89,7 @@ namespace XamarinReactorUI
             if (newNode.GetType().FullName == GetType().FullName)
             {
                 ((RxComponent)newNode)._isMounted = true;
-
+                ((RxComponent)newNode).OnPropsChanged();
                 base.MergeWith(newNode);
             }
             else
@@ -126,6 +126,9 @@ namespace XamarinReactorUI
         protected virtual void OnWillUnmount()
         {
         }
+
+        protected virtual void OnPropsChanged()
+        { }
 
         public INavigation Navigation
             => RxApplication.Instance.Navigation;

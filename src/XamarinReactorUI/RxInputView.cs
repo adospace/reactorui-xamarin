@@ -100,6 +100,7 @@ namespace XamarinReactorUI
         protected override void OnUnmount()
         {
             NativeControl.TextChanged -= NativeControl_TextChanged;
+            NativeControl.Unfocused -= NativeControl_Unfocused;
             base.OnUnmount();
         }
 

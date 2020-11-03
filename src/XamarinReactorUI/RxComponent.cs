@@ -152,6 +152,8 @@ namespace XamarinReactorUI
         object State { get; }
 
         PropertyInfo[] StateProperties { get; }
+
+        void ForwardState(object stateFromOldComponent);
     }
 
     internal interface IRxComponentWithProps
@@ -183,6 +185,8 @@ namespace XamarinReactorUI
 
     public abstract class RxComponent<S, P> : RxComponentWithProps<P>, IRxComponentWithState where S : class, IState, new() where P : class, IProps, new()
     {
+        private IRxComponentWithState _newComponent;
+
         protected RxComponent(S state = null, P props = null)
             : base(props)
         {
@@ -195,6 +199,16 @@ namespace XamarinReactorUI
 
         object IRxComponentWithState.State => State;
 
+        void IRxComponentWithState.ForwardState(object stateFromOldComponent)
+        {
+            stateFromOldComponent.CopyPropertiesTo(State, StateProperties);
+
+            if (Application.Current.Dispatcher.IsInvokeRequired)
+                Application.Current.Dispatcher.BeginInvokeOnMainThread(Invalidate);
+            else
+                Invalidate();
+        }
+
         protected virtual void SetState(Action<S> action)
         {
             if (action is null)
@@ -203,6 +217,12 @@ namespace XamarinReactorUI
             }
 
             action(State);
+
+            if (_newComponent != null)
+            {
+                _newComponent.ForwardState(State);
+                return;
+            }
 
             if (Application.Current.Dispatcher.IsInvokeRequired)
                 Application.Current.Dispatcher.BeginInvokeOnMainThread(Invalidate);
@@ -214,6 +234,7 @@ namespace XamarinReactorUI
         {
             if (newNode is IRxComponentWithState newComponentWithState)
             {
+                _newComponent = newComponentWithState;
                 State.CopyPropertiesTo(newComponentWithState.State, newComponentWithState.StateProperties);
             }
 

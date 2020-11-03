@@ -8,9 +8,10 @@ namespace XamarinReactorUI.Internals
 {
     internal static class CopyObjectExtensions
     {
-        public static void CopyPropertiesTo<T>(this T source, object dest, PropertyInfo[] destProps)
+        public static void CopyPropertiesTo(this object source, object dest, PropertyInfo[] destProps)
         {
-            var sourceProps = typeof(T).GetProperties()
+            var sourceProps = source.GetType()
+                .GetProperties()
                 .Where(x => x.CanRead)
                 .ToList();
 

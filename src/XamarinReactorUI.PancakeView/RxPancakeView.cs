@@ -11,14 +11,14 @@ namespace XamarinReactorUI
     {
         int Sides { get; set; }
         CornerRadius CornerRadius { get; set; }
-        float BorderThickness { get; set; }
-        DashPattern BorderDashPattern { get; set; }
-        Color BorderColor { get; set; }
-        BorderDrawingStyle BorderDrawingStyle { get; set; }
+        //float BorderThickness { get; set; }
+        //DashPattern BorderDashPattern { get; set; }
+        //Color BorderColor { get; set; }
+        //BorderDrawingStyle BorderDrawingStyle { get; set; }
         //int BackgroundGradientAngle { get; set; }
         GradientStopCollection BackgroundGradientStops { get; set; }
-        int BorderGradientAngle { get; set; }
-        GradientStopCollection BorderGradientStops { get; set; }
+        //int BorderGradientAngle { get; set; }
+        //GradientStopCollection BorderGradientStops { get; set; }
         double OffsetAngle { get; set; }
         DropShadow Shadow { get; set; }
     }
@@ -36,14 +36,14 @@ namespace XamarinReactorUI
 
         public int Sides { get; set; } = (int)PancakeView.SidesProperty.DefaultValue;
         public CornerRadius CornerRadius { get; set; } = (CornerRadius)PancakeView.CornerRadiusProperty.DefaultValue;
-        public float BorderThickness { get; set; } = (float)PancakeView.BorderThicknessProperty.DefaultValue;
-        public DashPattern BorderDashPattern { get; set; } = (DashPattern)PancakeView.BorderDashPatternProperty.DefaultValue;
-        public Color BorderColor { get; set; } = (Color)PancakeView.BorderColorProperty.DefaultValue;
-        public BorderDrawingStyle BorderDrawingStyle { get; set; } = (BorderDrawingStyle)PancakeView.BorderDrawingStyleProperty.DefaultValue;
+        //public float BorderThickness { get; set; } = (float)PancakeView.BorderThicknessProperty.DefaultValue;
+        //public DashPattern BorderDashPattern { get; set; } = (DashPattern)PancakeView.BorderDashPatternProperty.DefaultValue;
+        //public Color BorderColor { get; set; } = (Color)PancakeView.BorderColorProperty.DefaultValue;
+        //public BorderDrawingStyle BorderDrawingStyle { get; set; } = (BorderDrawingStyle)PancakeView.BorderDrawingStyleProperty.DefaultValue;
         //public int BackgroundGradientAngle { get; set; } = (int)PancakeView.BackgroundGradientAngleProperty.DefaultValue;
         public GradientStopCollection BackgroundGradientStops { get; set; } = (GradientStopCollection)PancakeView.BackgroundGradientStopsProperty.DefaultValue;
-        public int BorderGradientAngle { get; set; } = (int)PancakeView.BorderGradientAngleProperty.DefaultValue;
-        public GradientStopCollection BorderGradientStops { get; set; } = (GradientStopCollection)PancakeView.BorderGradientStopsProperty.DefaultValue;
+        //public int BorderGradientAngle { get; set; } = (int)PancakeView.BorderGradientAngleProperty.DefaultValue;
+        //public GradientStopCollection BorderGradientStops { get; set; } = (GradientStopCollection)PancakeView.BorderGradientStopsProperty.DefaultValue;
         public double OffsetAngle { get; set; } = (double)PancakeView.OffsetAngleProperty.DefaultValue;
         public DropShadow Shadow { get; set; } = (DropShadow)PancakeView.ShadowProperty.DefaultValue;
 
@@ -51,14 +51,14 @@ namespace XamarinReactorUI
         {
             NativeControl.Sides = Sides;
             NativeControl.CornerRadius = CornerRadius;
-            NativeControl.BorderThickness = BorderThickness;
-            NativeControl.BorderDashPattern = BorderDashPattern;
-            NativeControl.BorderColor = BorderColor;
-            NativeControl.BorderDrawingStyle = BorderDrawingStyle;
+            //NativeControl.BorderThickness = BorderThickness;
+            //NativeControl.BorderDashPattern = BorderDashPattern;
+            //NativeControl.BorderColor = BorderColor;
+            //NativeControl.BorderDrawingStyle = BorderDrawingStyle;
             //NativeControl.BackgroundGradientAngle = BackgroundGradientAngle;
             NativeControl.BackgroundGradientStops = BackgroundGradientStops;
-            NativeControl.BorderGradientAngle = BorderGradientAngle;
-            NativeControl.BorderGradientStops = BorderGradientStops;
+            //NativeControl.BorderGradientAngle = BorderGradientAngle;
+            //NativeControl.BorderGradientStops = BorderGradientStops;
             NativeControl.OffsetAngle = OffsetAngle;
             NativeControl.Shadow = Shadow;
 
@@ -104,29 +104,29 @@ namespace XamarinReactorUI
             return pancakeview;
         }
 
-        public static T BorderThickness<T>(this T pancakeview, float borderThickness) where T : IRxPancakeView
-        {
-            pancakeview.BorderThickness = borderThickness;
-            return pancakeview;
-        }
+        //public static T BorderThickness<T>(this T pancakeview, float borderThickness) where T : IRxPancakeView
+        //{
+        //    pancakeview.BorderThickness = borderThickness;
+        //    return pancakeview;
+        //}
 
-        public static T BorderDashPattern<T>(this T pancakeview, DashPattern borderDashPattern) where T : IRxPancakeView
-        {
-            pancakeview.BorderDashPattern = borderDashPattern;
-            return pancakeview;
-        }
+        //public static T BorderDashPattern<T>(this T pancakeview, DashPattern borderDashPattern) where T : IRxPancakeView
+        //{
+        //    pancakeview.BorderDashPattern = borderDashPattern;
+        //    return pancakeview;
+        //}
 
-        public static T BorderColor<T>(this T pancakeview, Color borderColor) where T : IRxPancakeView
-        {
-            pancakeview.BorderColor = borderColor;
-            return pancakeview;
-        }
+        //public static T BorderColor<T>(this T pancakeview, Color borderColor) where T : IRxPancakeView
+        //{
+        //    pancakeview.BorderColor = borderColor;
+        //    return pancakeview;
+        //}
 
-        public static T BorderDrawingStyle<T>(this T pancakeview, BorderDrawingStyle borderDrawingStyle) where T : IRxPancakeView
-        {
-            pancakeview.BorderDrawingStyle = borderDrawingStyle;
-            return pancakeview;
-        }
+        //public static T BorderDrawingStyle<T>(this T pancakeview, BorderDrawingStyle borderDrawingStyle) where T : IRxPancakeView
+        //{
+        //    pancakeview.BorderDrawingStyle = borderDrawingStyle;
+        //    return pancakeview;
+        //}
 
         //public static T BackgroundGradientAngle<T>(this T pancakeview, int backgroundGradientAngle) where T : IRxPancakeView
         //{
@@ -158,35 +158,35 @@ namespace XamarinReactorUI
             return pancakeview;
         }
 
-        public static T BorderGradientAngle<T>(this T pancakeview, int borderGradientAngle) where T : IRxPancakeView
-        {
-            pancakeview.BorderGradientAngle = borderGradientAngle;
-            return pancakeview;
-        }
+        //public static T BorderGradientAngle<T>(this T pancakeview, int borderGradientAngle) where T : IRxPancakeView
+        //{
+        //    pancakeview.BorderGradientAngle = borderGradientAngle;
+        //    return pancakeview;
+        //}
 
-        public static T BorderGradientStops<T>(this T pancakeview, GradientStopCollection borderGradientStops) where T : IRxPancakeView
-        {
-            pancakeview.BorderGradientStops = borderGradientStops;
-            return pancakeview;
-        }
+        //public static T BorderGradientStops<T>(this T pancakeview, GradientStopCollection borderGradientStops) where T : IRxPancakeView
+        //{
+        //    pancakeview.BorderGradientStops = borderGradientStops;
+        //    return pancakeview;
+        //}
 
-        public static T BorderGradientStops<T>(this T pancakeview, IEnumerable<GradientStop> gradientStops) where T : IRxPancakeView
-        {
-            var gradientStopsCollection = new GradientStopCollection();
-            foreach (var gradientStop in gradientStops)
-                gradientStopsCollection.Add(gradientStop);
-            pancakeview.BorderGradientStops = gradientStopsCollection;
-            return pancakeview;
-        }
+        //public static T BorderGradientStops<T>(this T pancakeview, IEnumerable<GradientStop> gradientStops) where T : IRxPancakeView
+        //{
+        //    var gradientStopsCollection = new GradientStopCollection();
+        //    foreach (var gradientStop in gradientStops)
+        //        gradientStopsCollection.Add(gradientStop);
+        //    pancakeview.BorderGradientStops = gradientStopsCollection;
+        //    return pancakeview;
+        //}
 
-        public static T BorderGradientStops<T>(this T pancakeview, params GradientStop[] gradientStops) where T : IRxPancakeView
-        {
-            var gradientStopsCollection = new GradientStopCollection();
-            foreach (var gradientStop in gradientStops)
-                gradientStopsCollection.Add(gradientStop);
-            pancakeview.BorderGradientStops = gradientStopsCollection;
-            return pancakeview;
-        }
+        //public static T BorderGradientStops<T>(this T pancakeview, params GradientStop[] gradientStops) where T : IRxPancakeView
+        //{
+        //    var gradientStopsCollection = new GradientStopCollection();
+        //    foreach (var gradientStop in gradientStops)
+        //        gradientStopsCollection.Add(gradientStop);
+        //    pancakeview.BorderGradientStops = gradientStopsCollection;
+        //    return pancakeview;
+        //}
 
         public static T OffsetAngle<T>(this T pancakeview, double offsetAngle) where T : IRxPancakeView
         {

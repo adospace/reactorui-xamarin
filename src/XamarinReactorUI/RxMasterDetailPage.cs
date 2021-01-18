@@ -5,6 +5,7 @@ using Xamarin.Forms;
 
 namespace XamarinReactorUI
 {
+    [Obsolete("Use Flyout instead")]
     public interface IRxMasterDetailPage
     {
         bool IsGestureEnabled { get; set; }
@@ -12,6 +13,7 @@ namespace XamarinReactorUI
         MasterBehavior MasterBehavior { get; set; }
     }
 
+    [Obsolete("Use Flyout instead")]
     public class RxMasterDetailPage<T> : RxPage<T>, IRxMasterDetailPage where T : Xamarin.Forms.MasterDetailPage, new()
     {
         public RxMasterDetailPage()
@@ -74,6 +76,7 @@ namespace XamarinReactorUI
 
     }
 
+    [Obsolete("Use Flyout instead")]
     public class RxMasterDetailPage : RxMasterDetailPage<MasterDetailPage>
     {
         public RxMasterDetailPage()
@@ -86,6 +89,7 @@ namespace XamarinReactorUI
         }
     }
 
+    [Obsolete("Use Flyout instead")]
     public static class RxMasterDetailPageExtensions
     {
         public static T IsGestureEnabled<T>(this T masterdetailpage, bool isGestureEnabled) where T : IRxMasterDetailPage

@@ -2,7 +2,7 @@
 
 ReactorUI is an alternative UI framework written on top of Xamarin Forms highly inspired to React.js and Flutter
 
-:tada: **NOW WITH VISUAL STUDIO FOR MAC SUPPORT** :tada:
+:tada: **UPDATED TO XAMARIN FORMS 5** :tada:
 
 [ReactorUI for Xamarin Documentation](https://adospace.gitbook.io/reactorui/)
 

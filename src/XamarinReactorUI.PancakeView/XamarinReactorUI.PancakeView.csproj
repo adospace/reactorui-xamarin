@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Version Condition=" '$(APPVEYOR_BUILD_VERSION)' == '' ">0.0.1-local</Version>
-    <Version Condition=" '$(APPVEYOR_BUILD_VERSION)' != '' ">$(APPVEYOR_BUILD_VERSION)-beta</Version>
+    <Version Condition=" '$(APPVEYOR_BUILD_VERSION)' != '' ">$(APPVEYOR_BUILD_VERSION)</Version>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>adospace</Authors>
     <Description>XamarinReactorUI is an UI framework that let you build Xamarin Forms pages using a React/Flutter inspired model. This is the package required to integrate PancakeView (https://github.com/sthewissen/Xamarin.Forms.PancakeView)</Description>

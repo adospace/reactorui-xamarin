@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Xamarin.Forms;
+using Xamarin.Forms.Internals;
 using Xamarin.Forms.Shapes;
 using XamarinReactorUI.Animations;
 using XamarinReactorUI.Shapes;
+using static Xamarin.Forms.VisualElement;
 
 namespace XamarinReactorUI
 {
@@ -37,6 +39,10 @@ namespace XamarinReactorUI
         int TabIndex { get; set; }
         bool IsTabStop { get; set; }
         VisualStateGroupList VisualStateGroups { get; set; }
+
+        Action SizeChangedAction { get; set; }
+        Action<FocusEventArgs> UnfocusedAction { get; set; }
+        Action<FocusEventArgs> FocusedAction { get; set; }
     }
 
     public abstract class RxVisualElement<T> : RxElement<T>, IRxVisualElement where T : Xamarin.Forms.VisualElement, new()
@@ -51,7 +57,6 @@ namespace XamarinReactorUI
 
         }
 
-        //public Style Style { get; set; } = (Style)VisualElement.StyleProperty.DefaultValue;
         public bool InputTransparent { get; set; } = (bool)VisualElement.InputTransparentProperty.DefaultValue;
         public bool IsEnabled { get; set; } = (bool)VisualElement.IsEnabledProperty.DefaultValue;
         public double AnchorX { get; set; } = (double)VisualElement.AnchorXProperty.DefaultValue;
@@ -75,13 +80,15 @@ namespace XamarinReactorUI
         public FlowDirection FlowDirection { get; set; } = (FlowDirection)VisualElement.FlowDirectionProperty.DefaultValue;
         public int TabIndex { get; set; } = (int)VisualElement.TabIndexProperty.DefaultValue;
         public bool IsTabStop { get; set; } = (bool)VisualElement.IsTabStopProperty.DefaultValue;
-        //public IRxGeometry Clip { get; set; }
+
+        public Action SizeChangedAction { get; set; }
+        public Action<FocusEventArgs> UnfocusedAction { get; set; }
+        public Action<FocusEventArgs> FocusedAction { get; set; }
 
         public VisualStateGroupList VisualStateGroups { get; set; } = new VisualStateGroupList();
 
         protected override void OnUpdate()
         {
-            //NativeControl.Style = Style ?? Application.Current.Resources.GetResourceOrDefault<Style>(typeof(T).ToString());
             NativeControl.InputTransparent = InputTransparent;
             NativeControl.IsEnabled = IsEnabled;
             NativeControl.AnchorX = AnchorX;
@@ -106,12 +113,33 @@ namespace XamarinReactorUI
             NativeControl.TabIndex = TabIndex;
             NativeControl.IsTabStop = IsTabStop;
 
-            //NativeControl.Clip = (Clip as IVisualNodeWithNativeControl)?.GetNativeControl<Geometry>();
+            if (SizeChangedAction != null)
+                NativeControl.SizeChanged += NativeControl_SizeChanged;
+            if (UnfocusedAction != null)
+                NativeControl.Unfocused += NativeControl_Unfocused;
+            if (FocusedAction != null)
+                NativeControl.Focused += NativeControl_Focused;
+
 
             //TODO: Merge instead of clear+add
             VisualStateManager.SetVisualStateGroups(NativeControl, VisualStateGroups);
 
             base.OnUpdate();
+        }
+
+        private void NativeControl_Focused(object sender, FocusEventArgs e)
+        {
+            FocusedAction?.Invoke(e);
+        }
+
+        private void NativeControl_Unfocused(object sender, FocusEventArgs e)
+        {
+            UnfocusedAction?.Invoke(e);
+        }
+
+        private void NativeControl_SizeChanged(object sender, EventArgs e)
+        {
+            SizeChangedAction?.Invoke();
         }
 
         protected override void OnAnimate()
@@ -165,19 +193,29 @@ namespace XamarinReactorUI
             return animate;
         }
 
-        //protected override void OnMigrated(VisualNode newNode)
-        //{
-        //    var newElement = (IRxVisualElement)newNode;
-        //    if (Clip != null &&
-        //        newElement.Clip != null &&
-        //        Clip.GetType() == newElement.Clip.GetType()) 
-        //    {
-        //        (Clip as VisualNode).MergeWith((VisualNode)newElement.Clip);
-        //    }
+        protected override void OnMigrated(VisualNode newNode)
+        {
+            if (NativeControl != null)
+            {
+                NativeControl.SizeChanged -= NativeControl_SizeChanged;
+                NativeControl.Unfocused -= NativeControl_Unfocused;
+                NativeControl.Focused -= NativeControl_Focused;
+            }
 
-        //    base.OnMigrated(newNode);
-        //}
+            base.OnMigrated(newNode);
+        }
 
+        protected override void OnUnmount()
+        {
+            if (NativeControl != null)
+            {
+                NativeControl.SizeChanged -= NativeControl_SizeChanged;
+                NativeControl.Unfocused -= NativeControl_Unfocused;
+                NativeControl.Focused -= NativeControl_Focused;
+            }
+
+            base.OnUnmount();
+        }
     }
 
     public class VisualStateNamedGroup

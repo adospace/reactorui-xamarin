@@ -389,6 +389,24 @@ namespace XamarinReactorUI
             //visualelement.Clip = geometry;
             return visualelement;
         }
+
+        public static T OnSizeChanged<T>(this T datepicker, Action action) where T : IRxVisualElement
+        {
+            datepicker.SizeChangedAction = action;
+            return datepicker;
+        }
+
+        public static T OnUnfocused<T>(this T datepicker, Action<FocusEventArgs> action) where T : IRxVisualElement
+        {
+            datepicker.UnfocusedAction = action;
+            return datepicker;
+        }
+
+        public static T OnFocused<T>(this T datepicker, Action<FocusEventArgs> action) where T : IRxVisualElement
+        {
+            datepicker.FocusedAction = action;
+            return datepicker;
+        }
     }
 
 }

@@ -26,10 +26,10 @@ namespace XamarinReactorUI
         private bool _styled = false;
         private RxTheme _theme = null;
 
-        internal override void Layout(RxTheme theme = null, VisualNode parent = null)
+        internal override void Layout(RxTheme theme = null/*, VisualNode parent = null*/)
         {
             _theme = theme;
-            base.Layout(theme, parent);
+            base.Layout(theme/*, parent*/);
         }
 
         protected override void OnMount()

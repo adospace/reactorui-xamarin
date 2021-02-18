@@ -220,10 +220,10 @@ namespace XamarinReactorUI
             });
         }
 
-        internal virtual void Layout(RxTheme theme = null, VisualNode parent = null)
+        internal virtual void Layout(RxTheme theme = null/*, VisualNode parent = null*/)
         {
-            if (parent != null)
-                Parent = parent;
+            //if (parent != null)
+            //    Parent = parent;
 
             if (!IsLayoutCycleRequired)
                 return;
@@ -249,7 +249,7 @@ namespace XamarinReactorUI
             if (_stateChanged)
                 OnUpdate();
 
-            foreach (var child in Children)
+            foreach (var child in Children.Where(_ => _.IsLayoutCycleRequired))
                 child.Layout(theme);
         }
 

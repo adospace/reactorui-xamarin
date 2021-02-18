@@ -40,7 +40,7 @@ namespace XamarinReactorUI
         bool IsTabStop { get; set; }
         VisualStateGroupList VisualStateGroups { get; set; }
 
-        Action SizeChangedAction { get; set; }
+        Action<SizeChangedEventArgs> SizeChangedAction { get; set; }
         Action<FocusEventArgs> UnfocusedAction { get; set; }
         Action<FocusEventArgs> FocusedAction { get; set; }
     }
@@ -81,7 +81,7 @@ namespace XamarinReactorUI
         public int TabIndex { get; set; } = (int)VisualElement.TabIndexProperty.DefaultValue;
         public bool IsTabStop { get; set; } = (bool)VisualElement.IsTabStopProperty.DefaultValue;
 
-        public Action SizeChangedAction { get; set; }
+        public Action<SizeChangedEventArgs> SizeChangedAction { get; set; }
         public Action<FocusEventArgs> UnfocusedAction { get; set; }
         public Action<FocusEventArgs> FocusedAction { get; set; }
 
@@ -137,9 +137,11 @@ namespace XamarinReactorUI
             UnfocusedAction?.Invoke(e);
         }
 
+
         private void NativeControl_SizeChanged(object sender, EventArgs e)
         {
-            SizeChangedAction?.Invoke();
+            var element = (T)sender;
+            SizeChangedAction?.Invoke(new SizeChangedEventArgs(new Size(element.Width, element.Height)));
         }
 
         protected override void OnAnimate()
@@ -170,12 +172,12 @@ namespace XamarinReactorUI
             base.OnAnimate();
         }
 
-        internal override void Layout(RxTheme theme = null, VisualNode parent = null)
-        {
-            //(Clip as VisualNode)?.Layout(theme, this);
+        //internal override void Layout(RxTheme theme = null, VisualNode parent = null)
+        //{
+        //    //(Clip as VisualNode)?.Layout(theme, this);
 
-            base.Layout(theme, parent);
-        }
+        //    base.Layout(theme, parent);
+        //}
 
         internal override bool Animate()
         {
@@ -390,10 +392,10 @@ namespace XamarinReactorUI
             return visualelement;
         }
 
-        public static T OnSizeChanged<T>(this T datepicker, Action action) where T : IRxVisualElement
+        public static T OnSizeChanged<T>(this T visualelement, Action<SizeChangedEventArgs> action) where T : IRxPage
         {
-            datepicker.SizeChangedAction = action;
-            return datepicker;
+            visualelement.SizeChangedAction = action;
+            return visualelement;
         }
 
         public static T OnUnfocused<T>(this T datepicker, Action<FocusEventArgs> action) where T : IRxVisualElement

@@ -34,6 +34,9 @@
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>TypeGenerator.cs</LastGenOutput>
     </None>
+    <None Update="WidgetList.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

@@ -13,9 +13,16 @@ namespace XamarinReactorUI
         RxContext Context { get; }
     }
 
-    public abstract class RxComponent : VisualNode, IEnumerable<VisualNode>
+    public abstract class RxComponent : VisualNode, IEnumerable<VisualNode>, IVisualNodeWithAttachedProperties
     {
+        private readonly Dictionary<BindableProperty, object> _attachedProperties = new Dictionary<BindableProperty, object>();
+
         public abstract VisualNode Render();
+
+        public void SetAttachedProperty(BindableProperty property, object value)
+            => _attachedProperties[property] = value;
+
+        private BindableObject _nativeControl;
 
         private readonly List<VisualNode> _children = new List<VisualNode>();
 
@@ -61,12 +68,26 @@ namespace XamarinReactorUI
 
         protected sealed override void OnAddChild(VisualNode widget, BindableObject nativeControl)
         {
+            foreach (var attachedProperty in _attachedProperties)
+            {
+                nativeControl.SetValue(attachedProperty.Key, attachedProperty.Value);
+            }
+
             Parent.AddChild(this, nativeControl);
+
+            _nativeControl = nativeControl;
         }
 
         protected sealed override void OnRemoveChild(VisualNode widget, BindableObject nativeControl)
         {
             Parent.RemoveChild(this, nativeControl);
+            
+            foreach (var attachedProperty in _attachedProperties)
+            {
+                nativeControl.SetValue(attachedProperty.Key, attachedProperty.Key.DefaultValue);
+            }
+
+            _nativeControl = null;
         }
 
         protected sealed override IEnumerable<VisualNode> RenderChildren()
@@ -76,6 +97,14 @@ namespace XamarinReactorUI
 
         protected sealed override void OnUpdate()
         {
+            if (_nativeControl != null)
+            {
+                foreach (var attachedProperty in _attachedProperties)
+                {
+                    _nativeControl.SetValue(attachedProperty.Key, attachedProperty.Value);
+                }
+            }
+
             base.OnUpdate();
         }
 
@@ -89,6 +118,8 @@ namespace XamarinReactorUI
             if (newNode.GetType().FullName == GetType().FullName)
             {
                 ((RxComponent)newNode)._isMounted = true;
+                ((RxComponent)newNode)._nativeControl = _nativeControl;
+                _nativeControl = null;
                 ((RxComponent)newNode).OnPropsChanged();
                 base.MergeWith(newNode);
             }

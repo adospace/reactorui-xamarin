@@ -200,12 +200,10 @@ namespace XamarinReactorUI
             if (view == null)
                 return null;
 
-            if (view is IRxElement element)
-                element.SetAttachedProperty(Grid.RowProperty, rowIndex);
-            else
-            {
-                throw new NotSupportedException($"Type '{typeof(T)}' doesn't support attached properties");
-            }
+            if (!(view is IVisualNodeWithAttachedProperties visualNodeWithAttachedProperties))
+                throw new NotSupportedException($"Type '{view.GetType()}' doesn't support attached properties");
+
+            visualNodeWithAttachedProperties.SetAttachedProperty(Grid.RowProperty, rowIndex);
 
             return view;
         }
@@ -213,14 +211,13 @@ namespace XamarinReactorUI
         public static T GridRowSpan<T>(this T view, int rowSpan) where T : VisualNode
         {
             if (view == null)
-                return null;
 
-            if (view is IRxElement element)
-                element.SetAttachedProperty(Grid.RowSpanProperty, rowSpan);
-            else
-            {
-                throw new NotSupportedException($"Type '{typeof(T)}' doesn't support attached properties");
-            }
+                return null;
+            if (!(view is IVisualNodeWithAttachedProperties visualNodeWithAttachedProperties))
+                throw new NotSupportedException($"Type '{view.GetType()}' doesn't support attached properties");
+
+            visualNodeWithAttachedProperties.SetAttachedProperty(Grid.RowSpanProperty, rowSpan);
+
             return view;
         }
 
@@ -229,12 +226,11 @@ namespace XamarinReactorUI
             if (view == null)
                 return null;
 
-            if (view is IRxElement element)
-                element.SetAttachedProperty(Grid.ColumnProperty, columnIndex);
-            else
-            {
-                throw new NotSupportedException($"Type '{typeof(T)}' doesn't support attached properties");
-            }
+            if (!(view is IVisualNodeWithAttachedProperties visualNodeWithAttachedProperties))
+                throw new NotSupportedException($"Type '{view.GetType()}' doesn't support attached properties");
+
+            visualNodeWithAttachedProperties.SetAttachedProperty(Grid.ColumnProperty, columnIndex);
+
             return view;
         }
 
@@ -243,12 +239,11 @@ namespace XamarinReactorUI
             if (view == null)
                 return null;
 
-            if (view is IRxElement element)
-                element.SetAttachedProperty(Grid.ColumnSpanProperty, columnSpan);
-            else
-            {
-                throw new NotSupportedException($"Type '{typeof(T)}' doesn't support attached properties");
-            }
+            if (!(view is IVisualNodeWithAttachedProperties visualNodeWithAttachedProperties))
+                throw new NotSupportedException($"Type '{view.GetType()}' doesn't support attached properties");
+
+            visualNodeWithAttachedProperties.SetAttachedProperty(Grid.ColumnSpanProperty, columnSpan);
+
             return view;
         }
     }

@@ -419,7 +419,21 @@ namespace XamarinReactorUI
         TResult GetNativeControl<TResult>() where TResult : BindableObject;
     }
 
-    public abstract class VisualNode<T> : VisualNode, IVisualNodeWithNativeControl where T : BindableObject, new()
+    public interface IVisualNodeWithAttachedProperties
+    {
+        void SetAttachedProperty(BindableProperty property, object value);
+    }
+
+    public static class VisualNodeWithAttachedPropertiesExtensions
+    {
+        public static T Set<T>(this T element, BindableProperty property, object value) where T : IVisualNodeWithAttachedProperties
+        {
+            element.SetAttachedProperty(property, value);
+            return element;
+        }
+    }
+
+    public abstract class VisualNode<T> : VisualNode, IVisualNodeWithNativeControl, IVisualNodeWithAttachedProperties where T : BindableObject, new()
     {
         protected BindableObject _nativeControl;
 

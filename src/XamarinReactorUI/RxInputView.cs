@@ -52,16 +52,25 @@ namespace XamarinReactorUI
 
         protected override void OnUpdate()
         {
-            if (NativeControl.Text != Text)
-                NativeControl.Text = Text;
-            NativeControl.Keyboard = Keyboard;
-            NativeControl.IsSpellCheckEnabled = IsSpellCheckEnabled;
-            NativeControl.MaxLength = MaxLength;
-            NativeControl.IsReadOnly = IsReadOnly;
-            NativeControl.Placeholder = Placeholder;
-            NativeControl.PlaceholderColor = PlaceholderColor;
-            NativeControl.TextColor = TextColor;
-            NativeControl.CharacterSpacing = CharacterSpacing;
+            //if (NativeControl.Text != Text)
+            //    NativeControl.Text = Text;
+            //NativeControl.Keyboard = Keyboard;
+            //NativeControl.IsSpellCheckEnabled = IsSpellCheckEnabled;
+            //NativeControl.MaxLength = MaxLength;
+            //NativeControl.IsReadOnly = IsReadOnly;
+            //NativeControl.Placeholder = Placeholder;
+            //NativeControl.PlaceholderColor = PlaceholderColor;
+            //NativeControl.TextColor = TextColor;
+            //NativeControl.CharacterSpacing = CharacterSpacing;
+            if (NativeControl.Text != Text) NativeControl.Text = Text;
+            if (NativeControl.Keyboard != Keyboard) NativeControl.Keyboard = Keyboard;
+            if (NativeControl.IsSpellCheckEnabled != IsSpellCheckEnabled) NativeControl.IsSpellCheckEnabled = IsSpellCheckEnabled;
+            if (NativeControl.MaxLength != MaxLength) NativeControl.MaxLength = MaxLength;
+            if (NativeControl.IsReadOnly != IsReadOnly) NativeControl.IsReadOnly = IsReadOnly;
+            if (NativeControl.Placeholder != Placeholder) NativeControl.Placeholder = Placeholder;
+            if (NativeControl.PlaceholderColor != PlaceholderColor) NativeControl.PlaceholderColor = PlaceholderColor;
+            if (NativeControl.TextColor != TextColor) NativeControl.TextColor = TextColor;
+            if (NativeControl.CharacterSpacing != CharacterSpacing) NativeControl.CharacterSpacing = CharacterSpacing;
 
             if (IsFocused)
                 NativeControl.Focus();

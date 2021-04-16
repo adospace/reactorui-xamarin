@@ -11,6 +11,7 @@ namespace XamarinReactorUI.Scaffold
     {
         public static void Main()
         {
+            //force XF assembly load
             var _ = new Xamarin.Forms.Shapes.Rectangle();
 
             var types = (from domainAssembly in AppDomain.CurrentDomain.GetAssemblies()
@@ -25,8 +26,7 @@ namespace XamarinReactorUI.Scaffold
             foreach (var classNameToGenerate in File.ReadAllLines("WidgetList.txt").Where(_ => !string.IsNullOrWhiteSpace(_)))
             {
                 var typeToScaffold = types[classNameToGenerate];
-
-                var outputPath = @"..\XamarinReactorUI";
+                var outputPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "gen");
                 Directory.CreateDirectory(outputPath);
 
                 Scaffold(typeToScaffold, outputPath);

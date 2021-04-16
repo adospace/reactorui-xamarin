@@ -60,19 +60,34 @@ namespace XamarinReactorUI
 
         protected override void OnUpdate()
         {
-            NativeControl.ReturnType = ReturnType;
-            NativeControl.Placeholder = Placeholder;
-            NativeControl.PlaceholderColor = PlaceholderColor;
-            NativeControl.IsPassword = IsPassword;
-            NativeControl.HorizontalTextAlignment = HorizontalTextAlignment;
-            NativeControl.VerticalTextAlignment = VerticalTextAlignment;
-            NativeControl.FontFamily = FontFamily;
-            NativeControl.FontSize = FontSize;
-            NativeControl.FontAttributes = FontAttributes;
-            NativeControl.IsTextPredictionEnabled = IsTextPredictionEnabled;
-            NativeControl.CursorPosition = CursorPosition;
-            NativeControl.SelectionLength = SelectionLength;
-            NativeControl.ClearButtonVisibility = ClearButtonVisibility;
+            //NativeControl.ReturnType = ReturnType;
+            //NativeControl.Placeholder = Placeholder;
+            //NativeControl.PlaceholderColor = PlaceholderColor;
+            //NativeControl.IsPassword = IsPassword;
+            //NativeControl.HorizontalTextAlignment = HorizontalTextAlignment;
+            //NativeControl.VerticalTextAlignment = VerticalTextAlignment;
+            //NativeControl.FontFamily = FontFamily;
+            //NativeControl.FontSize = FontSize;
+            //NativeControl.FontAttributes = FontAttributes;
+            //NativeControl.IsTextPredictionEnabled = IsTextPredictionEnabled;
+            //NativeControl.CursorPosition = CursorPosition;
+            //NativeControl.SelectionLength = SelectionLength;
+            //NativeControl.ClearButtonVisibility = ClearButtonVisibility;
+
+            if (NativeControl.ReturnType != ReturnType) NativeControl.ReturnType = ReturnType;
+            if (NativeControl.Placeholder != Placeholder) NativeControl.Placeholder = Placeholder;
+            if (NativeControl.PlaceholderColor != PlaceholderColor) NativeControl.PlaceholderColor = PlaceholderColor;
+            if (NativeControl.IsPassword != IsPassword) NativeControl.IsPassword = IsPassword;
+            if (NativeControl.HorizontalTextAlignment != HorizontalTextAlignment) NativeControl.HorizontalTextAlignment = HorizontalTextAlignment;
+            if (NativeControl.VerticalTextAlignment != VerticalTextAlignment) NativeControl.VerticalTextAlignment = VerticalTextAlignment;
+            if (NativeControl.FontFamily != FontFamily) NativeControl.FontFamily = FontFamily;
+            if (NativeControl.FontSize != FontSize) NativeControl.FontSize = FontSize;
+            if (NativeControl.FontAttributes != FontAttributes) NativeControl.FontAttributes = FontAttributes;
+            if (NativeControl.IsTextPredictionEnabled != IsTextPredictionEnabled) NativeControl.IsTextPredictionEnabled = IsTextPredictionEnabled;
+            if (NativeControl.CursorPosition != CursorPosition) NativeControl.CursorPosition = CursorPosition;
+            if (NativeControl.SelectionLength != SelectionLength) NativeControl.SelectionLength = SelectionLength;
+            if (NativeControl.ClearButtonVisibility != ClearButtonVisibility) NativeControl.ClearButtonVisibility = ClearButtonVisibility;
+
 
             if (CompletedAction != null)
                 NativeControl.Completed += NativeControl_Completed;

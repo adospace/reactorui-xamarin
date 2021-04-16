@@ -47,8 +47,8 @@ namespace XamarinReactorUI
 
         protected override void OnUpdate()
         {
-            NativeControl.Orientation = Orientation;
-            NativeControl.Spacing = Spacing;
+            if (NativeControl.Orientation != Orientation) NativeControl.Orientation = Orientation;
+            if (NativeControl.Spacing != Spacing) NativeControl.Spacing = Spacing;
 
             base.OnUpdate();
         }

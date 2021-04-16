@@ -84,10 +84,15 @@ namespace XamarinReactorUI
 
         protected override void OnUpdate()
         {
-            NativeControl.RowSpacing = RowSpacing;
-            NativeControl.ColumnSpacing = ColumnSpacing;
-            NativeControl.ColumnDefinitions = ColumnDefinitions;
-            NativeControl.RowDefinitions = RowDefinitions;
+            //NativeControl.RowSpacing = RowSpacing;
+            //NativeControl.ColumnSpacing = ColumnSpacing;
+            //NativeControl.ColumnDefinitions = ColumnDefinitions;
+            //NativeControl.RowDefinitions = RowDefinitions;
+            if (NativeControl.RowSpacing != RowSpacing) NativeControl.RowSpacing = RowSpacing;
+            if (NativeControl.ColumnSpacing != ColumnSpacing) NativeControl.ColumnSpacing = ColumnSpacing;
+            if (NativeControl.ColumnDefinitions != ColumnDefinitions) NativeControl.ColumnDefinitions = ColumnDefinitions;
+            if (NativeControl.RowDefinitions != RowDefinitions) NativeControl.RowDefinitions = RowDefinitions;
+
 
             base.OnUpdate();
         }

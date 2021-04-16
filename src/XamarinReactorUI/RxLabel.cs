@@ -57,21 +57,22 @@ namespace XamarinReactorUI
 
         protected override void OnUpdate()
         {
-            NativeControl.HorizontalTextAlignment = HorizontalTextAlignment;
-            NativeControl.VerticalTextAlignment = VerticalTextAlignment;
-            NativeControl.TextColor = TextColor;
-            NativeControl.CharacterSpacing = CharacterSpacing;
-            NativeControl.Text = Text;
-            NativeControl.FontFamily = FontFamily;
-            NativeControl.FontSize = FontSize;
-            NativeControl.FontAttributes = FontAttributes;
-            NativeControl.TextDecorations = TextDecorations;
-            NativeControl.FormattedText = FormattedText;
-            NativeControl.LineBreakMode = LineBreakMode;
-            NativeControl.LineHeight = LineHeight;
-            NativeControl.MaxLines = MaxLines;
-            NativeControl.Padding = Padding;
-            NativeControl.TextType = TextType;
+            if (NativeControl.HorizontalTextAlignment != HorizontalTextAlignment) NativeControl.HorizontalTextAlignment = HorizontalTextAlignment;
+            if (NativeControl.VerticalTextAlignment != VerticalTextAlignment) NativeControl.VerticalTextAlignment = VerticalTextAlignment;
+            if (NativeControl.TextColor != TextColor) NativeControl.TextColor = TextColor;
+            if (NativeControl.CharacterSpacing != CharacterSpacing) NativeControl.CharacterSpacing = CharacterSpacing;
+            if (NativeControl.Text != Text) NativeControl.Text = Text;
+            if (NativeControl.FontFamily != FontFamily) NativeControl.FontFamily = FontFamily;
+            if (NativeControl.FontSize != FontSize) NativeControl.FontSize = FontSize;
+            if (NativeControl.FontAttributes != FontAttributes) NativeControl.FontAttributes = FontAttributes;
+            if (NativeControl.TextDecorations != TextDecorations) NativeControl.TextDecorations = TextDecorations;
+            if (NativeControl.FormattedText != FormattedText) NativeControl.FormattedText = FormattedText;
+            if (NativeControl.LineBreakMode != LineBreakMode) NativeControl.LineBreakMode = LineBreakMode;
+            if (NativeControl.LineHeight != LineHeight) NativeControl.LineHeight = LineHeight;
+            if (NativeControl.MaxLines != MaxLines) NativeControl.MaxLines = MaxLines;
+            if (NativeControl.Padding != Padding) NativeControl.Padding = Padding;
+            if (NativeControl.TextType != TextType) NativeControl.TextType = TextType;
+
 
             base.OnUpdate();
         }

@@ -1,1 +1,10 @@
-﻿Xamarin.Forms.Shapes.Rectangle
+﻿Xamarin.Forms.VisualElement
+Xamarin.Forms.Button
+Xamarin.Forms.View
+Xamarin.Forms.Label
+Xamarin.Forms.InputView
+Xamarin.Forms.Entry
+Xamarin.Forms.Page
+Xamarin.Forms.Layout
+Xamarin.Forms.Grid
+Xamarin.Forms.StackLayout

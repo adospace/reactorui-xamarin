@@ -89,29 +89,29 @@ namespace XamarinReactorUI
 
         protected override void OnUpdate()
         {
-            NativeControl.InputTransparent = InputTransparent;
-            NativeControl.IsEnabled = IsEnabled;
-            NativeControl.AnchorX = AnchorX;
-            NativeControl.AnchorY = AnchorY;
-            NativeControl.TranslationX = TranslationX;
-            NativeControl.TranslationY = TranslationY;
-            NativeControl.Rotation = Rotation;
-            NativeControl.RotationX = RotationX;
-            NativeControl.RotationY = RotationY;
-            NativeControl.Scale = Scale;
-            NativeControl.ScaleX = ScaleX;
-            NativeControl.ScaleY = ScaleY;
-            NativeControl.Visual = Visual;
-            NativeControl.IsVisible = IsVisible;
-            NativeControl.Opacity = Opacity;
-            NativeControl.BackgroundColor = BackgroundColor;
-            NativeControl.WidthRequest = WidthRequest;
-            NativeControl.HeightRequest = HeightRequest;
-            NativeControl.MinimumWidthRequest = MinimumWidthRequest;
-            NativeControl.MinimumHeightRequest = MinimumHeightRequest;
-            NativeControl.FlowDirection = FlowDirection;
-            NativeControl.TabIndex = TabIndex;
-            NativeControl.IsTabStop = IsTabStop;
+            if (NativeControl.InputTransparent != InputTransparent) NativeControl.InputTransparent = InputTransparent;
+            if (NativeControl.IsEnabled != IsEnabled) NativeControl.IsEnabled = IsEnabled;
+            if (NativeControl.AnchorX != AnchorX) NativeControl.AnchorX = AnchorX;
+            if (NativeControl.AnchorY != AnchorY) NativeControl.AnchorY = AnchorY;
+            if (NativeControl.TranslationX != TranslationX) NativeControl.TranslationX = TranslationX;
+            if (NativeControl.TranslationY != TranslationY) NativeControl.TranslationY = TranslationY;
+            if (NativeControl.Rotation != Rotation) NativeControl.Rotation = Rotation;
+            if (NativeControl.RotationX != RotationX) NativeControl.RotationX = RotationX;
+            if (NativeControl.RotationY != RotationY) NativeControl.RotationY = RotationY;
+            if (NativeControl.Scale != Scale) NativeControl.Scale = Scale;
+            if (NativeControl.ScaleX != ScaleX) NativeControl.ScaleX = ScaleX;
+            if (NativeControl.ScaleY != ScaleY) NativeControl.ScaleY = ScaleY;
+            if (NativeControl.Visual != Visual) NativeControl.Visual = Visual;
+            if (NativeControl.IsVisible != IsVisible) NativeControl.IsVisible = IsVisible;
+            if (NativeControl.Opacity != Opacity) NativeControl.Opacity = Opacity;
+            if (NativeControl.BackgroundColor != BackgroundColor) NativeControl.BackgroundColor = BackgroundColor;
+            if (NativeControl.WidthRequest != WidthRequest) NativeControl.WidthRequest = WidthRequest;
+            if (NativeControl.HeightRequest != HeightRequest) NativeControl.HeightRequest = HeightRequest;
+            if (NativeControl.MinimumWidthRequest != MinimumWidthRequest) NativeControl.MinimumWidthRequest = MinimumWidthRequest;
+            if (NativeControl.MinimumHeightRequest != MinimumHeightRequest) NativeControl.MinimumHeightRequest = MinimumHeightRequest;
+            if (NativeControl.FlowDirection != FlowDirection) NativeControl.FlowDirection = FlowDirection;
+            if (NativeControl.TabIndex != TabIndex) NativeControl.TabIndex = TabIndex;
+            if (NativeControl.IsTabStop != IsTabStop) NativeControl.IsTabStop = IsTabStop;
 
             if (SizeChangedAction != null)
                 NativeControl.SizeChanged += NativeControl_SizeChanged;

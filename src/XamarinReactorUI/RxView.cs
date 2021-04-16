@@ -49,9 +49,9 @@ namespace XamarinReactorUI
 
         protected override void OnUpdate()
         {
-            NativeControl.VerticalOptions = VerticalOptions;
-            NativeControl.HorizontalOptions = HorizontalOptions;
-            NativeControl.Margin = Margin;
+            if (NativeControl.VerticalOptions.Alignment != VerticalOptions.Alignment || NativeControl.VerticalOptions.Expands != VerticalOptions.Expands) NativeControl.VerticalOptions = VerticalOptions;
+            if (NativeControl.HorizontalOptions.Alignment != HorizontalOptions.Alignment || NativeControl.HorizontalOptions.Expands != HorizontalOptions.Expands) NativeControl.HorizontalOptions = HorizontalOptions;
+            if (NativeControl.Margin != Margin) NativeControl.Margin = Margin;
 
             AttachEvents();
 

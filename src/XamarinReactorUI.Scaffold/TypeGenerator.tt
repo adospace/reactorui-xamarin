@@ -3,11 +3,15 @@
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
-
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Xamarin.Forms;
+using Xamarin.Forms.Internals;
+using Xamarin.Forms.Shapes;
+using XamarinReactorUI.Animations;
+using XamarinReactorUI.Shapes;
 
 namespace XamarinReactorUI
 {
@@ -38,7 +42,7 @@ namespace XamarinReactorUI
         protected override void OnUpdate()
         {
             <# foreach (var property in Properties) { #>
-            NativeControl.<#= property.Name #> = <#= property.Name #>;
+            if (NativeControl.<#= property.Name #> != <#= property.Name #>) NativeControl.<#= property.Name #> = <#= property.Name #>;
             <# } #>
 
             base.OnUpdate();

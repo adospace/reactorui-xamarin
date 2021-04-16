@@ -58,19 +58,19 @@ namespace XamarinReactorUI
 
         protected override void OnUpdate()
         {
-            NativeControl.ContentLayout = ContentLayout;
-            NativeControl.Text = Text;
-            NativeControl.TextColor = TextColor;
-            NativeControl.CharacterSpacing = CharacterSpacing;
-            NativeControl.Font = Font;
-            NativeControl.FontFamily = FontFamily;
-            NativeControl.FontSize = FontSize;
-            NativeControl.FontAttributes = FontAttributes;
-            NativeControl.BorderWidth = BorderWidth;
-            NativeControl.BorderColor = BorderColor;
-            NativeControl.CornerRadius = CornerRadius;
-            NativeControl.ImageSource = ImageSource;
-            NativeControl.Padding = Padding;
+            if (NativeControl.ContentLayout != ContentLayout) NativeControl.ContentLayout = ContentLayout;
+            if (NativeControl.Text != Text) NativeControl.Text = Text;
+            if (NativeControl.TextColor != TextColor) NativeControl.TextColor = TextColor;
+            if (NativeControl.CharacterSpacing != CharacterSpacing) NativeControl.CharacterSpacing = CharacterSpacing;
+            if (NativeControl.Font != Font) NativeControl.Font = Font;
+            if (NativeControl.FontFamily != FontFamily) NativeControl.FontFamily = FontFamily;
+            if (NativeControl.FontSize != FontSize) NativeControl.FontSize = FontSize;
+            if (NativeControl.FontAttributes != FontAttributes) NativeControl.FontAttributes = FontAttributes;
+            if (NativeControl.BorderWidth != BorderWidth) NativeControl.BorderWidth = BorderWidth;
+            if (NativeControl.BorderColor != BorderColor) NativeControl.BorderColor = BorderColor;
+            if (NativeControl.CornerRadius != CornerRadius) NativeControl.CornerRadius = CornerRadius;
+            if (NativeControl.ImageSource != ImageSource) NativeControl.ImageSource = ImageSource;
+            if (NativeControl.Padding != Padding) NativeControl.Padding = Padding;
 
             if (ClickAction != null)
                 NativeControl.Clicked += NativeControl_Clicked;

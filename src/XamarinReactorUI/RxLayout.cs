@@ -38,9 +38,9 @@ namespace XamarinReactorUI
 
         protected override void OnUpdate()
         {
-            NativeControl.IsClippedToBounds = IsClippedToBounds;
-            NativeControl.CascadeInputTransparent = CascadeInputTransparent;
-            NativeControl.Padding = Padding;
+            if (NativeControl.IsClippedToBounds != IsClippedToBounds) NativeControl.IsClippedToBounds = IsClippedToBounds;
+            if (NativeControl.CascadeInputTransparent != CascadeInputTransparent) NativeControl.CascadeInputTransparent = CascadeInputTransparent;
+            if (NativeControl.Padding != Padding) NativeControl.Padding = Padding;
 
             base.OnUpdate();
         }

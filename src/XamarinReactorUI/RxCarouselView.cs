@@ -15,6 +15,7 @@ namespace XamarinReactorUI
         int Position { get; set; }
         Action<PositionChangedEventArgs> PositionChangedAction { get; set; }
         LinearItemsLayout ItemsLayout { get; set; }
+        bool Loop { get; set; }
     }
 
     public class RxCarouselView<T, I> : RxItemsView<T, I>, IRxCarouselView where T : Xamarin.Forms.CarouselView, new()
@@ -37,6 +38,7 @@ namespace XamarinReactorUI
         public LinearItemsLayout ItemsLayout { get; set; } = (LinearItemsLayout)CarouselView.ItemsLayoutProperty.DefaultValue;
         public Action<CurrentItemChangedEventArgs> CurrentItemChangedAction { get; set; }
         public Action<PositionChangedEventArgs> PositionChangedAction { get; set; }
+        public bool Loop { get; set; } = (bool)CarouselView.LoopProperty.DefaultValue;
 
         protected override void OnUpdate()
         {
@@ -47,6 +49,7 @@ namespace XamarinReactorUI
             NativeControl.CurrentItem = CurrentItem;
             NativeControl.Position = Position;
             NativeControl.ItemsLayout = ItemsLayout;
+            NativeControl.Loop = Loop;
 
             if (CurrentItemChangedAction != null)
                 NativeControl.CurrentItemChanged += NativeControl_CurrentItemChanged;
@@ -166,6 +169,12 @@ namespace XamarinReactorUI
         public static T ItemsLayout<T>(this T carouselview, LinearItemsLayout itemsLayout) where T : IRxCarouselView
         {
             carouselview.ItemsLayout = itemsLayout;
+            return carouselview;
+        }
+
+        public static T Loop<T>(this T carouselview, bool loop) where T : IRxCarouselView
+        {
+            carouselview.Loop = loop;
             return carouselview;
         }
     }

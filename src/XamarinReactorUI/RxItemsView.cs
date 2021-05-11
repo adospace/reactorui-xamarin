@@ -53,17 +53,28 @@ namespace XamarinReactorUI
         public IEnumerable<I> Collection { get; set; }
         public Func<I, VisualNode> Template { get; set; }
 
-        private class ItemTemplateNode : VisualNode
+        private class ItemTemplateNode : VisualNode, IRxHostElement
         {
             private readonly ItemTemplatePresenter _presenter = null;
+            private readonly VisualNode _owner;
 
-            public ItemTemplateNode(VisualNode root, ItemTemplatePresenter presenter)
+            public ItemTemplateNode(VisualNode root, ItemTemplatePresenter presenter, VisualNode owner)
             {
                 Root = root;
                 _presenter = presenter;
+                this._owner = owner;
             }
 
             private VisualNode _root;
+
+            private IRxHostElement GetPageHost()
+            {
+                var current = _owner;
+                while (current != null && !(current is IRxHostElement))
+                    current = current.Parent;
+
+                return current as IRxHostElement;
+            }
 
             public VisualNode Root
             {
@@ -77,6 +88,8 @@ namespace XamarinReactorUI
                     }
                 }
             }
+
+            public Page ContainerPage => GetPageHost()?.ContainerPage;
 
             protected sealed override void OnAddChild(VisualNode widget, BindableObject nativeControl)
             {
@@ -102,6 +115,28 @@ namespace XamarinReactorUI
                 Layout();
                 base.OnLayoutCycleRequested();
             }
+
+            public IRxHostElement Run()
+            {
+                var ownerPageHost = GetPageHost();
+                if (ownerPageHost == null)
+                {
+                    throw new NotSupportedException();
+                }
+
+                return ownerPageHost.Run();
+            }
+
+            public void Stop()
+            {
+                var ownerPageHost = GetPageHost();
+                if (ownerPageHost == null)
+                {
+                    throw new NotSupportedException();
+                }
+
+                ownerPageHost.Stop();
+            }
         }
 
         private class ItemTemplatePresenter : ContentView
@@ -117,13 +152,16 @@ namespace XamarinReactorUI
 
             protected override void OnBindingContextChanged()
             {
-                var item = (I)BindingContext;
-                VisualNode newRoot = null;
-                if (item != null)
+                if (BindingContext != null)
                 {
-                    newRoot = _template.Owner.Template(item);
-                    _itemTemplateNode = new ItemTemplateNode(newRoot, this);
-                    _itemTemplateNode.Layout();
+                    var item = (I)BindingContext;
+                    VisualNode newRoot = null;
+                    if (item != null)
+                    {
+                        newRoot = _template.Owner.Template(item);
+                        _itemTemplateNode = new ItemTemplateNode(newRoot, this, _template.Owner);
+                        _itemTemplateNode.Layout();
+                    }
                 }
 
                 base.OnBindingContextChanged();

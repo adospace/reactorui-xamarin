@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Xamarin.Forms;
+using XamarinReactorUI.Utils;
 
 namespace XamarinReactorUI
 {
@@ -90,8 +91,8 @@ namespace XamarinReactorUI
             //NativeControl.RowDefinitions = RowDefinitions;
             if (NativeControl.RowSpacing != RowSpacing) NativeControl.RowSpacing = RowSpacing;
             if (NativeControl.ColumnSpacing != ColumnSpacing) NativeControl.ColumnSpacing = ColumnSpacing;
-            if (NativeControl.ColumnDefinitions != ColumnDefinitions) NativeControl.ColumnDefinitions = ColumnDefinitions;
-            if (NativeControl.RowDefinitions != RowDefinitions) NativeControl.RowDefinitions = RowDefinitions;
+            if (!NativeControl.ColumnDefinitions.IsEqualTo(ColumnDefinitions)) NativeControl.ColumnDefinitions = ColumnDefinitions;
+            if (!NativeControl.RowDefinitions.IsEqualTo(RowDefinitions)) NativeControl.RowDefinitions = RowDefinitions;
 
 
             base.OnUpdate();

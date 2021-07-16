@@ -17,6 +17,7 @@ namespace XamarinReactorUI
     public interface IRxSelectableItemsView<I> : IRxSelectableItemsView
     {
         Action<I> SelectedAction { get; set; }
+        Action<IEnumerable<I>> SelectedItemsAction { get; set; }
         Action<IReadOnlyList<I>, IReadOnlyList<I>> SelectionChangedAction { get; set; }
     }
 
@@ -37,15 +38,18 @@ namespace XamarinReactorUI
         public object SelectedItem { get; set; } = (object)SelectableItemsView.SelectedItemProperty.DefaultValue;
         public IEnumerable<object> SelectedItems { get; set; } = (IEnumerable<object>)SelectableItemsView.SelectedItemsProperty.DefaultValue;
         public Action<I> SelectedAction { get; set; }
+        public Action<IEnumerable<I>> SelectedItemsAction { get; set; }
         public Action<IReadOnlyList<I>, IReadOnlyList<I>> SelectionChangedAction { get; set; }
 
         protected override void OnUpdate()
         {
-            NativeControl.SelectionMode = SelectionMode;
-            NativeControl.SelectedItem = SelectedItem;
-            NativeControl.SelectedItems = SelectedItems?.ToList();
+            if (NativeControl.SelectionMode != SelectionMode) NativeControl.SelectionMode = SelectionMode;
+            if (NativeControl.SelectedItem != SelectedItem) NativeControl.SelectedItem = SelectedItem;
 
-            if (SelectedAction != null || SelectionChangedAction != null)
+            var selectedItems = SelectedItems as IList<object> ?? SelectedItems?.ToList();
+            if (NativeControl.SelectedItems != selectedItems) NativeControl.SelectedItems = selectedItems;
+
+            if (SelectedAction != null || SelectionChangedAction != null || SelectedItemsAction != null)
                 NativeControl.SelectionChanged += NativeControl_SelectionChanged;
 
             base.OnUpdate();
@@ -53,10 +57,14 @@ namespace XamarinReactorUI
 
         private void NativeControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (SelectedAction != null || SelectionChangedAction != null)
+            if (SelectedAction != null || SelectionChangedAction != null || SelectedItemsAction != null)
             {
                 SelectedAction?.Invoke(e.CurrentSelection.Count > 0 ? (I)e.CurrentSelection[0] : default);
                 SelectionChangedAction?.Invoke(e.CurrentSelection.Cast<I>().ToList(), e.PreviousSelection.Cast<I>().ToList());
+                if (NativeControl != null)
+                {
+                    SelectedItemsAction?.Invoke(NativeControl.SelectedItems.Cast<I>());
+                }
                 Invalidate();
             }
         }
@@ -89,6 +97,12 @@ namespace XamarinReactorUI
         public static T OnSelected<T, I>(this T collectionView, Action<I> action) where T : IRxSelectableItemsView<I>
         {
             collectionView.SelectedAction = action;
+            return collectionView;
+        }
+
+        public static T OnSelectedItems<T, I>(this T collectionView, Action<IEnumerable<I>> action) where T : IRxSelectableItemsView<I>
+        {
+            collectionView.SelectedItemsAction = action;
             return collectionView;
         }
 

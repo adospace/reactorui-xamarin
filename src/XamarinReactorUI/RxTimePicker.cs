@@ -13,7 +13,7 @@ namespace XamarinReactorUI
         string FontFamily { get; set; }
         double FontSize { get; set; }
         FontAttributes FontAttributes { get; set; }
-        Action<TimeSpan> OnTimeChanged { get; set; }
+        Action<TimeSpan> TimeChangedAction { get; set; }
     }
 
     public class RxTimePicker<T> : RxView<T>, IRxTimePicker where T : TimePicker, new()
@@ -34,7 +34,7 @@ namespace XamarinReactorUI
         public string FontFamily { get; set; } = (string)TimePicker.FontFamilyProperty.DefaultValue;
         public double FontSize { get; set; } = (double)TimePicker.FontSizeProperty.DefaultValue;
         public FontAttributes FontAttributes { get; set; } = (FontAttributes)TimePicker.FontAttributesProperty.DefaultValue;
-        public Action<TimeSpan> OnTimeChanged { get; set; }
+        public Action<TimeSpan> TimeChangedAction { get; set; }
 
         protected override void OnUpdate()
         {
@@ -47,7 +47,7 @@ namespace XamarinReactorUI
             NativeControl.FontAttributes = FontAttributes;
 
 
-            if (OnTimeChanged != null)
+            if (TimeChangedAction != null)
                 NativeControl.PropertyChanged += NativeControl_PropertyChanged;
 
             base.OnUpdate();
@@ -57,7 +57,7 @@ namespace XamarinReactorUI
         {
             if (e.PropertyName == TimePicker.TimeProperty.PropertyName)
             {
-                OnTimeChanged?.Invoke(NativeControl.Time);
+                TimeChangedAction?.Invoke(NativeControl.Time);
             }
         }
 
@@ -103,7 +103,7 @@ namespace XamarinReactorUI
     {
         public static T OnTimeChanged<T>(this T timepicker, Action<TimeSpan> action) where T : IRxTimePicker
         {
-            timepicker.OnTimeChanged = action;
+            timepicker.TimeChangedAction = action;
             return timepicker;
         }
 

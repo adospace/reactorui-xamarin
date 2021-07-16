@@ -26,16 +26,13 @@ namespace XamarinReactorUI
             yield break;
         }
 
-        private readonly NullableField<bool> _isRunning = new NullableField<bool>();
-        public bool IsRunning { get => _isRunning.GetValueOrDefault(); set => _isRunning.Value = value; }
-
-        private readonly NullableField<Color> _color = new NullableField<Color>();
-        public Color Color { get => _color.GetValueOrDefault(); set => _color.Value = value; }
+        public bool IsRunning { get; set; } = (bool)ActivityIndicator.IsRunningProperty.DefaultValue;
+        public Color Color { get; set; } = (Color)ActivityIndicator.ColorProperty.DefaultValue;
 
         protected override void OnUpdate()
         {
-            if (_isRunning.HasValue) NativeControl.IsRunning = _isRunning.Value;
-            if (_color.HasValue) NativeControl.Color = _color.Value;
+            if (NativeControl.IsRunning != IsRunning) NativeControl.IsRunning = IsRunning;
+            if (NativeControl.Color != Color) NativeControl.Color = Color;
 
             base.OnUpdate();
         }

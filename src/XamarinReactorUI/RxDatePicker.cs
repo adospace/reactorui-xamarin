@@ -24,7 +24,7 @@ namespace XamarinReactorUI
         {
         }
 
-        public RxDatePicker(Action<DatePicker> componentRefAction)
+        public RxDatePicker(Action<T> componentRefAction)
             : base(componentRefAction)
         {
         }
@@ -42,15 +42,16 @@ namespace XamarinReactorUI
 
         protected override void OnUpdate()
         {
-            NativeControl.Format = Format;
-            NativeControl.Date = Date;
-            NativeControl.MinimumDate = MinimumDate;
-            NativeControl.MaximumDate = MaximumDate;
-            NativeControl.TextColor = TextColor;
-            NativeControl.CharacterSpacing = CharacterSpacing;
-            NativeControl.FontFamily = FontFamily;
-            NativeControl.FontSize = FontSize;
-            NativeControl.FontAttributes = FontAttributes;
+            if (NativeControl.Format != Format) NativeControl.Format = Format;
+            if (NativeControl.Date != Date) NativeControl.Date = Date;
+            if (NativeControl.MinimumDate != MinimumDate) NativeControl.MinimumDate = MinimumDate;
+            if (NativeControl.TextColor != TextColor) NativeControl.TextColor = TextColor;
+            if (NativeControl.CharacterSpacing != CharacterSpacing) NativeControl.CharacterSpacing = CharacterSpacing;
+            if (NativeControl.FontFamily != FontFamily) NativeControl.FontFamily = FontFamily;
+            if (NativeControl.FontSize != FontSize) NativeControl.FontSize = FontSize;
+            if (NativeControl.FontAttributes != FontAttributes) NativeControl.FontAttributes = FontAttributes;
+            if (NativeControl.FontAttributes != FontAttributes) NativeControl.FontAttributes = FontAttributes;
+
 
             if (DateChangedAction != null)
                 NativeControl.DateSelected += NativeControl_DateSelected;

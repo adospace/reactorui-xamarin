@@ -34,7 +34,7 @@ namespace XamarinReactorUI
             Text = text;
         }
 
-        public RxLabel(Action<Xamarin.Forms.Label> componentRefAction)
+        public RxLabel(Action<T> componentRefAction)
             : base(componentRefAction)
         {
         }

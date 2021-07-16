@@ -80,11 +80,12 @@ namespace XamarinReactorUI
 
         protected override void OnUpdate()
         {
-            NativeControl.BackgroundImageSource = BackgroundImageSource;
-            NativeControl.IsBusy = IsBusy;
-            NativeControl.Padding = Padding;
-            NativeControl.Title = Title;
-            NativeControl.IconImageSource = IconImageSource;
+            if (NativeControl.BackgroundImageSource != BackgroundImageSource) NativeControl.BackgroundImageSource = BackgroundImageSource;
+            if (NativeControl.IsBusy != IsBusy) NativeControl.IsBusy = IsBusy;
+            if (NativeControl.Padding != Padding) NativeControl.Padding = Padding;
+            if (NativeControl.Title != Title) NativeControl.Title = Title;
+            if (NativeControl.IconImageSource != IconImageSource) NativeControl.IconImageSource = IconImageSource;
+
 
             //if (SizeChangedAction != null)
             //    NativeControl.SizeChanged += NativeControl_SizeChanged;

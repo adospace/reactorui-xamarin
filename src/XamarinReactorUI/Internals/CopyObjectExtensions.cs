@@ -10,6 +10,12 @@ namespace XamarinReactorUI.Internals
     {
         public static void CopyPropertiesTo(this object source, object dest, PropertyInfo[] destProps)
         {
+            if (source.GetType().FullName != dest.GetType().FullName)
+            {
+                //can't copy state over a type with a different name: surely it's a different type
+                return;
+            }
+
             var sourceProps = source.GetType()
                 .GetProperties()
                 .Where(x => x.CanRead)
@@ -32,11 +38,21 @@ namespace XamarinReactorUI.Internals
                     }
                     catch (Exception ex)
                     {
-                        System.Diagnostics.Debug.WriteLine($"Unable to copy property '{targetProperty.Name}' of state ({source.GetType()}) to new state after hot reload (Exception: '{ex.Message}')");
+                        System.Diagnostics.Debug.WriteLine($"Unable to copy property '{targetProperty.Name}' of state ({source.GetType()}) to new state after hot reload (Exception: '{DumpExceptionMessage(ex)}')");
                     }
                 }
             }
 
+        }
+
+        private static string DumpExceptionMessage(Exception ex)
+        {
+            if (ex.InnerException != null)
+            {
+                return $"{ex.GetType().Name}({DumpExceptionMessage(ex.InnerException)})";
+            }
+
+            return ex.Message;
         }
 
     }

@@ -1,5 +1,4 @@
 ﻿using CommandLine;
-using Ninja.WebSockets;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -38,6 +37,9 @@ namespace XamarinReactorUI.HotReloadConsole
                    .WithParsed(o =>
                    {
                        _remoteServerPort = o.Port;
+
+                       SendAssemblyToEmulatorAsync(o.AssemblyPath).Wait();
+
                        if (o.Monitor)
                        {
                            Monitor(o.AssemblyPath);
@@ -56,33 +58,26 @@ namespace XamarinReactorUI.HotReloadConsole
         {
             var adbCommandLine = "\"" + Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Android", "sdk", "platform-tools", "adb" + (IsWindows ? ".exe" : "")) + "\" "
                 + "forward tcp:45820 tcp:45820";
+            var adbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Android", "android-sdk", "platform-tools", "adb.exe");
 
-            var process = new Process();
+            var process = new System.Diagnostics.Process();
 
             process.StartInfo.CreateNoWindow = true;
             process.StartInfo.RedirectStandardOutput = true;
             process.StartInfo.RedirectStandardInput = true;
             process.StartInfo.RedirectStandardError = true;
             process.StartInfo.UseShellExecute = false;
-            if (IsWindows)
-            {
-                process.StartInfo.Arguments = adbCommandLine;
-                process.StartInfo.FileName = "powershell";
-            }
-            else
-            {
-                process.StartInfo.Arguments = string.Format("-c \"{0}\"", adbCommandLine);
-                process.StartInfo.FileName = "/bin/sh";
-            }
+            process.StartInfo.Arguments = "forward tcp:45820 tcp:45820";
+            process.StartInfo.FileName = adbPath;
 
             try
             {
                 process.Start();
 
                 var adb_output = process.StandardOutput.ReadToEnd();
-                
+
                 if (adb_output.Length > 0 && adb_output != "45820" + Environment.NewLine)
-                    throw new InvalidOperationException($"Unable to forward tcp port from emulator, is emulator running? (adb tool returned '{adb_output}')");
+                    throw new InvalidOperationException($"Unable to forward tcp port from emulator (executing '{adbPath} forward tcp:45820 tcp:45820' adb tool returned '{adb_output}')");
             }
             catch (Exception ex)
             {
@@ -155,50 +150,130 @@ namespace XamarinReactorUI.HotReloadConsole
             _lastWriteTime = lastWriteTime;
             _sending = true;
 
-            await SendAssemblyToEmulator(e.FullPath);
+            await SendAssemblyToEmulatorAsync(e.FullPath);
 
             _sending = false;
         }
 
-        private static async Task SendAssemblyToEmulator(string assemblyPath)
+        private static async Task<bool> SendAssemblyToEmulatorAsync(string assemblyPath, bool debugging = true)
         {
-            var client = new TcpClient();
+            
+            //ThreadHelper.ThrowIfNotOnUIThread();
+
+            //outputPane.OutputString($"Sending to emulator new assembly (debugging={debugging})...");
+            //outputPane.Activate(); // Brings this pane into view
+
+            var client = new TcpClient
+            {
+                ReceiveTimeout = 15000,
+                SendTimeout = 15000
+            };
 
             try
             {
-                Console.WriteLine($"File changed, sending new assembly to emulator");
+               
+                await client.ConnectAsync(IPAddress.Loopback, 45820);
 
-                await client.ConnectAsync(IPAddress.Loopback, _remoteServerPort);
+                var assemblyRaw = await FileUtil.ReadAllFileAsync(assemblyPath);
 
-                var assemblyRaw = await File.ReadAllBytesAsync(assemblyPath);
+                var networkStream = client.GetStream();
 
-                var binaryWriter = new BinaryWriter(client.GetStream());
+                var lengthBytes = BitConverter.GetBytes(assemblyRaw.Length);
+                await networkStream.WriteAsync(lengthBytes, 0, lengthBytes.Length);
 
-                binaryWriter.Write(assemblyRaw.Length);
+                await networkStream.WriteAsync(assemblyRaw, 0, assemblyRaw.Length);
 
-                binaryWriter.Write(assemblyRaw);
+                await networkStream.FlushAsync();
 
-                binaryWriter.Flush();
+                var assemblySymbolStorePath = Path.Combine(Path.GetDirectoryName(assemblyPath), Path.GetFileNameWithoutExtension(assemblyPath) + ".pdb");
 
-                var binaryReader = new BinaryReader(client.GetStream());
+                if (File.Exists(assemblySymbolStorePath) && debugging)
+                {
+                    var assemblySynmbolStoreRaw = await FileUtil.ReadAllFileAsync(assemblySymbolStorePath);
 
-                binaryReader.ReadBoolean();
+                    lengthBytes = BitConverter.GetBytes(assemblySynmbolStoreRaw.Length);
 
-                Console.WriteLine($"File sent");
-            }
-            catch (OperationCanceledException)
-            {
+                    await networkStream.WriteAsync(lengthBytes, 0, lengthBytes.Length);
 
+                    await networkStream.WriteAsync(assemblySynmbolStoreRaw, 0, assemblySynmbolStoreRaw.Length);
+
+                    await networkStream.FlushAsync();
+                }
+                else
+                {
+                    lengthBytes = BitConverter.GetBytes(0);
+
+                    await networkStream.WriteAsync(lengthBytes, 0, lengthBytes.Length);
+
+                    await networkStream.FlushAsync();
+                }
+
+                var booleanBuffer = new byte[1];
+                if (await networkStream.ReadAsync(booleanBuffer, 0, 1) == 0)
+                    throw new SocketException();
+
+                Console.WriteLine($"Sent new assembly ({assemblyRaw.Length} bytes) to emulator{Environment.NewLine}");
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
+                Console.WriteLine($@"
+Unable to connect to ReactorUI Hot Reload module
+Please ensure that:
+1) Only one device is running among emulators and physical devices
+2) Application is running either in debug or release mode
+3) RxApplication call WithHotReload()
+Socket exception: {ex.Message}
+");
+                return false;
             }
             finally
             {
                 client.Close();
             }
+
+            return true;
         }
+
+
+        //private static async Task SendAssemblyToEmulator(string assemblyPath)
+        //{
+        //    var client = new TcpClient();
+
+        //    try
+        //    {
+        //        Console.WriteLine($"File changed, sending new assembly to emulator");
+
+        //        await client.ConnectAsync(IPAddress.Loopback, _remoteServerPort);
+
+        //        var assemblyRaw = await File.ReadAllBytesAsync(assemblyPath);
+
+        //        var binaryWriter = new BinaryWriter(client.GetStream());
+
+        //        binaryWriter.Write(assemblyRaw.Length);
+
+        //        binaryWriter.Write(assemblyRaw);
+
+        //        binaryWriter.Flush();
+
+        //        var binaryReader = new BinaryReader(client.GetStream());
+
+        //        binaryReader.ReadBoolean();
+
+        //        Console.WriteLine($"File sent");
+        //    }
+        //    catch (OperationCanceledException)
+        //    {
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine(ex);
+        //    }
+        //    finally
+        //    {
+        //        client.Close();
+        //    }
+        //}
 
 
         //private static async void OnChanged(object sender, FileSystemEventArgs e)

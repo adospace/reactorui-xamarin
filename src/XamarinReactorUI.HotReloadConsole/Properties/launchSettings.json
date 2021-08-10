@@ -2,7 +2,7 @@
   "profiles": {
     "XamarinReactorUI.HotReloadConsole": {
       "commandName": "Project",
-      "commandLineArgs": "--assembly \"D:\\Source\\Projects\\IowaDnr\\src\\IowaDnr.MobileApp\\IowaDnr.MobileApp\\bin\\Debug\\netstandard2.0\\IowaDnr.MobileApp.dll"
+      "commandLineArgs": "--assembly \"C:\\Source\\tests\\maui\\HelloMaui\\HelloMaui\\bin\\Debug\\net6.0-android\\HelloMaui.dll\""
     }
   }
 }

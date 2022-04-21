@@ -29,7 +29,15 @@ namespace XamarinReactorUI.Internals
                     var sourceValue = sourceProp.GetValue(source, null);
                     if (sourceValue != null && sourceValue.GetType().IsEnum)
                     {
-                        sourceValue = Convert.ChangeType(sourceValue, Enum.GetUnderlyingType(sourceProp.PropertyType));
+                        Type targetEnumUnderNullableType = Nullable.GetUnderlyingType(sourceProp.PropertyType);
+                        if (targetEnumUnderNullableType != null)
+                        {
+                            sourceValue = Convert.ChangeType(sourceValue, Enum.GetUnderlyingType(targetEnumUnderNullableType));
+                        }
+                        else
+                        {
+                            sourceValue = Convert.ChangeType(sourceValue, Enum.GetUnderlyingType(sourceProp.PropertyType));
+                        }
                     }
 
                     try

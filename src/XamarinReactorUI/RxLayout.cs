@@ -64,7 +64,8 @@ namespace XamarinReactorUI
         {
             if (nodes is null)
             {
-                throw new ArgumentNullException(nameof(nodes));
+                return;
+                //throw new ArgumentNullException(nameof(nodes));
             }
 
             foreach (var node in nodes)

@@ -140,6 +140,8 @@ namespace XamarinReactorUI.HotReloadConsole
         private static bool _sending = false;
         private static async void OnChanged(object sender, FileSystemEventArgs e)
         {
+            Console.WriteLine($"ChangeType: {e.ChangeType}");
+
             DateTime lastWriteTime = File.GetLastWriteTime(e.FullPath);
             if (lastWriteTime == _lastWriteTime)
                 return;
@@ -147,10 +149,14 @@ namespace XamarinReactorUI.HotReloadConsole
             if (_sending)
                 return;
 
-            _lastWriteTime = lastWriteTime;
             _sending = true;
 
-            await SendAssemblyToEmulatorAsync(e.FullPath);
+            Thread.Sleep(1000);
+
+            if (await SendAssemblyToEmulatorAsync(e.FullPath))
+            {
+                _lastWriteTime = lastWriteTime;
+            }
 
             _sending = false;
         }
@@ -222,7 +228,7 @@ Please ensure that:
 1) Only one device is running among emulators and physical devices
 2) Application is running either in debug or release mode
 3) RxApplication call WithHotReload()
-Socket exception: {ex.Message}
+Exception: {ex.Message}
 ");
                 return false;
             }

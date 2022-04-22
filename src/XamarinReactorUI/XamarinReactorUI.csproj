@@ -23,4 +23,6 @@
     <Folder Include="Shapes\" />
   </ItemGroup>
 
+  <ProjectExtensions><VisualStudio><UserProperties XamarinHotReloadXFormsNugetUpgradeInfoBarXamarinReactorUIHideInfoBar="True" /></VisualStudio></ProjectExtensions>
+
 </Project>

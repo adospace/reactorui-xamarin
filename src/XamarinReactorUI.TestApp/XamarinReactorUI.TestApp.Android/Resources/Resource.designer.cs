@@ -14,7 +14,7 @@ namespace XamarinReactorUI.TestApp.Droid
 {
 	
 	
-	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Android.Build.Tasks", "12.3.0.26")]
+	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Android.Build.Tasks", "13.0.99.154")]
 	public partial class Resource
 	{
 		
@@ -5419,13 +5419,7 @@ namespace XamarinReactorUI.TestApp.Droid
 			global::Xamarin.Forms.Maps.Android.Resource.Animation.EnterFromRight = global::XamarinReactorUI.TestApp.Droid.Resource.Animation.EnterFromRight;
 			global::Xamarin.Forms.Maps.Android.Resource.Animation.ExitToLeft = global::XamarinReactorUI.TestApp.Droid.Resource.Animation.ExitToLeft;
 			global::Xamarin.Forms.Maps.Android.Resource.Animation.ExitToRight = global::XamarinReactorUI.TestApp.Droid.Resource.Animation.ExitToRight;
-			global::Xamarin.Forms.Maps.Android.Resource.Animation.fragment_close_enter = global::XamarinReactorUI.TestApp.Droid.Resource.Animation.fragment_close_enter;
-			global::Xamarin.Forms.Maps.Android.Resource.Animation.fragment_close_exit = global::XamarinReactorUI.TestApp.Droid.Resource.Animation.fragment_close_exit;
-			global::Xamarin.Forms.Maps.Android.Resource.Animation.fragment_fade_enter = global::XamarinReactorUI.TestApp.Droid.Resource.Animation.fragment_fade_enter;
-			global::Xamarin.Forms.Maps.Android.Resource.Animation.fragment_fade_exit = global::XamarinReactorUI.TestApp.Droid.Resource.Animation.fragment_fade_exit;
 			global::Xamarin.Forms.Maps.Android.Resource.Animation.fragment_fast_out_extra_slow_in = global::XamarinReactorUI.TestApp.Droid.Resource.Animation.fragment_fast_out_extra_slow_in;
-			global::Xamarin.Forms.Maps.Android.Resource.Animation.fragment_open_enter = global::XamarinReactorUI.TestApp.Droid.Resource.Animation.fragment_open_enter;
-			global::Xamarin.Forms.Maps.Android.Resource.Animation.fragment_open_exit = global::XamarinReactorUI.TestApp.Droid.Resource.Animation.fragment_open_exit;
 			global::Xamarin.Forms.Maps.Android.Resource.Animation.mtrl_bottom_sheet_slide_in = global::XamarinReactorUI.TestApp.Droid.Resource.Animation.mtrl_bottom_sheet_slide_in;
 			global::Xamarin.Forms.Maps.Android.Resource.Animation.mtrl_bottom_sheet_slide_out = global::XamarinReactorUI.TestApp.Droid.Resource.Animation.mtrl_bottom_sheet_slide_out;
 			global::Xamarin.Forms.Maps.Android.Resource.Animation.mtrl_card_lowers_interpolator = global::XamarinReactorUI.TestApp.Droid.Resource.Animation.mtrl_card_lowers_interpolator;
@@ -5436,7 +5430,6 @@ namespace XamarinReactorUI.TestApp.Droid
 			global::Xamarin.Forms.Maps.Android.Resource.Animator.mtrl_btn_unelevated_state_list_anim = global::XamarinReactorUI.TestApp.Droid.Resource.Animator.mtrl_btn_unelevated_state_list_anim;
 			global::Xamarin.Forms.Maps.Android.Resource.Animator.mtrl_card_state_list_anim = global::XamarinReactorUI.TestApp.Droid.Resource.Animator.mtrl_card_state_list_anim;
 			global::Xamarin.Forms.Maps.Android.Resource.Animator.mtrl_chip_state_list_anim = global::XamarinReactorUI.TestApp.Droid.Resource.Animator.mtrl_chip_state_list_anim;
-			global::Xamarin.Forms.Maps.Android.Resource.Animator.mtrl_extended_fab_change_size_motion_spec = global::XamarinReactorUI.TestApp.Droid.Resource.Animator.mtrl_extended_fab_change_size_motion_spec;
 			global::Xamarin.Forms.Maps.Android.Resource.Animator.mtrl_extended_fab_hide_motion_spec = global::XamarinReactorUI.TestApp.Droid.Resource.Animator.mtrl_extended_fab_hide_motion_spec;
 			global::Xamarin.Forms.Maps.Android.Resource.Animator.mtrl_extended_fab_show_motion_spec = global::XamarinReactorUI.TestApp.Droid.Resource.Animator.mtrl_extended_fab_show_motion_spec;
 			global::Xamarin.Forms.Maps.Android.Resource.Animator.mtrl_extended_fab_state_list_animator = global::XamarinReactorUI.TestApp.Droid.Resource.Animator.mtrl_extended_fab_state_list_animator;
@@ -6093,7 +6086,6 @@ namespace XamarinReactorUI.TestApp.Droid
 			global::Xamarin.Forms.Maps.Android.Resource.Attribute.yearTodayStyle = global::XamarinReactorUI.TestApp.Droid.Resource.Attribute.yearTodayStyle;
 			global::Xamarin.Forms.Maps.Android.Resource.Attribute.zOrderOnTop = global::XamarinReactorUI.TestApp.Droid.Resource.Attribute.zOrderOnTop;
 			global::Xamarin.Forms.Maps.Android.Resource.Boolean.abc_action_bar_embed_tabs = global::XamarinReactorUI.TestApp.Droid.Resource.Boolean.abc_action_bar_embed_tabs;
-			global::Xamarin.Forms.Maps.Android.Resource.Boolean.abc_allow_stacked_button_bar = global::XamarinReactorUI.TestApp.Droid.Resource.Boolean.abc_allow_stacked_button_bar;
 			global::Xamarin.Forms.Maps.Android.Resource.Boolean.abc_config_actionMenuItemAllCaps = global::XamarinReactorUI.TestApp.Droid.Resource.Boolean.abc_config_actionMenuItemAllCaps;
 			global::Xamarin.Forms.Maps.Android.Resource.Boolean.mtrl_btn_textappearance_all_caps = global::XamarinReactorUI.TestApp.Droid.Resource.Boolean.mtrl_btn_textappearance_all_caps;
 			global::Xamarin.Forms.Maps.Android.Resource.Color.abc_background_cache_hint_selector_material_dark = global::XamarinReactorUI.TestApp.Droid.Resource.Color.abc_background_cache_hint_selector_material_dark;
@@ -6222,10 +6214,6 @@ namespace XamarinReactorUI.TestApp.Droid
 			global::Xamarin.Forms.Maps.Android.Resource.Color.material_on_surface_disabled = global::XamarinReactorUI.TestApp.Droid.Resource.Color.material_on_surface_disabled;
 			global::Xamarin.Forms.Maps.Android.Resource.Color.material_on_surface_emphasis_high_type = global::XamarinReactorUI.TestApp.Droid.Resource.Color.material_on_surface_emphasis_high_type;
 			global::Xamarin.Forms.Maps.Android.Resource.Color.material_on_surface_emphasis_medium = global::XamarinReactorUI.TestApp.Droid.Resource.Color.material_on_surface_emphasis_medium;
-			global::Xamarin.Forms.Maps.Android.Resource.Color.mtrl_bottom_nav_colored_item_tint = global::XamarinReactorUI.TestApp.Droid.Resource.Color.mtrl_bottom_nav_colored_item_tint;
-			global::Xamarin.Forms.Maps.Android.Resource.Color.mtrl_bottom_nav_colored_ripple_color = global::XamarinReactorUI.TestApp.Droid.Resource.Color.mtrl_bottom_nav_colored_ripple_color;
-			global::Xamarin.Forms.Maps.Android.Resource.Color.mtrl_bottom_nav_item_tint = global::XamarinReactorUI.TestApp.Droid.Resource.Color.mtrl_bottom_nav_item_tint;
-			global::Xamarin.Forms.Maps.Android.Resource.Color.mtrl_bottom_nav_ripple_color = global::XamarinReactorUI.TestApp.Droid.Resource.Color.mtrl_bottom_nav_ripple_color;
 			global::Xamarin.Forms.Maps.Android.Resource.Color.mtrl_btn_bg_color_selector = global::XamarinReactorUI.TestApp.Droid.Resource.Color.mtrl_btn_bg_color_selector;
 			global::Xamarin.Forms.Maps.Android.Resource.Color.mtrl_btn_ripple_color = global::XamarinReactorUI.TestApp.Droid.Resource.Color.mtrl_btn_ripple_color;
 			global::Xamarin.Forms.Maps.Android.Resource.Color.mtrl_btn_stroke_color_selector = global::XamarinReactorUI.TestApp.Droid.Resource.Color.mtrl_btn_stroke_color_selector;
@@ -6240,16 +6228,12 @@ namespace XamarinReactorUI.TestApp.Droid
 			global::Xamarin.Forms.Maps.Android.Resource.Color.mtrl_card_view_ripple = global::XamarinReactorUI.TestApp.Droid.Resource.Color.mtrl_card_view_ripple;
 			global::Xamarin.Forms.Maps.Android.Resource.Color.mtrl_chip_background_color = global::XamarinReactorUI.TestApp.Droid.Resource.Color.mtrl_chip_background_color;
 			global::Xamarin.Forms.Maps.Android.Resource.Color.mtrl_chip_close_icon_tint = global::XamarinReactorUI.TestApp.Droid.Resource.Color.mtrl_chip_close_icon_tint;
-			global::Xamarin.Forms.Maps.Android.Resource.Color.mtrl_chip_ripple_color = global::XamarinReactorUI.TestApp.Droid.Resource.Color.mtrl_chip_ripple_color;
 			global::Xamarin.Forms.Maps.Android.Resource.Color.mtrl_chip_surface_color = global::XamarinReactorUI.TestApp.Droid.Resource.Color.mtrl_chip_surface_color;
 			global::Xamarin.Forms.Maps.Android.Resource.Color.mtrl_chip_text_color = global::XamarinReactorUI.TestApp.Droid.Resource.Color.mtrl_chip_text_color;
 			global::Xamarin.Forms.Maps.Android.Resource.Color.mtrl_choice_chip_background_color = global::XamarinReactorUI.TestApp.Droid.Resource.Color.mtrl_choice_chip_background_color;
 			global::Xamarin.Forms.Maps.Android.Resource.Color.mtrl_choice_chip_ripple_color = global::XamarinReactorUI.TestApp.Droid.Resource.Color.mtrl_choice_chip_ripple_color;
 			global::Xamarin.Forms.Maps.Android.Resource.Color.mtrl_choice_chip_text_color = global::XamarinReactorUI.TestApp.Droid.Resource.Color.mtrl_choice_chip_text_color;
 			global::Xamarin.Forms.Maps.Android.Resource.Color.mtrl_error = global::XamarinReactorUI.TestApp.Droid.Resource.Color.mtrl_error;
-			global::Xamarin.Forms.Maps.Android.Resource.Color.mtrl_extended_fab_bg_color_selector = global::XamarinReactorUI.TestApp.Droid.Resource.Color.mtrl_extended_fab_bg_color_selector;
-			global::Xamarin.Forms.Maps.Android.Resource.Color.mtrl_extended_fab_ripple_color = global::XamarinReactorUI.TestApp.Droid.Resource.Color.mtrl_extended_fab_ripple_color;
-			global::Xamarin.Forms.Maps.Android.Resource.Color.mtrl_extended_fab_text_color_selector = global::XamarinReactorUI.TestApp.Droid.Resource.Color.mtrl_extended_fab_text_color_selector;
 			global::Xamarin.Forms.Maps.Android.Resource.Color.mtrl_fab_ripple_color = global::XamarinReactorUI.TestApp.Droid.Resource.Color.mtrl_fab_ripple_color;
 			global::Xamarin.Forms.Maps.Android.Resource.Color.mtrl_filled_background_color = global::XamarinReactorUI.TestApp.Droid.Resource.Color.mtrl_filled_background_color;
 			global::Xamarin.Forms.Maps.Android.Resource.Color.mtrl_filled_icon_tint = global::XamarinReactorUI.TestApp.Droid.Resource.Color.mtrl_filled_icon_tint;
@@ -6661,12 +6645,6 @@ namespace XamarinReactorUI.TestApp.Droid
 			global::Xamarin.Forms.Maps.Android.Resource.Drawable.abc_ic_menu_selectall_mtrl_alpha = global::XamarinReactorUI.TestApp.Droid.Resource.Drawable.abc_ic_menu_selectall_mtrl_alpha;
 			global::Xamarin.Forms.Maps.Android.Resource.Drawable.abc_ic_menu_share_mtrl_alpha = global::XamarinReactorUI.TestApp.Droid.Resource.Drawable.abc_ic_menu_share_mtrl_alpha;
 			global::Xamarin.Forms.Maps.Android.Resource.Drawable.abc_ic_search_api_material = global::XamarinReactorUI.TestApp.Droid.Resource.Drawable.abc_ic_search_api_material;
-			global::Xamarin.Forms.Maps.Android.Resource.Drawable.abc_ic_star_black_16dp = global::XamarinReactorUI.TestApp.Droid.Resource.Drawable.abc_ic_star_black_16dp;
-			global::Xamarin.Forms.Maps.Android.Resource.Drawable.abc_ic_star_black_36dp = global::XamarinReactorUI.TestApp.Droid.Resource.Drawable.abc_ic_star_black_36dp;
-			global::Xamarin.Forms.Maps.Android.Resource.Drawable.abc_ic_star_black_48dp = global::XamarinReactorUI.TestApp.Droid.Resource.Drawable.abc_ic_star_black_48dp;
-			global::Xamarin.Forms.Maps.Android.Resource.Drawable.abc_ic_star_half_black_16dp = global::XamarinReactorUI.TestApp.Droid.Resource.Drawable.abc_ic_star_half_black_16dp;
-			global::Xamarin.Forms.Maps.Android.Resource.Drawable.abc_ic_star_half_black_36dp = global::XamarinReactorUI.TestApp.Droid.Resource.Drawable.abc_ic_star_half_black_36dp;
-			global::Xamarin.Forms.Maps.Android.Resource.Drawable.abc_ic_star_half_black_48dp = global::XamarinReactorUI.TestApp.Droid.Resource.Drawable.abc_ic_star_half_black_48dp;
 			global::Xamarin.Forms.Maps.Android.Resource.Drawable.abc_ic_voice_search_api_material = global::XamarinReactorUI.TestApp.Droid.Resource.Drawable.abc_ic_voice_search_api_material;
 			global::Xamarin.Forms.Maps.Android.Resource.Drawable.abc_item_background_holo_dark = global::XamarinReactorUI.TestApp.Droid.Resource.Drawable.abc_item_background_holo_dark;
 			global::Xamarin.Forms.Maps.Android.Resource.Drawable.abc_item_background_holo_light = global::XamarinReactorUI.TestApp.Droid.Resource.Drawable.abc_item_background_holo_light;
@@ -6707,12 +6685,6 @@ namespace XamarinReactorUI.TestApp.Droid
 			global::Xamarin.Forms.Maps.Android.Resource.Drawable.abc_textfield_search_default_mtrl_alpha = global::XamarinReactorUI.TestApp.Droid.Resource.Drawable.abc_textfield_search_default_mtrl_alpha;
 			global::Xamarin.Forms.Maps.Android.Resource.Drawable.abc_textfield_search_material = global::XamarinReactorUI.TestApp.Droid.Resource.Drawable.abc_textfield_search_material;
 			global::Xamarin.Forms.Maps.Android.Resource.Drawable.abc_text_cursor_material = global::XamarinReactorUI.TestApp.Droid.Resource.Drawable.abc_text_cursor_material;
-			global::Xamarin.Forms.Maps.Android.Resource.Drawable.abc_text_select_handle_left_mtrl_dark = global::XamarinReactorUI.TestApp.Droid.Resource.Drawable.abc_text_select_handle_left_mtrl_dark;
-			global::Xamarin.Forms.Maps.Android.Resource.Drawable.abc_text_select_handle_left_mtrl_light = global::XamarinReactorUI.TestApp.Droid.Resource.Drawable.abc_text_select_handle_left_mtrl_light;
-			global::Xamarin.Forms.Maps.Android.Resource.Drawable.abc_text_select_handle_middle_mtrl_dark = global::XamarinReactorUI.TestApp.Droid.Resource.Drawable.abc_text_select_handle_middle_mtrl_dark;
-			global::Xamarin.Forms.Maps.Android.Resource.Drawable.abc_text_select_handle_middle_mtrl_light = global::XamarinReactorUI.TestApp.Droid.Resource.Drawable.abc_text_select_handle_middle_mtrl_light;
-			global::Xamarin.Forms.Maps.Android.Resource.Drawable.abc_text_select_handle_right_mtrl_dark = global::XamarinReactorUI.TestApp.Droid.Resource.Drawable.abc_text_select_handle_right_mtrl_dark;
-			global::Xamarin.Forms.Maps.Android.Resource.Drawable.abc_text_select_handle_right_mtrl_light = global::XamarinReactorUI.TestApp.Droid.Resource.Drawable.abc_text_select_handle_right_mtrl_light;
 			global::Xamarin.Forms.Maps.Android.Resource.Drawable.abc_vector_test = global::XamarinReactorUI.TestApp.Droid.Resource.Drawable.abc_vector_test;
 			global::Xamarin.Forms.Maps.Android.Resource.Drawable.avd_hide_password = global::XamarinReactorUI.TestApp.Droid.Resource.Drawable.avd_hide_password;
 			global::Xamarin.Forms.Maps.Android.Resource.Drawable.avd_show_password = global::XamarinReactorUI.TestApp.Droid.Resource.Drawable.avd_show_password;
@@ -6743,7 +6715,6 @@ namespace XamarinReactorUI.TestApp.Droid
 			global::Xamarin.Forms.Maps.Android.Resource.Drawable.common_google_signin_btn_text_light_focused = global::XamarinReactorUI.TestApp.Droid.Resource.Drawable.common_google_signin_btn_text_light_focused;
 			global::Xamarin.Forms.Maps.Android.Resource.Drawable.common_google_signin_btn_text_light_normal = global::XamarinReactorUI.TestApp.Droid.Resource.Drawable.common_google_signin_btn_text_light_normal;
 			global::Xamarin.Forms.Maps.Android.Resource.Drawable.common_google_signin_btn_text_light_normal_background = global::XamarinReactorUI.TestApp.Droid.Resource.Drawable.common_google_signin_btn_text_light_normal_background;
-			global::Xamarin.Forms.Maps.Android.Resource.Drawable.design_bottom_navigation_item_background = global::XamarinReactorUI.TestApp.Droid.Resource.Drawable.design_bottom_navigation_item_background;
 			global::Xamarin.Forms.Maps.Android.Resource.Drawable.design_fab_background = global::XamarinReactorUI.TestApp.Droid.Resource.Drawable.design_fab_background;
 			global::Xamarin.Forms.Maps.Android.Resource.Drawable.design_ic_visibility = global::XamarinReactorUI.TestApp.Droid.Resource.Drawable.design_ic_visibility;
 			global::Xamarin.Forms.Maps.Android.Resource.Drawable.design_ic_visibility_off = global::XamarinReactorUI.TestApp.Droid.Resource.Drawable.design_ic_visibility_off;
@@ -6751,13 +6722,6 @@ namespace XamarinReactorUI.TestApp.Droid
 			global::Xamarin.Forms.Maps.Android.Resource.Drawable.design_snackbar_background = global::XamarinReactorUI.TestApp.Droid.Resource.Drawable.design_snackbar_background;
 			global::Xamarin.Forms.Maps.Android.Resource.Drawable.googleg_disabled_color_18 = global::XamarinReactorUI.TestApp.Droid.Resource.Drawable.googleg_disabled_color_18;
 			global::Xamarin.Forms.Maps.Android.Resource.Drawable.googleg_standard_color_18 = global::XamarinReactorUI.TestApp.Droid.Resource.Drawable.googleg_standard_color_18;
-			global::Xamarin.Forms.Maps.Android.Resource.Drawable.ic_calendar_black_24dp = global::XamarinReactorUI.TestApp.Droid.Resource.Drawable.ic_calendar_black_24dp;
-			global::Xamarin.Forms.Maps.Android.Resource.Drawable.ic_clear_black_24dp = global::XamarinReactorUI.TestApp.Droid.Resource.Drawable.ic_clear_black_24dp;
-			global::Xamarin.Forms.Maps.Android.Resource.Drawable.ic_edit_black_24dp = global::XamarinReactorUI.TestApp.Droid.Resource.Drawable.ic_edit_black_24dp;
-			global::Xamarin.Forms.Maps.Android.Resource.Drawable.ic_keyboard_arrow_left_black_24dp = global::XamarinReactorUI.TestApp.Droid.Resource.Drawable.ic_keyboard_arrow_left_black_24dp;
-			global::Xamarin.Forms.Maps.Android.Resource.Drawable.ic_keyboard_arrow_right_black_24dp = global::XamarinReactorUI.TestApp.Droid.Resource.Drawable.ic_keyboard_arrow_right_black_24dp;
-			global::Xamarin.Forms.Maps.Android.Resource.Drawable.ic_menu_arrow_down_black_24dp = global::XamarinReactorUI.TestApp.Droid.Resource.Drawable.ic_menu_arrow_down_black_24dp;
-			global::Xamarin.Forms.Maps.Android.Resource.Drawable.ic_menu_arrow_up_black_24dp = global::XamarinReactorUI.TestApp.Droid.Resource.Drawable.ic_menu_arrow_up_black_24dp;
 			global::Xamarin.Forms.Maps.Android.Resource.Drawable.ic_mtrl_checked_circle = global::XamarinReactorUI.TestApp.Droid.Resource.Drawable.ic_mtrl_checked_circle;
 			global::Xamarin.Forms.Maps.Android.Resource.Drawable.ic_mtrl_chip_checked_black = global::XamarinReactorUI.TestApp.Droid.Resource.Drawable.ic_mtrl_chip_checked_black;
 			global::Xamarin.Forms.Maps.Android.Resource.Drawable.ic_mtrl_chip_checked_circle = global::XamarinReactorUI.TestApp.Droid.Resource.Drawable.ic_mtrl_chip_checked_circle;
@@ -6905,7 +6869,6 @@ namespace XamarinReactorUI.TestApp.Droid
 			global::Xamarin.Forms.Maps.Android.Resource.Id.filled = global::XamarinReactorUI.TestApp.Droid.Resource.Id.filled;
 			global::Xamarin.Forms.Maps.Android.Resource.Id.fill_horizontal = global::XamarinReactorUI.TestApp.Droid.Resource.Id.fill_horizontal;
 			global::Xamarin.Forms.Maps.Android.Resource.Id.fill_vertical = global::XamarinReactorUI.TestApp.Droid.Resource.Id.fill_vertical;
-			global::Xamarin.Forms.Maps.Android.Resource.Id.filter_chip = global::XamarinReactorUI.TestApp.Droid.Resource.Id.filter_chip;
 			global::Xamarin.Forms.Maps.Android.Resource.Id.fitToContents = global::XamarinReactorUI.TestApp.Droid.Resource.Id.fitToContents;
 			global::Xamarin.Forms.Maps.Android.Resource.Id.@fixed = global::XamarinReactorUI.TestApp.Droid.Resource.Id.@fixed;
 			global::Xamarin.Forms.Maps.Android.Resource.Id.flyoutcontent_appbar = global::XamarinReactorUI.TestApp.Droid.Resource.Id.flyoutcontent_appbar;
@@ -6928,7 +6891,6 @@ namespace XamarinReactorUI.TestApp.Droid
 			global::Xamarin.Forms.Maps.Android.Resource.Id.italic = global::XamarinReactorUI.TestApp.Droid.Resource.Id.italic;
 			global::Xamarin.Forms.Maps.Android.Resource.Id.item_touch_helper_previous_elevation = global::XamarinReactorUI.TestApp.Droid.Resource.Id.item_touch_helper_previous_elevation;
 			global::Xamarin.Forms.Maps.Android.Resource.Id.labeled = global::XamarinReactorUI.TestApp.Droid.Resource.Id.labeled;
-			global::Xamarin.Forms.Maps.Android.Resource.Id.largeLabel = global::XamarinReactorUI.TestApp.Droid.Resource.Id.largeLabel;
 			global::Xamarin.Forms.Maps.Android.Resource.Id.left = global::XamarinReactorUI.TestApp.Droid.Resource.Id.left;
 			global::Xamarin.Forms.Maps.Android.Resource.Id.light = global::XamarinReactorUI.TestApp.Droid.Resource.Id.light;
 			global::Xamarin.Forms.Maps.Android.Resource.Id.line1 = global::XamarinReactorUI.TestApp.Droid.Resource.Id.line1;
@@ -7029,7 +6991,6 @@ namespace XamarinReactorUI.TestApp.Droid
 			global::Xamarin.Forms.Maps.Android.Resource.Id.skipCollapsed = global::XamarinReactorUI.TestApp.Droid.Resource.Id.skipCollapsed;
 			global::Xamarin.Forms.Maps.Android.Resource.Id.slide = global::XamarinReactorUI.TestApp.Droid.Resource.Id.slide;
 			global::Xamarin.Forms.Maps.Android.Resource.Id.sliding_tabs = global::XamarinReactorUI.TestApp.Droid.Resource.Id.sliding_tabs;
-			global::Xamarin.Forms.Maps.Android.Resource.Id.smallLabel = global::XamarinReactorUI.TestApp.Droid.Resource.Id.smallLabel;
 			global::Xamarin.Forms.Maps.Android.Resource.Id.snackbar_action = global::XamarinReactorUI.TestApp.Droid.Resource.Id.snackbar_action;
 			global::Xamarin.Forms.Maps.Android.Resource.Id.snackbar_text = global::XamarinReactorUI.TestApp.Droid.Resource.Id.snackbar_text;
 			global::Xamarin.Forms.Maps.Android.Resource.Id.snap = global::XamarinReactorUI.TestApp.Droid.Resource.Id.snap;
@@ -7751,7 +7712,6 @@ namespace XamarinReactorUI.TestApp.Droid
 			global::Xamarin.Forms.Maps.Android.Resource.Style.ThemeOverlay_MaterialComponents_Dialog = global::XamarinReactorUI.TestApp.Droid.Resource.Style.ThemeOverlay_MaterialComponents_Dialog;
 			global::Xamarin.Forms.Maps.Android.Resource.Style.ThemeOverlay_MaterialComponents_Dialog_Alert = global::XamarinReactorUI.TestApp.Droid.Resource.Style.ThemeOverlay_MaterialComponents_Dialog_Alert;
 			global::Xamarin.Forms.Maps.Android.Resource.Style.ThemeOverlay_MaterialComponents_Light = global::XamarinReactorUI.TestApp.Droid.Resource.Style.ThemeOverlay_MaterialComponents_Light;
-			global::Xamarin.Forms.Maps.Android.Resource.Style.ThemeOverlay_MaterialComponents_Light_BottomSheetDialog = global::XamarinReactorUI.TestApp.Droid.Resource.Style.ThemeOverlay_MaterialComponents_Light_BottomSheetDialog;
 			global::Xamarin.Forms.Maps.Android.Resource.Style.ThemeOverlay_MaterialComponents_MaterialAlertDialog = global::XamarinReactorUI.TestApp.Droid.Resource.Style.ThemeOverlay_MaterialComponents_MaterialAlertDialog;
 			global::Xamarin.Forms.Maps.Android.Resource.Style.ThemeOverlay_MaterialComponents_MaterialAlertDialog_Centered = global::XamarinReactorUI.TestApp.Droid.Resource.Style.ThemeOverlay_MaterialComponents_MaterialAlertDialog_Centered;
 			global::Xamarin.Forms.Maps.Android.Resource.Style.ThemeOverlay_MaterialComponents_MaterialAlertDialog_Picker_Date = global::XamarinReactorUI.TestApp.Droid.Resource.Style.ThemeOverlay_MaterialComponents_MaterialAlertDialog_Picker_Date;
@@ -8291,18 +8251,7 @@ namespace XamarinReactorUI.TestApp.Droid
 			global::Xamarin.Forms.Maps.Android.Resource.Styleable.BottomAppBar_fabCradleVerticalOffset = global::XamarinReactorUI.TestApp.Droid.Resource.Styleable.BottomAppBar_fabCradleVerticalOffset;
 			global::Xamarin.Forms.Maps.Android.Resource.Styleable.BottomAppBar_hideOnScroll = global::XamarinReactorUI.TestApp.Droid.Resource.Styleable.BottomAppBar_hideOnScroll;
 			global::Xamarin.Forms.Maps.Android.Resource.Styleable.BottomNavigationView = global::XamarinReactorUI.TestApp.Droid.Resource.Styleable.BottomNavigationView;
-			global::Xamarin.Forms.Maps.Android.Resource.Styleable.BottomNavigationView_backgroundTint = global::XamarinReactorUI.TestApp.Droid.Resource.Styleable.BottomNavigationView_backgroundTint;
-			global::Xamarin.Forms.Maps.Android.Resource.Styleable.BottomNavigationView_elevation = global::XamarinReactorUI.TestApp.Droid.Resource.Styleable.BottomNavigationView_elevation;
-			global::Xamarin.Forms.Maps.Android.Resource.Styleable.BottomNavigationView_itemBackground = global::XamarinReactorUI.TestApp.Droid.Resource.Styleable.BottomNavigationView_itemBackground;
 			global::Xamarin.Forms.Maps.Android.Resource.Styleable.BottomNavigationView_itemHorizontalTranslationEnabled = global::XamarinReactorUI.TestApp.Droid.Resource.Styleable.BottomNavigationView_itemHorizontalTranslationEnabled;
-			global::Xamarin.Forms.Maps.Android.Resource.Styleable.BottomNavigationView_itemIconSize = global::XamarinReactorUI.TestApp.Droid.Resource.Styleable.BottomNavigationView_itemIconSize;
-			global::Xamarin.Forms.Maps.Android.Resource.Styleable.BottomNavigationView_itemIconTint = global::XamarinReactorUI.TestApp.Droid.Resource.Styleable.BottomNavigationView_itemIconTint;
-			global::Xamarin.Forms.Maps.Android.Resource.Styleable.BottomNavigationView_itemRippleColor = global::XamarinReactorUI.TestApp.Droid.Resource.Styleable.BottomNavigationView_itemRippleColor;
-			global::Xamarin.Forms.Maps.Android.Resource.Styleable.BottomNavigationView_itemTextAppearanceActive = global::XamarinReactorUI.TestApp.Droid.Resource.Styleable.BottomNavigationView_itemTextAppearanceActive;
-			global::Xamarin.Forms.Maps.Android.Resource.Styleable.BottomNavigationView_itemTextAppearanceInactive = global::XamarinReactorUI.TestApp.Droid.Resource.Styleable.BottomNavigationView_itemTextAppearanceInactive;
-			global::Xamarin.Forms.Maps.Android.Resource.Styleable.BottomNavigationView_itemTextColor = global::XamarinReactorUI.TestApp.Droid.Resource.Styleable.BottomNavigationView_itemTextColor;
-			global::Xamarin.Forms.Maps.Android.Resource.Styleable.BottomNavigationView_labelVisibilityMode = global::XamarinReactorUI.TestApp.Droid.Resource.Styleable.BottomNavigationView_labelVisibilityMode;
-			global::Xamarin.Forms.Maps.Android.Resource.Styleable.BottomNavigationView_menu = global::XamarinReactorUI.TestApp.Droid.Resource.Styleable.BottomNavigationView_menu;
 			global::Xamarin.Forms.Maps.Android.Resource.Styleable.BottomSheetBehavior_Layout = global::XamarinReactorUI.TestApp.Droid.Resource.Styleable.BottomSheetBehavior_Layout;
 			global::Xamarin.Forms.Maps.Android.Resource.Styleable.BottomSheetBehavior_Layout_android_elevation = global::XamarinReactorUI.TestApp.Droid.Resource.Styleable.BottomSheetBehavior_Layout_android_elevation;
 			global::Xamarin.Forms.Maps.Android.Resource.Styleable.BottomSheetBehavior_Layout_backgroundTint = global::XamarinReactorUI.TestApp.Droid.Resource.Styleable.BottomSheetBehavior_Layout_backgroundTint;

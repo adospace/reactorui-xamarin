@@ -448,7 +448,23 @@ namespace XamarinReactorUI
             _componentRefAction = componentRefAction;
         }
 
+#if DEBUG
+        protected T NativeControl
+        {
+            get
+            {
+                if (_nativeControl is T nativeControl)
+                    return nativeControl;
+
+                if (_nativeControl == null)
+                    return (T)_nativeControl;
+
+                throw new InvalidOperationException();
+            }
+        }
+#else
         protected T NativeControl { get => (T)_nativeControl; }
+#endif
 
         public void SetAttachedProperty(BindableProperty property, object value)
             => _attachedProperties[property] = value;

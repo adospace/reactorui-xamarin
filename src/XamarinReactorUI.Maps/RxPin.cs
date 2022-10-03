@@ -12,16 +12,22 @@ namespace XamarinReactorUI.Maps
         Position Position { get; set; }
         string Address { get; set; }
         string Label { get; set; }
+
+
+        Action MarkerClickedAction { get; set; }
+        Action<object, PinClickedEventArgs> MarkerClickedActionWithArgs { get; set; }
+        Action InfoWindowClickedAction { get; set; }
+        Action<object, PinClickedEventArgs> InfoWindowClickedActionWithArgs { get; set; }
     }
 
-    public class RxPin : RxElement<Pin>, IRxPin
+    public abstract class RxPin<T> : RxElement<T>, IRxPin where T : Pin, new()
     {
         public RxPin()
         {
 
         }
 
-        public RxPin(Action<Pin> componentRefAction)
+        public RxPin(Action<T> componentRefAction)
             : base(componentRefAction)
         {
 
@@ -33,9 +39,15 @@ namespace XamarinReactorUI.Maps
         public string Address { get; set; } = (string)Pin.AddressProperty.DefaultValue;
         public string Label { get; set; } = (string)Pin.LabelProperty.DefaultValue;
 
+        public Action MarkerClickedAction { get; set; }
+        public Action<object, PinClickedEventArgs> MarkerClickedActionWithArgs { get; set; }
+
+        public Action InfoWindowClickedAction { get; set; }
+        public Action<object, PinClickedEventArgs> InfoWindowClickedActionWithArgs { get; set; }
+
         protected override void OnMount()
         {
-            _nativeControl = _nativeControl ?? new Pin();
+            _nativeControl = _nativeControl ?? new T();
 
             UpdateCore();
 
@@ -46,7 +58,35 @@ namespace XamarinReactorUI.Maps
         {
             UpdateCore();
 
+            if (MarkerClickedAction != null || MarkerClickedActionWithArgs != null)
+                NativeControl.MarkerClicked += NativeControl_MarkerClicked;
+            if (InfoWindowClickedAction != null || InfoWindowClickedActionWithArgs != null)
+                NativeControl.InfoWindowClicked += NativeControl_InfoWindowClicked;
+
             base.OnUpdate();
+        }
+
+        private void NativeControl_MarkerClicked(object sender, PinClickedEventArgs e)
+        {
+            MarkerClickedAction?.Invoke();
+            MarkerClickedActionWithArgs?.Invoke(sender, e);
+        }
+
+        private void NativeControl_InfoWindowClicked(object sender, PinClickedEventArgs e)
+        {
+            InfoWindowClickedAction?.Invoke();
+            InfoWindowClickedActionWithArgs?.Invoke(sender, e);
+        }
+
+        protected override void OnMigrated(VisualNode newNode)
+        {
+            if (NativeControl != null)
+            {
+                NativeControl.MarkerClicked -= NativeControl_MarkerClicked;
+                NativeControl.InfoWindowClicked -= NativeControl_InfoWindowClicked;
+            }
+
+            base.OnMigrated(newNode);
         }
 
         private void UpdateCore()
@@ -57,11 +97,25 @@ namespace XamarinReactorUI.Maps
             NativeControl.Label = Label;
         }
 
+
+
         protected override IEnumerable<VisualNode> RenderChildren()
         {
             yield break;
         }
     }
+
+    public class RxPin : RxPin<Pin>
+    {
+        public RxPin() { }
+
+        public RxPin(Action<Pin> componentRefAction)
+            : base(componentRefAction)
+        {
+
+        }
+    }
+
 
     public static class RxPinExtensions
     {
@@ -97,6 +151,29 @@ namespace XamarinReactorUI.Maps
 
 
 
+        public static T OnMarkerClicked<T>(this T pin, Action action) where T : IRxPin
+        {
+            pin.MarkerClickedAction = action;
+            return pin;
+        }
+
+        public static T OnMarkerClicked<T>(this T pin, Action<object, PinClickedEventArgs> action) where T : IRxPin
+        {
+            pin.MarkerClickedActionWithArgs = action;
+            return pin;
+        }
+
+        public static T OnInfoWindowClicked<T>(this T pin, Action action) where T : IRxPin
+        {
+            pin.InfoWindowClickedAction = action;
+            return pin;
+        }
+
+        public static T OnInfoWindowClicked<T>(this T pin, Action<object, PinClickedEventArgs> action) where T : IRxPin
+        {
+            pin.InfoWindowClickedActionWithArgs = action;
+            return pin;
+        }
     }
 
 }

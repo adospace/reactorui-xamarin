@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 
@@ -16,16 +17,16 @@ namespace XamarinReactorUI.Maps
         Action<object, MapClickedEventArgs> ClickedAction { get; set; }
     }
 
-    public class RxMap<T> : RxView<T>, IRxMap, IEnumerable<RxPin> where T : Map, new()
+    public class RxMap<T> : RxView<T>, IRxMap, IEnumerable<IRxPin> where T : Map, new()
     {
-        private readonly List<RxPin> _internalChildren = new List<RxPin>();
+        private readonly List<IRxPin> _internalChildren = new List<IRxPin>();
         //private readonly List<VisualNode> _layoutChildren = new List<VisualNode>();
 
         public RxMap()
         {
         }
 
-        public RxMap(IEnumerable<RxPin> nodes)
+        public RxMap(IEnumerable<IRxPin> nodes)
         {
             Add(nodes);
         }
@@ -35,7 +36,7 @@ namespace XamarinReactorUI.Maps
         {
         }
 
-        public IEnumerator<RxPin> GetEnumerator()
+        public IEnumerator<IRxPin> GetEnumerator()
         {
             return _internalChildren.GetEnumerator();
         }
@@ -45,19 +46,19 @@ namespace XamarinReactorUI.Maps
             return _internalChildren.GetEnumerator();
         }
 
-        public void Add(RxPin node)
+        public void Add(IRxPin node)
         {
             _internalChildren.Add(node);
         }
 
-        public void Add(IEnumerable<RxPin> nodes)
+        public void Add(IEnumerable<IRxPin> nodes)
         {
             _internalChildren.AddRange(nodes);
         }
 
         protected override IEnumerable<VisualNode> RenderChildren()
         {
-            return _internalChildren;
+            return _internalChildren.Cast<VisualNode>();
         }
 
         protected override void OnAddChild(VisualNode widget, BindableObject childNativeControl)
@@ -124,7 +125,7 @@ namespace XamarinReactorUI.Maps
         {
         }
 
-        public RxMap(IEnumerable<RxPin> nodes)
+        public RxMap(IEnumerable<IRxPin> nodes)
             : base(nodes)
         {
         }

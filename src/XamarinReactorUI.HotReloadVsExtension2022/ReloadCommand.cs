@@ -135,8 +135,15 @@ TargetFramework=131072
             var allProjectsInSolution = _dte.Solution.Projects;
             foreach (var project in allProjectsInSolution.Cast<EnvDTE.Project>())
             {
-                if (project.Properties == null)
-                    continue;
+                try
+                {
+                    if (project.Properties == null)
+                        continue;
+                }
+                catch (COMException) 
+                {
+                    continue;    
+                }
 
                 //bool optimizeIsEnabled = false;
                 //foreach (Property property in project.Properties.Cast<Property>().Where(_=>_.Name.IndexOf("target", StringComparison.OrdinalIgnoreCase) > -1))

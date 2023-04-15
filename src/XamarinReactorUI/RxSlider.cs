@@ -94,9 +94,12 @@ namespace XamarinReactorUI
 
         protected override void OnUnmount()
         {
-            NativeControl.DragStarted -= NativeControl_DragStarted;
-            NativeControl.DragCompleted -= NativeControl_DragCompleted;
-            NativeControl.ValueChanged -= NativeControl_ValueChanged;
+            if (NativeControl != null)
+            {
+                NativeControl.DragStarted -= NativeControl_DragStarted;
+                NativeControl.DragCompleted -= NativeControl_DragCompleted;
+                NativeControl.ValueChanged -= NativeControl_ValueChanged;
+            }
 
             base.OnUnmount();
         }

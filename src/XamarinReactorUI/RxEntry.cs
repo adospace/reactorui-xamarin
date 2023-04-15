@@ -102,7 +102,11 @@ namespace XamarinReactorUI
 
         protected override void OnUnmount()
         {
-            NativeControl.Completed -= NativeControl_Completed;
+            if (NativeControl != null)
+            {
+                NativeControl.Completed -= NativeControl_Completed;
+            }
+
             base.OnUnmount();
         }
 

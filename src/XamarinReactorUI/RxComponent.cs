@@ -185,6 +185,8 @@ namespace XamarinReactorUI
         PropertyInfo[] StateProperties { get; }
 
         void ForwardState(object stateFromOldComponent);
+
+        bool InheritedState { get; }
     }
 
     internal interface IRxComponentWithProps
@@ -217,10 +219,12 @@ namespace XamarinReactorUI
     public abstract class RxComponent<S, P> : RxComponentWithProps<P>, IRxComponentWithState where S : class, IState, new() where P : class, IProps, new()
     {
         private IRxComponentWithState _newComponent;
+        private readonly bool _inheritedState;
 
         protected RxComponent(S state = null, P props = null)
             : base(props)
         {
+            _inheritedState = state != null;
             State = state ?? new S();
         }
 
@@ -229,6 +233,8 @@ namespace XamarinReactorUI
         public PropertyInfo[] StateProperties => typeof(S).GetProperties().Where(_ => _.CanWrite).ToArray();
 
         object IRxComponentWithState.State => State;
+
+        bool IRxComponentWithState.InheritedState => _inheritedState;
 
         void IRxComponentWithState.ForwardState(object stateFromOldComponent)
         {
@@ -266,7 +272,10 @@ namespace XamarinReactorUI
             if (newNode is IRxComponentWithState newComponentWithState)
             {
                 _newComponent = newComponentWithState;
-                State.CopyPropertiesTo(newComponentWithState.State, newComponentWithState.StateProperties);
+                if (!_newComponent.InheritedState)
+                {
+                    State.CopyPropertiesTo(newComponentWithState.State, newComponentWithState.StateProperties);
+                }
             }
 
             if (newNode is IRxComponentWithProps newComponentWithProps)

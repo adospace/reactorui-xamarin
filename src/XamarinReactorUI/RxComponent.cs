@@ -180,7 +180,7 @@ namespace XamarinReactorUI
 
     internal interface IRxComponentWithState
     {
-        object State { get; }
+        object State { get; internal set; }
 
         PropertyInfo[] StateProperties { get; }
 
@@ -191,7 +191,7 @@ namespace XamarinReactorUI
 
     internal interface IRxComponentWithProps
     {
-        object Props { get; }
+        object Props { get; internal set; }
 
         PropertyInfo[] PropsProperties { get; }
     }
@@ -206,40 +206,90 @@ namespace XamarinReactorUI
 
     public abstract class RxComponentWithProps<P> : RxComponent, IRxComponentWithProps where P : class, IProps, new()
     {
+        private readonly bool _derivedProps;
+        private P _props;
+
         public RxComponentWithProps(P props = null)
         {
-            Props = props ?? new P();
+            _props = props;
+            _derivedProps = props != null;
         }
 
-        public P Props { get; private set; }
-        object IRxComponentWithProps.Props => Props;
+        public P Props
+        {
+            get => _props ??= new P();
+        }
+
+        object IRxComponentWithProps.Props
+        {
+            get => Props;
+            set
+            {
+                if (_props != null)
+                {
+                    throw new InvalidOperationException();
+                }
+
+                _props = (P)value;
+            }
+        }
+
         public PropertyInfo[] PropsProperties => typeof(P).GetProperties().Where(_ => _.CanWrite).ToArray();
+        internal override void MergeWith(VisualNode newNode)
+        {
+            if (!_derivedProps && newNode is IRxComponentWithProps newComponentWithProps)
+            {
+                if (newNode.GetType() == GetType())
+                {
+                    newComponentWithProps.Props = Props;
+                }
+                else if (newNode.GetType().FullName == this.GetType().FullName)
+                {
+                    Props.CopyPropertiesTo(newComponentWithProps.Props, newComponentWithProps.PropsProperties);
+                }
+            }
+
+            base.MergeWith(newNode);
+        }
     }
 
     public abstract class RxComponent<S, P> : RxComponentWithProps<P>, IRxComponentWithState where S : class, IState, new() where P : class, IProps, new()
     {
         private IRxComponentWithState _newComponent;
         private readonly bool _inheritedState;
+        private S _state;
 
         protected RxComponent(S state = null, P props = null)
             : base(props)
         {
+            _state = state;
             _inheritedState = state != null;
-            State = state ?? new S();
         }
 
-        public S State { get; private set; }
+        public S State
+        {
+            get => _state ??= new S();
+        }
+
+        object IRxComponentWithState.State
+        {
+            get => State;
+            set
+            {
+                if (_state != null)
+                {
+                    throw new InvalidOperationException();
+                }
+                _state = (S)value;
+            }
+        }
 
         public PropertyInfo[] StateProperties => typeof(S).GetProperties().Where(_ => _.CanWrite).ToArray();
-
-        object IRxComponentWithState.State => State;
 
         bool IRxComponentWithState.InheritedState => _inheritedState;
 
         void IRxComponentWithState.ForwardState(object stateFromOldComponent)
         {
-            stateFromOldComponent.CopyPropertiesTo(State, StateProperties);
-
             if (Application.Current.Dispatcher.IsInvokeRequired)
                 Application.Current.Dispatcher.BeginInvokeOnMainThread(Invalidate);
             else
@@ -253,18 +303,21 @@ namespace XamarinReactorUI
                 throw new ArgumentNullException(nameof(action));
             }
 
-            action(State);
-
-            if (_newComponent != null)
+            if (_newComponent != null && _newComponent.State is S newComponentState)
             {
-                _newComponent.ForwardState(State);
-                return;
+                System.Diagnostics.Debug.WriteLine("XamarinReactorUI: Forward state to new component");
+                action(newComponentState);
+                _newComponent.ForwardState(newComponentState);
             }
-
-            if (Application.Current.Dispatcher.IsInvokeRequired)
-                Application.Current.Dispatcher.BeginInvokeOnMainThread(Invalidate);
             else
-                Invalidate();
+            {
+                action(State);
+
+                if (Application.Current.Dispatcher.IsInvokeRequired)
+                    Application.Current.Dispatcher.BeginInvokeOnMainThread(Invalidate);
+                else
+                    Invalidate();
+            }
         }
 
         internal override void MergeWith(VisualNode newNode)
@@ -274,13 +327,16 @@ namespace XamarinReactorUI
                 _newComponent = newComponentWithState;
                 if (!_newComponent.InheritedState)
                 {
-                    State.CopyPropertiesTo(newComponentWithState.State, newComponentWithState.StateProperties);
+                    if (newNode.GetType() == this.GetType())
+                    {
+                        newComponentWithState.State = State;
+                    }
+                    else if (newNode.GetType().FullName == this.GetType().FullName)
+                    {
+                        System.Diagnostics.Debug.WriteLine("WARNING: State copied after hot-reload");
+                        State.CopyPropertiesTo(newComponentWithState.State, newComponentWithState.StateProperties);
+                    }
                 }
-            }
-
-            if (newNode is IRxComponentWithProps newComponentWithProps)
-            {
-                Props.CopyPropertiesTo(newComponentWithProps.Props, newComponentWithProps.PropsProperties);
             }
 
             base.MergeWith(newNode);

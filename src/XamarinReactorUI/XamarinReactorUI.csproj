@@ -13,6 +13,7 @@
     <PackageTags>xamarin forms .net react flutter ui</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
